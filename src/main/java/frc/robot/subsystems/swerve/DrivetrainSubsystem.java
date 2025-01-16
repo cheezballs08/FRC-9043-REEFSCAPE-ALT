@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ModuleConstants;
 import frc.robot.Constants.RobotConsants;
+import frc.robot.units.VisionProcessingUnit;
 import frc.robot.Constants.DrivetrainConstants;
 
 public class DrivetrainSubsystem extends SubsystemBase {
@@ -83,6 +84,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
   
   private PPHolonomicDriveController controller = new PPHolonomicDriveController(ModuleConstants.drivePID, ModuleConstants.anglePID);
 
+  private VisionProcessingUnit vision = VisionProcessingUnit.getInstance();
+
   // TODO: Swap this for the SwerveDrivePoseEstimator which uses the vision as well.
   SwerveDrivePoseEstimator odometer = new SwerveDrivePoseEstimator(
     DrivetrainConstants.kinematics, 
@@ -122,7 +125,18 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+  }
+
+  public void updateOdometer() {
+
+    if (vision.canEstimatePose()) {
+
+      // TODO: Check if timestampSeconds is correct for this job.
+      odometer.addVisionMeasurement(vision.getEstimatedPose2d(), vision.getEstimate().timestampSeconds);
+    }
+
     odometer.update(this.getRotation2d(), this.getModulePositions());
+
   }
 
   public Pose2d getPose() {

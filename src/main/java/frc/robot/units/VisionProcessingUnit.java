@@ -64,6 +64,12 @@ public class VisionProcessingUnit {
     this.bestTarget = result.getBestTarget();
   }
 
+  public void update() {
+    this.updateResult();
+    this.updateTargets();
+    this.updatePoseEstimator();
+  }
+
   public PhotonTrackedTarget getBestTarget() {
     return bestTarget;
   }
@@ -95,8 +101,16 @@ public class VisionProcessingUnit {
   }
 
   public void updatePoseEstimator() {
-    // ! Possible termination point! Handle with more care!
-    estimatedPose = poseEstimator.update(result).get();  
+    // TODO: Possible termination point! Handle with more care!
+    estimatedPose = poseEstimator.update(result).isPresent() ? poseEstimator.update(result).get() : null;  
+  }
+
+  public boolean canEstimatePose() {
+    return estimatedPose != null;
+  }
+
+  public EstimatedRobotPose getEstimate() {
+    return estimatedPose;
   }
 
   public Pose2d getEstimatedPose2d() {
