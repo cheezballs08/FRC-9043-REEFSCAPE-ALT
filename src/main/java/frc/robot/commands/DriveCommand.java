@@ -25,6 +25,8 @@ public class DriveCommand extends Command {
 
   double xInput, yInput, rInput;
 
+  ChassisSpeeds speeds;
+
 
   public DriveCommand(
     DrivetrainSubsystem swerveSubsystem,
@@ -68,14 +70,17 @@ public class DriveCommand extends Command {
     rInput = rLimiter.calculate(rInput) * ControllerConsants.angleSpeedReductionFactor;
 
     if (driveType == DriveType.FieldRelative) {
-      drivetrainSubsystem.drive(ChassisSpeeds.fromFieldRelativeSpeeds(xInput, yInput, rInput, drivetrainSubsystem.getRotation2d()));
+      speeds = ChassisSpeeds.fromRobotRelativeSpeeds(yInput, xInput, rInput, drivetrainSubsystem.getRotation2d());
     } else {
-      drivetrainSubsystem.drive(ChassisSpeeds.fromRobotRelativeSpeeds(xInput, yInput, rInput, drivetrainSubsystem.getRotation2d()));
+      speeds = new ChassisSpeeds(yInput, xInput, rInput);
     }
+
+    drivetrainSubsystem.drive(speeds);
   }
 
   @Override
   public void end(boolean interrupted) {
+    this.speeds = new ChassisSpeeds();
     drivetrainSubsystem.stop();
   }
 
