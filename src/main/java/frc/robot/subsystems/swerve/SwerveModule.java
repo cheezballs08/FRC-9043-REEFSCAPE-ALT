@@ -1,38 +1,41 @@
 package frc.robot.subsystems.swerve;
 
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.config.SparkBaseConfig;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import frc.robot.Constants.MathConsants;
-import frc.robot.Constants.ModuleConsants;
+import frc.robot.Constants.ModuleConstants;
 import frc.robot.utils.SparkEncoder;
 import frc.robot.utils.ThriftyEncoder;
 
 public class SwerveModule {
-  SparkMax driveMotor;
-  SparkMax angleMotor;
+  private SparkMax driveMotor;
+  private SparkMax angleMotor;
   
-  SparkEncoder driveEncoder;
-  SparkEncoder angleEncoder;
+  private SparkEncoder driveEncoder;
+  private SparkEncoder angleEncoder;
   
-  PIDController driveController;
-  PIDController angleController;
+  private PIDController driveController;
+  private PIDController angleController;
 
-  ThriftyEncoder absoluteEncoder;
+  private ThriftyEncoder absoluteEncoder;
 
   public SwerveModule(
     int driveMotorID,
     MotorType driveMotorType,
-    boolean invertDriveMotor,
+    SparkBaseConfig driveMotorConfig,
     boolean invertDriveEncoder,
 
     int angleMotorID,
     MotorType angleMotorType,
-    boolean invertAngleMotor,
+    SparkBaseConfig angleMotorConfig,
     boolean invertAngleEncoder,
 
     int absoluteEncoderID,
@@ -40,26 +43,27 @@ public class SwerveModule {
     boolean invertAbsoluteEncoder
   ) {
 
-    // TODO: Configure all of the motors here.
-    driveMotor = new SparkMax(driveMotorID, driveMotorType);
-    
+    // ? Im assuming we don't have to burn the flash with persist parameters, I hope Im right
+    driveMotor.configure(driveMotorConfig, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
+
     driveEncoder = new SparkEncoder(driveMotor.getEncoder());
     driveEncoder.setInverted(invertDriveEncoder);
-    driveEncoder.setPositionConversionConstant(ModuleConsants.driveEncoderSpeedConversionFactor);
-    driveEncoder.setVelocityConversionConstant(ModuleConsants.driveEncoderAcclerationConversionFactor);
+    driveEncoder.setPositionConversionConstant(ModuleConstants.driveEncoderSpeedConversionFactor);
+    driveEncoder.setVelocityConversionConstant(ModuleConstants.driveEncoderAcclerationConversionFactor);
 
-    driveController = new PIDController(ModuleConsants.PDrive, ModuleConsants.IDrive, ModuleConsants.DDrive);
-    driveController.setIZone(ModuleConsants.IZDrive);
+    driveController = new PIDController(ModuleConstants.PDrive, ModuleConstants.IDrive, ModuleConstants.DDrive);
+    driveController.setIZone(ModuleConstants.IZDrive);
     
     angleMotor = new SparkMax(angleMotorID, angleMotorType);
+    angleMotor.configure(angleMotorConfig, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
 
     angleEncoder = new SparkEncoder(angleMotor.getEncoder());
     angleEncoder.setInverted(invertAngleEncoder);
-    angleEncoder.setPositionConversionConstant(ModuleConsants.angleEncoderSpeedConversionFactor);
-    angleEncoder.setVelocityConversionConstant(ModuleConsants.angleEncoderAccelerationConversionFactor);
+    angleEncoder.setPositionConversionConstant(ModuleConstants.angleEncoderSpeedConversionFactor);
+    angleEncoder.setVelocityConversionConstant(ModuleConstants.angleEncoderAccelerationConversionFactor);
   
-    angleController = new PIDController(ModuleConsants.PAngle, ModuleConsants.IAngle, ModuleConsants.DAngle);
-    angleController.setIZone(ModuleConsants.IZAngle);
+    angleController = new PIDController(ModuleConstants.PAngle, ModuleConstants.IAngle, ModuleConstants.DAngle);
+    angleController.setIZone(ModuleConstants.IZAngle);
     angleController.enableContinuousInput(-Math.PI, Math.PI);
 
     absoluteEncoder = new ThriftyEncoder(absoluteEncoderID);
@@ -84,8 +88,8 @@ public class SwerveModule {
 
     desiredState.optimize(this.getState().angle);
 
-    double driveSpeed = driveController.calculate(this.getState().speedMetersPerSecond, desiredState.speedMetersPerSecond) / ModuleConsants.driveMaxSpeed;
-    double angleSpeed = angleController.calculate(this.getState().angle.getRadians(), desiredState.angle.getRadians()) / ModuleConsants.angleMaxSpeed;
+    double driveSpeed = driveController.calculate(this.getState().speedMetersPerSecond, desiredState.speedMetersPerSecond) / ModuleConstants.driveMaxSpeed;
+    double angleSpeed = angleController.calculate(this.getState().angle.getRadians(), desiredState.angle.getRadians()) / ModuleConstants.angleMaxSpeed;
 
     driveMotor.set(driveSpeed);
     angleMotor.set(angleSpeed);
