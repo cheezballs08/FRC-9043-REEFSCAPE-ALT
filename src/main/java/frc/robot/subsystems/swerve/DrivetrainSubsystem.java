@@ -87,7 +87,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   private VisionProcessingUnit vision = VisionProcessingUnit.getInstance();
 
-  // TODO: Swap this for the SwerveDrivePoseEstimator which uses the vision as well.
   SwerveDrivePoseEstimator odometer = new SwerveDrivePoseEstimator(
     DrivetrainConstants.kinematics, 
     this.getRotation2d(), 
