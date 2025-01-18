@@ -51,7 +51,7 @@ public class VisionProcessingUnit {
     
     List<PhotonPipelineResult> results = camera.getAllUnreadResults();
 
-    if (results.size() == 0) {
+    if (results.isEmpty()) {
       return;
     }
     
