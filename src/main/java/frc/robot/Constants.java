@@ -224,6 +224,11 @@ public class Constants {
     public static final AprilTagFieldLayout fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2024Crescendo);
   }
 
+  public static class AutoConstants {
+    public static final double aprilTagAimReductionFactor = 0.0;
+    public static final double aprilTagAngleTolerance = 0.0;
+    public static final double aprilTagDistanceTolerance = 0.0;
+  }
 
   public static class ControllerConsants {
     public static final double deadband = 0.0;

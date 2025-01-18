@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ModuleConstants;
 import frc.robot.Constants.RobotConsants;
 import frc.robot.units.VisionProcessingUnit;
+import frc.robot.utils.DriveType;
 import frc.robot.Constants.DrivetrainConstants;
 
 public class DrivetrainSubsystem extends SubsystemBase {
@@ -207,6 +208,19 @@ public class DrivetrainSubsystem extends SubsystemBase {
   }
 
   public void drive(ChassisSpeeds speeds) {
+    this.setModuleStates(DrivetrainConstants.kinematics.toSwerveModuleStates(speeds));
+  }
+
+  public void drive(double xSpeed, double ySpeed, double rSpeed, DriveType driveType) {
+    
+    ChassisSpeeds speeds;
+
+    if (driveType == DriveType.FieldRelative) {
+      speeds = ChassisSpeeds.fromRobotRelativeSpeeds(xSpeed, ySpeed, rSpeed, this.getRotation2d());
+    } else {
+      speeds = new ChassisSpeeds(xSpeed, ySpeed, rSpeed);
+    }
+
     this.setModuleStates(DrivetrainConstants.kinematics.toSwerveModuleStates(speeds));
   }
 
