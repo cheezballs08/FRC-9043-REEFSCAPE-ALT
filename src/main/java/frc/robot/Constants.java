@@ -18,6 +18,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.system.plant.DCMotor;
 
+// TODO: Initialize all of the constants seen here.
 public class Constants {
 
   public static class ModuleConstants {
@@ -225,6 +226,7 @@ public class Constants {
   }
 
   public static class AutoConstants {
+    public static final double aprilTagDriveReductionFactor = 0.0;
     public static final double aprilTagAimReductionFactor = 0.0;
     public static final double aprilTagAngleTolerance = 0.0;
     public static final double aprilTagDistanceTolerance = 0.0;
