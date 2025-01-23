@@ -1,9 +1,6 @@
 package frc.robot.subsystems.swerve;
 
 import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.SparkBase.PersistMode;
-import com.revrobotics.spark.SparkBase.ResetMode;
-import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkBaseConfig;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -29,12 +26,10 @@ public class SwerveModule {
 
   public SwerveModule(
     int driveMotorID,
-    MotorType driveMotorType,
     SparkBaseConfig driveMotorConfig,
     boolean invertDriveEncoder,
 
     int angleMotorID,
-    MotorType angleMotorType,
     SparkBaseConfig angleMotorConfig,
     boolean invertAngleEncoder,
 
@@ -44,7 +39,9 @@ public class SwerveModule {
   ) {
 
     // ? Im assuming we don't have to burn the flash with persist parameters, I hope Im right
-    driveMotor.configure(driveMotorConfig, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
+    driveMotor = new SparkMax(driveMotorID, ModuleConstants.driveMotorType);
+
+    driveMotor.configure(driveMotorConfig, ModuleConstants.resetMode, ModuleConstants.persistMode);
 
     driveEncoder = new SparkEncoder(driveMotor.getEncoder());
     driveEncoder.setInverted(invertDriveEncoder);
@@ -54,8 +51,8 @@ public class SwerveModule {
     driveController = new PIDController(ModuleConstants.PDrive, ModuleConstants.IDrive, ModuleConstants.DDrive);
     driveController.setIZone(ModuleConstants.IZDrive);
     
-    angleMotor = new SparkMax(angleMotorID, angleMotorType);
-    angleMotor.configure(angleMotorConfig, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
+    angleMotor = new SparkMax(angleMotorID, ModuleConstants.angleMotorType);
+    angleMotor.configure(angleMotorConfig, ModuleConstants.resetMode, ModuleConstants.persistMode);
 
     angleEncoder = new SparkEncoder(angleMotor.getEncoder());
     angleEncoder.setInverted(invertAngleEncoder);

@@ -5,6 +5,8 @@ import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import com.pathplanner.lib.config.ModuleConfig;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
@@ -25,6 +27,12 @@ public class Constants {
     public static final double wheelDiameter = 0;
 
     public static final double wheelCoefficientOfFriction = 0;
+
+    public static final MotorType driveMotorType = MotorType.kBrushless;
+    public static final MotorType angleMotorType = MotorType.kBrushless;
+
+    public static final PersistMode persistMode = PersistMode.kPersistParameters;
+    public static final ResetMode resetMode = ResetMode.kNoResetSafeParameters;
 
     public static final int driveCurrentLimit = 0;
     public static final int angleCurrentLimit = 0;
@@ -87,7 +95,6 @@ public class Constants {
     .idleMode(null)
     .inverted(false)
     .apply(ModuleConstants.driveMotorDefaultConfig);
-    public static final boolean frontLeftInvertDriveMotor = false;
     public static final boolean frontLeftInvertDriveEncoder = false;
 
     public static final int frontLeftAngleMotorID = 0;
@@ -176,7 +183,7 @@ public class Constants {
 
     // * Back Right
 
-    //*  Gyroscope
+    // * Gyroscope
 
     public static final NavXComType GyroscopeCommunicationType = NavXComType.kI2C;
     public static final boolean invertGyroscope = false;

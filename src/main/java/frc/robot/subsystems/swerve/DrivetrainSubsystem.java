@@ -28,11 +28,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
   
   private SwerveModule frontLeftModule = new SwerveModule(
     DrivetrainConstants.frontLeftDriveMotorID, 
-    DrivetrainConstants.frontLeftDriveMotorType, 
     DrivetrainConstants.frontLeftDriveMotorConfig, 
     DrivetrainConstants.frontLeftInvertDriveEncoder, 
     DrivetrainConstants.frontLeftAngleMotorID, 
-    DrivetrainConstants.frontLeftAngleMotorType, 
     DrivetrainConstants.frontLeftAngleMotorConfig, 
     DrivetrainConstants.frontLeftInvertAngleEncoder, 
     DrivetrainConstants.frontLeftAbsoluteEncoderID, 
@@ -42,11 +40,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
   
   private SwerveModule frontRightModule = new SwerveModule(
     DrivetrainConstants.frontRightDriveMotorID, 
-    DrivetrainConstants.frontRightDriveMotorType, 
     DrivetrainConstants.frontRightDriveMotorConfig, 
     DrivetrainConstants.frontRightInvertDriveEncoder, 
     DrivetrainConstants.frontRightAngleMotorID, 
-    DrivetrainConstants.frontRightAngleMotorType, 
     DrivetrainConstants.frontRightAngleMotorConfig, 
     DrivetrainConstants.frontRightInvertAngleEncoder, 
     DrivetrainConstants.frontRightAbsoluteEncoderID, 
@@ -56,11 +52,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
   
   private SwerveModule backLeftModule = new SwerveModule(
     DrivetrainConstants.backLeftDriveMotorID, 
-    DrivetrainConstants.backLeftDriveMotorType, 
     DrivetrainConstants.backLeftDriveMotorConfig, 
     DrivetrainConstants.backLeftInvertDriveEncoder, 
     DrivetrainConstants.backLeftAngleMotorID, 
-    DrivetrainConstants.backLeftAngleMotorType, 
     DrivetrainConstants.backLeftAngleMotorConfig, 
     DrivetrainConstants.backLeftInvertAngleEncoder, 
     DrivetrainConstants.backLeftAbsoluteEncoderID,  
@@ -70,11 +64,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   private SwerveModule backRightModule = new SwerveModule(
     DrivetrainConstants.backRightDriveMotorID, 
-    DrivetrainConstants.backRightDriveMotorType, 
     DrivetrainConstants.backRightDriveMotorConfig,
     DrivetrainConstants.backRightInvertDriveEncoder, 
     DrivetrainConstants.backRightAngleMotorID, 
-    DrivetrainConstants.backRightAngleMotorType, 
     DrivetrainConstants.backRightAngleMotorConfig, 
     DrivetrainConstants.backRightInvertAngleEncoder, 
     DrivetrainConstants.backRightAbsoluteEncoderID, 
