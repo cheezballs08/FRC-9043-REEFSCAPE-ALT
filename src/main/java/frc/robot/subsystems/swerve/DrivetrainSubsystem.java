@@ -21,6 +21,7 @@ import frc.robot.Constants.ModuleConstants;
 import frc.robot.Constants.RobotConsants;
 import frc.robot.units.VisionProcessingUnit;
 import frc.robot.utils.DriveType;
+import frc.robot.utils.Gyroscope;
 import frc.robot.Constants.DrivetrainConstants;
 
 public class DrivetrainSubsystem extends SubsystemBase {
@@ -81,7 +82,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     DrivetrainConstants.backRightInvertAbsoluteEncoder
   );
 
-  private AHRS gyroscope = new AHRS(DrivetrainConstants.GyroscopeCommunicationType);
+  private Gyroscope gyroscope = new Gyroscope(new AHRS(DrivetrainConstants.GyroscopeCommunicationType), DrivetrainConstants.invertGyroscope);
   
   private PPHolonomicDriveController controller = new PPHolonomicDriveController(ModuleConstants.drivePID, ModuleConstants.anglePID);
 
@@ -96,6 +97,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   public DrivetrainSubsystem() {
     // For reseting the gyro.
+    // TODO: Use isCalibrating for the thread duration.
     new Thread( 
     () -> {
       try {

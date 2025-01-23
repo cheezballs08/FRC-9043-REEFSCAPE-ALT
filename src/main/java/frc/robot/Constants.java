@@ -179,7 +179,7 @@ public class Constants {
     //*  Gyroscope
 
     public static final NavXComType GyroscopeCommunicationType = NavXComType.kI2C;
-    public static final int GyroscopeID = 0;
+    public static final boolean invertGyroscope = false;
 
 
     // TODO: Should we put these values in cm or m?
