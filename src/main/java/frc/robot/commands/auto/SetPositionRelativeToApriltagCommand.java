@@ -66,7 +66,7 @@ public class SetPositionRelativeToApriltagCommand extends Command {
   @Override
   public void execute() {
 
-    // TODO: Is the robot height important?
+    // TODO: Robot yüksekliği önemli mi?
     cameraPose = new Pose3d(drivetrainSubsystem.getPose());
 
     targetPose = cameraPose.transformBy(vision.getTarget(targetId).getBestCameraToTarget());
@@ -75,7 +75,7 @@ public class SetPositionRelativeToApriltagCommand extends Command {
     currentYOffset = targetPose.getY();
     currentAngle = targetPose.getRotation().getAngle();
 
-    // TODO: Fix these values by trial and error.
+    // TODO: Deneme yanılmayla bunları düzelt.
     xError = desiredXOffset - currentXOffset;
     yError = desiredYOffset - currentYOffset;
     angleError = desiredAngle - currentAngle;

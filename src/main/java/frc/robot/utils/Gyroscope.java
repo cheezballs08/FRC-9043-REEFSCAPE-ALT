@@ -18,4 +18,8 @@ public class Gyroscope {
     public void reset() {
         ahrs.reset();
     }
+
+    public boolean isCalibrating() {
+        return ahrs.isCalibrating();
+    }
 }

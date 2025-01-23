@@ -75,7 +75,7 @@ public class AimAtAprilTagCommand extends Command {
 
   @Override
   public void initialize() {
-    // TODO: Check if this is okay to do.
+    // TODO: Bunu yapmakta sıkıntı var mıdır.
     if (Math.abs(angleError) < AutoConstants.aprilTagAngleTolerance || !vision.isSeen(targetId)) {
       // This specifically.
       CommandScheduler.getInstance().cancel(this);

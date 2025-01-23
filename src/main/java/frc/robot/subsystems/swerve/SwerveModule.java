@@ -77,7 +77,7 @@ public class SwerveModule {
 
   public void setDesiredState(SwerveModuleState desiredState) {
    
-    // TODO: Check if only checking the speed will give the same result.
+    // TODO: Sadece hıza bakmanın yetip yetmeyeceğine bak. Önemsiz ama neyse.
     if (Math.abs(desiredState.speedMetersPerSecond) < MathConsants.epsilon && Math.abs(desiredState.angle.getRadians()) < MathConsants.epsilon) {
       stop();
       return;
@@ -92,7 +92,7 @@ public class SwerveModule {
     angleMotor.set(angleSpeed);
   }
 
-  // TODO: Check if this is correct.
+  // TODO: Doğru mu değil mi bak.
   public SwerveModulePosition getPosition() {
     return new SwerveModulePosition(
       driveEncoder.getPosition(),

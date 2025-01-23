@@ -55,7 +55,6 @@ public class VisionProcessingUnit {
       return;
     }
     
-    // TODO: Make sure this returns the latest one.
     this.result = results.get(results.size() - 1);
   }
 
@@ -101,7 +100,6 @@ public class VisionProcessingUnit {
   }
 
   public void updatePoseEstimator() {
-    // TODO: Possible termination point! Handle with more care!
     // TODO: Also, shouldn't there be more to this? Dosen't this need to be calibrated with the cameras properties?
     estimatedPose = poseEstimator.update(result).isPresent() ? poseEstimator.update(result).get() : null;  
   }

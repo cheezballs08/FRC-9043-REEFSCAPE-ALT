@@ -49,7 +49,7 @@ public class TeleopDriveCommand extends Command {
   }
 
   public void updateSpeeds() {
-    // TODO: Add squaring or cubing the inputs to reduce sensitivity. 
+    // TODO: Girdinin karesi veya küpünu alarak girdinin reaktivitesini azalt. 
     xSpeed = xSpeedSupplier.get();
     ySpeed = ySpeedSupplier.get();
     rSpeed = rSpeedSupplier.get(); 

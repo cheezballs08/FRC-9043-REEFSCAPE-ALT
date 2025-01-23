@@ -2,7 +2,7 @@ package frc.robot.utils;
 
 import com.revrobotics.RelativeEncoder;
 
-// TODO: Check if this is done correctly
+// TODO: Bu doğru yapılmış mı bak
 public class SparkEncoder {
   RelativeEncoder encoder;
 
@@ -20,12 +20,12 @@ public class SparkEncoder {
   }
 
   public double getPosition() {
-    // ! Especially this.
+    // ! Özellike bu.
     return (inverted ? -1.0 : 1.0) * encoder.getPosition() * positionConversionConstant;
   }
 
   public double getVelocity() {
-    // ! And this.
+    // ! Ve bu.
     return (inverted ? -1.0 : 1.0) * encoder.getVelocity() * velocityConversionConstant;
   }
 

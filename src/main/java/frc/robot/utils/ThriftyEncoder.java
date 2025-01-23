@@ -3,7 +3,7 @@ package frc.robot.utils;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.RobotController;
 
-// TODO: Check if this is done correctly
+// TODO: Bu sınıf doğru tanımlanmış mı bak
 public class ThriftyEncoder {
 	
   private AnalogInput analogInput;
@@ -24,7 +24,7 @@ public class ThriftyEncoder {
 	 * @return the current raw position of the absolute encoder in radians.
 	 */
 	public double getPosition() {
-		// ! Especially this.
+		// ! Özellike bu.
 		return (inverted ? -1.0 : 1.0) * ((analogInput.getAverageVoltage() / RobotController.getVoltage5V()) * (Math.PI * 2) - Math.PI);
 	}
 

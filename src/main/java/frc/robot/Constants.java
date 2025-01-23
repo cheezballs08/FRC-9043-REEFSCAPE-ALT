@@ -10,6 +10,7 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.studica.frc.AHRS.NavXComType;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
@@ -20,7 +21,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.system.plant.DCMotor;
 
-// TODO: Initialize all of the constants seen here.
+// TODO: Buradaki bütün sabitlere değer ver.
 public class Constants {
 
   public static class ModuleConstants {
@@ -34,11 +35,18 @@ public class Constants {
     public static final PersistMode persistMode = PersistMode.kPersistParameters;
     public static final ResetMode resetMode = ResetMode.kNoResetSafeParameters;
 
+    public static final IdleMode idleMode = IdleMode.kBrake;
+
     public static final int driveCurrentLimit = 0;
     public static final int angleCurrentLimit = 0;
 
-    public static final SparkBaseConfig driveMotorDefaultConfig = new SparkMaxConfig().smartCurrentLimit(driveCurrentLimit);    
-    public static final SparkBaseConfig angleMotorDefaultConfig = new SparkMaxConfig().smartCurrentLimit(angleCurrentLimit);
+    public static final SparkBaseConfig driveMotorDefaultConfig = new SparkMaxConfig()
+    .smartCurrentLimit(driveCurrentLimit)
+    .idleMode(idleMode);
+        
+    public static final SparkBaseConfig angleMotorDefaultConfig = new SparkMaxConfig()
+    .smartCurrentLimit(angleCurrentLimit)
+    .idleMode(idleMode);
     
     // Meters
     public static final double driveMaxSpeed = 0;
@@ -74,8 +82,8 @@ public class Constants {
 
     public static final PIDConstants anglePID = new PIDConstants(PAngle, IAngle, DAngle, IZAngle);
   
-    // TODO: Check why is the motor per module 1? (Probably because it only counts drive Motors)
-    // TODO: Check if gear reduction is what I think it is.
+    // TODO: Modül başına motor neden 1? (Büyük ihtimal sadece sürüş motorunu hesaba kattığım.)
+    // TODO: Gear reduction ile Gear ratio aynı şey mi bak.
     public static final ModuleConfig moduleConfig = new ModuleConfig(
       wheelDiameter / 2,
       driveMaxSpeed, 
@@ -90,17 +98,13 @@ public class Constants {
     // * Front Left
 
     public static final int frontLeftDriveMotorID = 0;
-    public static final MotorType frontLeftDriveMotorType = MotorType.kBrushless;
     public static final SparkBaseConfig frontLeftDriveMotorConfig = new SparkMaxConfig()
-    .idleMode(null)
     .inverted(false)
     .apply(ModuleConstants.driveMotorDefaultConfig);
     public static final boolean frontLeftInvertDriveEncoder = false;
 
     public static final int frontLeftAngleMotorID = 0;
-    public static final MotorType frontLeftAngleMotorType = MotorType.kBrushless;
     public static final SparkBaseConfig frontLeftAngleMotorConfig = new SparkMaxConfig()
-    .idleMode(null)
     .inverted(false)
     .apply(ModuleConstants.angleMotorDefaultConfig);
     public static final boolean frontLeftInvertAngleEncoder = false;
@@ -114,17 +118,13 @@ public class Constants {
     // * Front Right
 
     public static final int frontRightDriveMotorID = 0;
-    public static final MotorType frontRightDriveMotorType = MotorType.kBrushless;
     public static final SparkBaseConfig frontRightDriveMotorConfig = new SparkMaxConfig()
-    .idleMode(null)
     .inverted(false)
     .apply(ModuleConstants.driveMotorDefaultConfig);
     public static final boolean frontRightInvertDriveEncoder = false;
 
     public static final int frontRightAngleMotorID = 0;
-    public static final MotorType frontRightAngleMotorType = MotorType.kBrushless;
     public static final SparkBaseConfig frontRightAngleMotorConfig = new SparkMaxConfig()
-    .idleMode(null)
     .inverted(false)
     .apply(ModuleConstants.angleMotorDefaultConfig);
     public static final boolean frontRightInvertAngleEncoder = false;
@@ -138,17 +138,13 @@ public class Constants {
     // * Back Left
 
     public static final int backLeftDriveMotorID = 0;
-    public static final MotorType backLeftDriveMotorType = MotorType.kBrushless;
     public static final SparkBaseConfig backLeftDriveMotorConfig = new SparkMaxConfig()
-    .idleMode(null)
     .inverted(false)
     .apply(ModuleConstants.driveMotorDefaultConfig);
     public static final boolean backLeftInvertDriveEncoder = false;
 
     public static final int backLeftAngleMotorID = 0;
-    public static final MotorType backLeftAngleMotorType = MotorType.kBrushless;
     public static final SparkBaseConfig backLeftAngleMotorConfig = new SparkMaxConfig()
-    .idleMode(null)
     .inverted(false)
     .apply(ModuleConstants.angleMotorDefaultConfig);
     public static final boolean backLeftInvertAngleEncoder = false;
@@ -162,17 +158,13 @@ public class Constants {
     // * Back Right
 
     public static final int backRightDriveMotorID = 0;
-    public static final MotorType backRightDriveMotorType = MotorType.kBrushless;
     public static final SparkBaseConfig backRightDriveMotorConfig = new SparkMaxConfig()
-    .idleMode(null)
     .inverted(false)
     .apply(ModuleConstants.driveMotorDefaultConfig);
     public static final boolean backRightInvertDriveEncoder = false;
 
     public static final int backRightAngleMotorID = 0;
-    public static final MotorType backRightAngleMotorType = MotorType.kBrushless;
     public static final SparkBaseConfig backRightAngleMotorConfig = new SparkMaxConfig()
-    .idleMode(null)
     .inverted(false)
     .apply(ModuleConstants.angleMotorDefaultConfig);
     public static final boolean backRightInvertAngleEncoder = false;
@@ -188,13 +180,10 @@ public class Constants {
     public static final NavXComType GyroscopeCommunicationType = NavXComType.kI2C;
     public static final boolean invertGyroscope = false;
 
-
-    // TODO: Should we put these values in cm or m?
+    // TODO: Bu değerler cm mi metre mi olsun?
     public static final double moduleLateralDistance = 0.0;
     public static final double moduleLongitudinalDistance = 0.0;
 
-    // This is probably very wrong so :P
-    // TODO: Check if this is actually true
     public static final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
       new Translation2d(moduleLateralDistance / 2, moduleLongitudinalDistance / 2), // Front Left
       new Translation2d(-moduleLateralDistance / 2, moduleLongitudinalDistance / 2), // Front Right
@@ -228,7 +217,7 @@ public class Constants {
 
     public static final PoseStrategy poseEstimationStrategy = PoseStrategy.LOWEST_AMBIGUITY;
 
-    // TODO: Change this layout to the updated one.
+    // TODO: Bunu güncel değerine çevir.
     public static final AprilTagFieldLayout fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2024Crescendo);
   }
 

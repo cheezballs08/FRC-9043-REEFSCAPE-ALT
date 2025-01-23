@@ -89,11 +89,12 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   public DrivetrainSubsystem() {
     // For reseting the gyro.
-    // TODO: Use isCalibrating for the thread duration.
     new Thread( 
     () -> {
       try {
-        Thread.sleep(1000);
+        while (gyroscope.isCalibrating()) {
+          Thread.sleep(10);
+        }
         this.resetRobotAngle();
 
       } catch (Exception e) {
@@ -108,7 +109,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
       this::getPose, 
       this::resetOdometry, 
       this::getRobotRelativeSpeeds, 
-      // TODO: Make this use the feedforwards too.
+      // TODO: Bunu feedforwardları da kullanacak şekilde ayarla.
       (speeds, feedworwards) -> this.drive(speeds), 
       controller, 
       RobotConsants.config, 
@@ -125,7 +126,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     if (vision.canEstimatePose()) {
 
-      // TODO: Check if timestampSeconds is correct for this job.
+      // TODO: timestampSeconds değerinin bu iş için uygun olup olmadığına bak.
       odometer.addVisionMeasurement(vision.getEstimatedPose2d(), vision.getEstimate().timestampSeconds);
     }
 
@@ -138,7 +139,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   }
 
   public double getRobotAngle() {
-    // TODO: Check if I need to do this or if it does this by itself
+    // TODO: Bunu yapmalımıyım yoksa otomatik olarak yapılıyor mu?
     return Math.IEEEremainder(gyroscope.getAngle(), 360);
   }
 
@@ -156,7 +157,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   }
 
 
-  // TODO: These two might be horribly wrong.
+  // TODO: Bu iki metod baya yanlış olabilir. Kontrol et.
   public ChassisSpeeds getFieldRelativeSpeeds() {
     return DrivetrainConstants.kinematics.toChassisSpeeds(this.getModuleStates());
   }
@@ -165,7 +166,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     return ChassisSpeeds.fromFieldRelativeSpeeds(this.getFieldRelativeSpeeds(), this.getRotation2d());
   }
 
-  // TODO: Check if this is correct.
+  // TODO: Bu böyle doğru mu kontrol et.
   public void resetOdometry(Pose2d pose) {
     odometer.resetPosition(this.getRotation2d(), this.getModulePositions(), pose);
   }
