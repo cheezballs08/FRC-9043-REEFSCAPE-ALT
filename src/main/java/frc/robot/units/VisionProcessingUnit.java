@@ -100,7 +100,7 @@ public class VisionProcessingUnit {
   }
 
   public void updatePoseEstimator() {
-    // TODO: Also, shouldn't there be more to this? Dosen't this need to be calibrated with the cameras properties?
+    // TODO: Pose estimator direk böyle çalışıyor mu? Kalibreye ihtiyacı yok mudur?
     estimatedPose = poseEstimator.update(result).isPresent() ? poseEstimator.update(result).get() : null;  
   }
 

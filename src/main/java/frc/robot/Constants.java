@@ -210,6 +210,10 @@ public class Constants {
     );
   }
 
+  public static class AlgeaeIntakeConstants {
+    
+  }
+
   public static class VisionConstants {
     public static final String cameraName = "cam0";
 
@@ -217,8 +221,30 @@ public class Constants {
 
     public static final PoseStrategy poseEstimationStrategy = PoseStrategy.LOWEST_AMBIGUITY;
 
-    // TODO: Bunu güncel değerine çevir.
+    // TODO: Bunu güncel değerine çevir".
     public static final AprilTagFieldLayout fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2024Crescendo);
+  }
+
+  public static class ElevatorConstants {
+    public static final int elevatorMotor1ID = 0;
+    public static final MotorType elevatorMotor1type = MotorType.kBrushless;
+
+    public static final int elevatorMotor2ID = 0;
+    public static final MotorType elevatorMotor2type = MotorType.kBrushless;
+
+    public static final int encoderID = 0;
+
+    public static final double kP = 0.0;
+    public static final double kI = 0.0;
+    public static final double kIZ = 0.0;
+    public static final double kD = 0.0;
+
+    public static final double elevatorHeight = 0.0;
+
+    public static final double level1Height = 0.0;
+    public static final double level2Height = 0.0;
+    public static final double level3Height = 0.0;
+    public static final double level4Height = 0.0;
   }
 
   public static class AutoConstants {
@@ -229,6 +255,8 @@ public class Constants {
   }
 
   public static class ControllerConsants {
+    public static final int controllerPort = 0;
+
     public static final double deadband = 0.0;
 
     public static final double driveSpeedReductionFactor = 0.0;
