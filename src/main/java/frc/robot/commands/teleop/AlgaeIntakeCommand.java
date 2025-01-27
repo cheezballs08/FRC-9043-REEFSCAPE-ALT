@@ -6,11 +6,13 @@ import frc.robot.subsystems.AlgaeIntakeSubsystem;
 public class AlgaeIntakeCommand extends Command {
 
   AlgaeIntakeSubsystem subsystem;
+  
   boolean isIntake = true;
+  
   double startTime, curTime;
 
   // Sabitler
-  int AlgaeMotorsIntakeTime = 1;
+  int algaeMotorsIntakeTime = 1;
   double speed = 0.6;
 
   public AlgaeIntakeCommand(AlgaeIntakeSubsystem subsystem) {
@@ -22,7 +24,7 @@ public class AlgaeIntakeCommand extends Command {
   @Override
   public void initialize() {
     startTime = System.currentTimeMillis();
-    subsystem.SetAlgaeIntakeMotorsRotation(speed, isIntake);
+    subsystem.setAlgaeIntakeMotorsRotation(speed, isIntake);
   }
 
   @Override
@@ -32,13 +34,13 @@ public class AlgaeIntakeCommand extends Command {
 
   @Override
   public void end(boolean interrupted) {
-    subsystem.SetAlgaeIntakeMotorsRotation(0, isIntake);
+    subsystem.setAlgaeIntakeMotorsRotation(0, isIntake);
     isIntake = !isIntake;
   }
 
   @Override
   public boolean isFinished() {
-    if(curTime - startTime >= AlgaeMotorsIntakeTime * 1000){
+    if(curTime - startTime >= algaeMotorsIntakeTime * 1000){
       return true;
     }
     return false;

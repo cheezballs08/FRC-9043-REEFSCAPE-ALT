@@ -26,14 +26,14 @@ public class AlgaeIntakeSubsystem extends SubsystemBase {
   @Override
   public void periodic() {}
 
-  public void SetAlgaeIntakeMotorsSpeeds(double speed){
+  public void setAlgaeIntakeMotorsSpeeds(double speed){
     algaeIntakeMotor1.set(speed);
     algaeIntakeMotor2.set(speed);
   }
 
-  public void SetAlgaeIntakeMotorsRotation(double speed, boolean isIntake){
+  public void setAlgaeIntakeMotorsRotation(double speed, boolean isIntake){
     if(!(isIntake)) speed *= -1; 
-    SetAlgaeIntakeMotorsSpeeds(speed);
+    setAlgaeIntakeMotorsSpeeds(speed);
   }
 
 }
