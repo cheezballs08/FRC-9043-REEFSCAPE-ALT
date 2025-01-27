@@ -1,5 +1,6 @@
 package frc.robot.commands.teleop;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.AlgaeIntakeSubsystem;
 
@@ -24,13 +25,13 @@ public class AlgaeIntakeCommand extends Command {
 
   @Override
   public void initialize() {
-    startTime = System.currentTimeMillis();
+    startTime = Timer.getTimestamp();
     subsystem.setAlgaeIntakeMotorsRotation(speed, isIntake);
   }
 
   @Override
   public void execute() {
-    currentTime = System.currentTimeMillis();
+    currentTime = Timer.getTimestamp();
   }
 
   @Override
