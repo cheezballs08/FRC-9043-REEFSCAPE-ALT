@@ -9,11 +9,11 @@ public class AlgaeIntakeCommand extends Command {
   
   boolean isIntake = true;
   
-  double startTime, curTime;
+  double startTime, currentTime;
 
   // Sabitler
   int algaeMotorsIntakeTime = 1;
-  
+
   double speed = 0.6;
 
   public AlgaeIntakeCommand(AlgaeIntakeSubsystem subsystem) {
@@ -30,7 +30,7 @@ public class AlgaeIntakeCommand extends Command {
 
   @Override
   public void execute() {
-    curTime = System.currentTimeMillis();
+    currentTime = System.currentTimeMillis();
   }
 
   @Override
@@ -41,7 +41,7 @@ public class AlgaeIntakeCommand extends Command {
 
   @Override
   public boolean isFinished() {
-    if(curTime - startTime >= algaeMotorsIntakeTime * 1000){
+    if(currentTime - startTime >= algaeMotorsIntakeTime * 1000){
       return true;
     }
     return false;
