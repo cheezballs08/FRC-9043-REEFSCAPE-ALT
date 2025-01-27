@@ -13,6 +13,7 @@ public class AlgaeIntakeCommand extends Command {
 
   // Sabitler
   int algaeMotorsIntakeTime = 1;
+  
   double speed = 0.6;
 
   public AlgaeIntakeCommand(AlgaeIntakeSubsystem subsystem) {
