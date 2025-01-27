@@ -26,7 +26,7 @@ public class AlgaeIntakeCommand extends Command {
   @Override
   public void initialize() {
     startTime = Timer.getTimestamp();
-    subsystem.setAlgaeIntakeMotorsRotation(speed, isIntake);
+    subsystem.setMotorRotation(speed, isIntake);
   }
 
   @Override
@@ -36,7 +36,7 @@ public class AlgaeIntakeCommand extends Command {
 
   @Override
   public void end(boolean interrupted) {
-    subsystem.setAlgaeIntakeMotorsRotation(0, isIntake);
+    subsystem.setMotorRotation(0, isIntake);
     isIntake = !isIntake;
   }
 

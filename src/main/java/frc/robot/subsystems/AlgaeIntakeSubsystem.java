@@ -11,23 +11,23 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class AlgaeIntakeSubsystem extends SubsystemBase {
   
-  SparkMax algaeIntakeMotor1, algaeIntakeMotor2;
+  SparkMax motor1, motor2;
 
   // Sabitler
-  int algaeIntakeMotor1ID = 0, algaeIntakeMotor2ID = 0;
+  int motor1ID = 0, motor2ID = 0;
   
-  MotorType algaeIntakeMotor1Type = null, algaeIntakeMotor2Type = null;
+  MotorType motor1Type = null, motor2Type = null;
 
-  SparkBaseConfig algeaMotorDefaultConfig = new SparkMaxConfig()
+  SparkBaseConfig motorDefaultConfig = new SparkMaxConfig()
   .smartCurrentLimit(0)
   .idleMode(null);
 
   SparkBaseConfig motor1Config = new SparkMaxConfig()
-  .apply(algeaMotorDefaultConfig)
+  .apply(motorDefaultConfig)
   .inverted(false);
 
   SparkBaseConfig motor2Config = new SparkMaxConfig()
-  .apply(algeaMotorDefaultConfig)
+  .apply(motorDefaultConfig)
   .inverted(false);
 
   // TODO: Bu persist ve reset mode'u genel bir sabit sınıfına atarak her alt birimide aynı kullanılmasını sağla
@@ -36,24 +36,24 @@ public class AlgaeIntakeSubsystem extends SubsystemBase {
   ResetMode resetMode = ResetMode.kNoResetSafeParameters;
 
   public AlgaeIntakeSubsystem() {
-    this.algaeIntakeMotor1 = new SparkMax(algaeIntakeMotor1ID, algaeIntakeMotor1Type);
-    this.algaeIntakeMotor1.configure(motor1Config, resetMode, persistMode);
+    this.motor1 = new SparkMax(motor1ID, motor1Type);
+    this.motor1.configure(motor1Config, resetMode, persistMode);
 
-    this.algaeIntakeMotor2 = new SparkMax(algaeIntakeMotor2ID, algaeIntakeMotor2Type);
-    this.algaeIntakeMotor2.configure(motor1Config, resetMode, persistMode);
+    this.motor2 = new SparkMax(motor2ID, motor2Type);
+    this.motor2.configure(motor1Config, resetMode, persistMode);
   }
 
   @Override
   public void periodic() {}
 
-  public void setAlgaeIntakeMotorsSpeeds(double speed){
-    algaeIntakeMotor1.set(speed);
-    algaeIntakeMotor2.set(speed);
+  public void setMotorSpeeds(double speed){
+    motor1.set(speed);
+    motor2.set(speed);
   }
 
-  public void setAlgaeIntakeMotorsRotation(double speed, boolean isIntake){
+  public void setMotorRotation(double speed, boolean isIntake){
     if(!(isIntake)) speed *= -1; 
-    setAlgaeIntakeMotorsSpeeds(speed);
+    setMotorSpeeds(speed);
   }
 
 }
