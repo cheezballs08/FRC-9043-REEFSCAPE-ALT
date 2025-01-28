@@ -228,9 +228,11 @@ public class Constants {
   public static class ElevatorConstants {
     public static final int elevatorMotor1ID = 0;
     public static final MotorType elevatorMotor1type = MotorType.kBrushless;
+    public static final boolean elevatorMotor1isInverted = true;
 
     public static final int elevatorMotor2ID = 0;
     public static final MotorType elevatorMotor2type = MotorType.kBrushless;
+    public static final boolean elevatorMotor2isInverted = true;
 
     public static final int encoderID = 0;
 
