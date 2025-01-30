@@ -1,0 +1,42 @@
+package frc.robot.constants;
+
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.config.SparkBaseConfig;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.config.SparkMaxConfig;
+
+public class ElevatorConstants {
+  
+  public static final int elevatorMotor1ID = 0;
+  public static final MotorType elevatorMotor1type = MotorType.kBrushless;
+  
+  public static final SparkBaseConfig defaultMotorConfig = new SparkMaxConfig()
+  .smartCurrentLimit(elevatorMotor1ID)
+  .idleMode(IdleMode.kBrake);
+
+  public static final SparkBaseConfig motor1Config = new SparkMaxConfig()
+  .inverted(false);
+  
+  public static final SparkBaseConfig motor2Config = new SparkMaxConfig()
+  .inverted(false);
+
+  public static final double encoderSpeedConversionFactor = 0.0;
+  public static final double encoderAccelerationConversionFactor = 0.0;
+
+  public static final int elevatorMotor2ID = 0;
+  public static final MotorType elevatorMotor2type = MotorType.kBrushless;
+      
+  public static final int encoderID = 0;
+
+  public static final double kP = 0.0;
+  public static final double kI = 0.0;
+  public static final double kIZ = 0.0;
+  public static final double kD = 0.0;
+
+  public static final double elevatorHeight = 0.0;
+
+  public static final double level1Height = 0.0;
+  public static final double level2Height = 0.0;
+  public static final double level3Height = 0.0;
+  public static final double level4Height = 0.0;
+}
