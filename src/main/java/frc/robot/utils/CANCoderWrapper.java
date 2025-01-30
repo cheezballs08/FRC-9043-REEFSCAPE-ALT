@@ -3,7 +3,7 @@ package frc.robot.utils;
 import com.ctre.phoenix6.hardware.CANcoder;
 
 // TODO: Bu doğru yapılmış mı bak
-public class CanCoder {
+public class CANCoderWrapper {
   CANcoder encoder;
 
   boolean inverted;
@@ -11,7 +11,7 @@ public class CanCoder {
   double positionConversionConstant;
   double velocityConversionConstant;
 
-  public CanCoder(CANcoder encoder) {
+  public CANCoderWrapper(CANcoder encoder) {
     this.encoder = encoder;
     this.inverted = false;
 
