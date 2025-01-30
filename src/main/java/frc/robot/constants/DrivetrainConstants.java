@@ -13,14 +13,14 @@ public class DrivetrainConstants {
 
   public static final int frontLeftDriveMotorID = 0;
   public static final SparkBaseConfig frontLeftDriveMotorConfig = new SparkMaxConfig()
-  .inverted(false)
-  .apply(ModuleConstants.driveMotorDefaultConfig);
+  .apply(ModuleConstants.driveMotorDefaultConfig)
+  .inverted(false);
   public static final boolean frontLeftInvertDriveEncoder = false;
 
   public static final int frontLeftAngleMotorID = 0;
   public static final SparkBaseConfig frontLeftAngleMotorConfig = new SparkMaxConfig()
-  .inverted(false)
-  .apply(ModuleConstants.angleMotorDefaultConfig);
+  .apply(ModuleConstants.angleMotorDefaultConfig)
+  .inverted(false);
   public static final boolean frontLeftInvertAngleEncoder = false;
 
   public static final int frontLeftAbsoluteEncoderID = 0;
@@ -33,14 +33,14 @@ public class DrivetrainConstants {
 
   public static final int frontRightDriveMotorID = 0;
   public static final SparkBaseConfig frontRightDriveMotorConfig = new SparkMaxConfig()
-  .inverted(false)
-  .apply(ModuleConstants.driveMotorDefaultConfig);
+  .apply(ModuleConstants.driveMotorDefaultConfig)
+  .inverted(false);
   public static final boolean frontRightInvertDriveEncoder = false;
 
   public static final int frontRightAngleMotorID = 0;
   public static final SparkBaseConfig frontRightAngleMotorConfig = new SparkMaxConfig()
-  .inverted(false)
-  .apply(ModuleConstants.angleMotorDefaultConfig);
+  .apply(ModuleConstants.angleMotorDefaultConfig)
+  .inverted(false);
   public static final boolean frontRightInvertAngleEncoder = false;
 
   public static final int frontRightAbsoluteEncoderID = 0;
@@ -53,14 +53,14 @@ public class DrivetrainConstants {
 
   public static final int backLeftDriveMotorID = 0;
   public static final SparkBaseConfig backLeftDriveMotorConfig = new SparkMaxConfig()
-  .inverted(false)
-  .apply(ModuleConstants.driveMotorDefaultConfig);
+  .apply(ModuleConstants.driveMotorDefaultConfig)
+  .inverted(false);
   public static final boolean backLeftInvertDriveEncoder = false;
 
   public static final int backLeftAngleMotorID = 0;
   public static final SparkBaseConfig backLeftAngleMotorConfig = new SparkMaxConfig()
-  .inverted(false)
-  .apply(ModuleConstants.angleMotorDefaultConfig);
+  .apply(ModuleConstants.angleMotorDefaultConfig)
+  .inverted(false);
   public static final boolean backLeftInvertAngleEncoder = false;
 
   public static final int backLeftAbsoluteEncoderID = 0;
@@ -73,14 +73,14 @@ public class DrivetrainConstants {
 
   public static final int backRightDriveMotorID = 0;
   public static final SparkBaseConfig backRightDriveMotorConfig = new SparkMaxConfig()
-  .inverted(false)
-  .apply(ModuleConstants.driveMotorDefaultConfig);
+  .apply(ModuleConstants.driveMotorDefaultConfig)
+  .inverted(false);
   public static final boolean backRightInvertDriveEncoder = false;
 
   public static final int backRightAngleMotorID = 0;
   public static final SparkBaseConfig backRightAngleMotorConfig = new SparkMaxConfig()
-  .inverted(false)
-  .apply(ModuleConstants.angleMotorDefaultConfig);
+  .apply(ModuleConstants.angleMotorDefaultConfig)
+  .inverted(false);
   public static final boolean backRightInvertAngleEncoder = false;
 
   public static final int backRightAbsoluteEncoderID = 0;

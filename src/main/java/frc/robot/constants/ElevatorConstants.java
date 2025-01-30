@@ -7,18 +7,20 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 public class ElevatorConstants {
   
-  public static final SparkBaseConfig defaultMotorConfig = new SparkMaxConfig()
+  public static final SparkBaseConfig motorDefaultConfig = new SparkMaxConfig()
   .smartCurrentLimit(0)
   .idleMode(IdleMode.kBrake);
   
   public static final int motor1ID = 0;
   public static final MotorType motor1type = MotorType.kBrushless;
   public static final SparkBaseConfig motor1Config = new SparkMaxConfig()
+  .apply(motorDefaultConfig)
   .inverted(false);
     
   public static final int motor2ID = 0;
   public static final MotorType motor2type = MotorType.kBrushless;
   public static final SparkBaseConfig motor2Config = new SparkMaxConfig()
+  .apply(motorDefaultConfig)
   .inverted(false);
         
   public static final int encoderID = 0;
