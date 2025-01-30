@@ -8,14 +8,14 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.Constants.ControllerConsants;
-import frc.robot.Constants.ElevatorConstants;
+import frc.robot.constants.ControllerConstants;
+import frc.robot.constants.ElevatorConstants;
 import frc.robot.commands.teleop.SetElevatorPostitionCommand;
 import frc.robot.subsystems.ElevatorSubsystem;
 
 public class RobotContainer {
 
-  CommandXboxController controller = new CommandXboxController(ControllerConsants.controllerPort);
+  CommandXboxController controller = new CommandXboxController(ControllerConstants.controllerPort);
 
   ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
 

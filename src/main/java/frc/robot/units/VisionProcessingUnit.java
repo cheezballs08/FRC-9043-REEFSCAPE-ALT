@@ -13,7 +13,7 @@ import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.math.geometry.Pose2d;
-import frc.robot.Constants.VisionConstants;
+import frc.robot.constants.VisionConstants;
 
 public class VisionProcessingUnit {
 

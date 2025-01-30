@@ -5,8 +5,8 @@ import java.util.function.Supplier;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.Constants.AutoConstants;
-import frc.robot.Constants.ControllerConsants;
+import frc.robot.constants.AutoConstants;
+import frc.robot.constants.ControllerConstants;
 import frc.robot.subsystems.swerve.DrivetrainSubsystem;
 import frc.robot.units.VisionProcessingUnit;
 import frc.robot.utils.DriveType;
@@ -41,12 +41,12 @@ public class AimAtAprilTagCommand extends Command {
     this.driveType = driveType;
 
     this.xSpeedSupplier = xSpeedSupplier;
-    this.xLimiter = new SlewRateLimiter(ControllerConsants.maxAllowedDriveAcceleration);
+    this.xLimiter = new SlewRateLimiter(ControllerConstants.maxAllowedDriveAcceleration);
     
     this.ySpeedSupplier = ySpeedSupplier;
-    this.yLimiter = new SlewRateLimiter(ControllerConsants.maxAllowedDriveAcceleration);  
+    this.yLimiter = new SlewRateLimiter(ControllerConstants.maxAllowedDriveAcceleration);  
 
-    this.rLimiter = new SlewRateLimiter(ControllerConsants.maxAllowedAngleAcceleration);
+    this.rLimiter = new SlewRateLimiter(ControllerConstants.maxAllowedAngleAcceleration);
 
     this.targetId = targetId;
 
@@ -58,11 +58,11 @@ public class AimAtAprilTagCommand extends Command {
     xSpeed = xSpeedSupplier.get();
     ySpeed = ySpeedSupplier.get();
     
-    xSpeed = Math.abs(xSpeed) > ControllerConsants.deadband ? xSpeed : 0.0;
-    ySpeed = Math.abs(ySpeed) > ControllerConsants.deadband ? ySpeed : 0.0;
+    xSpeed = Math.abs(xSpeed) > ControllerConstants.deadband ? xSpeed : 0.0;
+    ySpeed = Math.abs(ySpeed) > ControllerConstants.deadband ? ySpeed : 0.0;
 
-    xSpeed = xLimiter.calculate(xSpeed) * ControllerConsants.driveSpeedReductionFactor;
-    ySpeed = yLimiter.calculate(ySpeed) * ControllerConsants.driveSpeedReductionFactor;
+    xSpeed = xLimiter.calculate(xSpeed) * ControllerConstants.driveSpeedReductionFactor;
+    ySpeed = yLimiter.calculate(ySpeed) * ControllerConstants.driveSpeedReductionFactor;
     
     this.calculateRSpeed();
   }

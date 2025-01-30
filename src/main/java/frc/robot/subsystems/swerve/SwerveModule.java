@@ -7,8 +7,9 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import frc.robot.Constants.MathConsants;
-import frc.robot.Constants.ModuleConstants;
+import frc.robot.constants.MathConstants;
+import frc.robot.constants.ModuleConstants;
+import frc.robot.constants.MotorConstants;
 import frc.robot.utils.SparkEncoder;
 import frc.robot.utils.ThriftyEncoder;
 
@@ -41,7 +42,7 @@ public class SwerveModule {
     // ? Im assuming we don't have to burn the flash with persist parameters, I hope Im right
     driveMotor = new SparkMax(driveMotorID, ModuleConstants.driveMotorType);
 
-    driveMotor.configure(driveMotorConfig, ModuleConstants.resetMode, ModuleConstants.persistMode);
+    driveMotor.configure(driveMotorConfig, MotorConstants.resetMode, MotorConstants.persistMode);
 
     driveEncoder = new SparkEncoder(driveMotor.getEncoder());
     driveEncoder.setInverted(invertDriveEncoder);
@@ -52,7 +53,7 @@ public class SwerveModule {
     driveController.setIZone(ModuleConstants.IZDrive);
     
     angleMotor = new SparkMax(angleMotorID, ModuleConstants.angleMotorType);
-    angleMotor.configure(angleMotorConfig, ModuleConstants.resetMode, ModuleConstants.persistMode);
+    angleMotor.configure(angleMotorConfig, MotorConstants.resetMode, MotorConstants.persistMode);
 
     angleEncoder = new SparkEncoder(angleMotor.getEncoder());
     angleEncoder.setInverted(invertAngleEncoder);
@@ -78,7 +79,7 @@ public class SwerveModule {
   public void setDesiredState(SwerveModuleState desiredState) {
    
     // TODO: Sadece hıza bakmanın yetip yetmeyeceğine bak. Önemsiz ama neyse.
-    if (Math.abs(desiredState.speedMetersPerSecond) < MathConsants.epsilon && Math.abs(desiredState.angle.getRadians()) < MathConsants.epsilon) {
+    if (Math.abs(desiredState.speedMetersPerSecond) < MathConstants.epsilon && Math.abs(desiredState.angle.getRadians()) < MathConstants.epsilon) {
       stop();
       return;
     }

@@ -17,12 +17,12 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.ModuleConstants;
-import frc.robot.Constants.RobotConsants;
+import frc.robot.constants.ModuleConstants;
+import frc.robot.constants.RobotConstants;
 import frc.robot.units.VisionProcessingUnit;
 import frc.robot.utils.DriveType;
 import frc.robot.utils.Gyroscope;
-import frc.robot.Constants.DrivetrainConstants;
+import frc.robot.constants.DrivetrainConstants;
 
 public class DrivetrainSubsystem extends SubsystemBase {
   
@@ -84,7 +84,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     DrivetrainConstants.kinematics, 
     this.getRotation2d(), 
     this.getModulePositions(), 
-    RobotConsants.initialPose
+    RobotConstants.initialPose
     );
 
   public DrivetrainSubsystem() {
@@ -112,7 +112,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
       // TODO: Bunu feedforwardları da kullanacak şekilde ayarla.
       (speeds, feedworwards) -> this.drive(speeds), 
       controller, 
-      RobotConsants.config, 
+      RobotConstants.config, 
       () -> DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == DriverStation.Alliance.Red, 
       this
     );

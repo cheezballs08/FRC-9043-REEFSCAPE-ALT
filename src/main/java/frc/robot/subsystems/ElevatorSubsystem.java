@@ -2,26 +2,26 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.revrobotics.spark.SparkMax;
-import frc.robot.Constants.ElevatorConstants;
-import frc.robot.Constants.ModuleConstants;
+import frc.robot.constants.ElevatorConstants;
+import frc.robot.constants.MotorConstants;
 import frc.robot.utils.CANCoderWrapper;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ElevatorSubsystem extends SubsystemBase {
   
-  SparkMax elevatorMotor1, elevatorMotor2;
+  SparkMax motor1, motor2;
 
   CANCoderWrapper encoder;
 
   PIDController controller;
 
   public ElevatorSubsystem() {
-    this.elevatorMotor1 = new SparkMax(ElevatorConstants.elevatorMotor1ID, ElevatorConstants.elevatorMotor1type);
-    this.elevatorMotor1.configure(ElevatorConstants.motor1Config, ModuleConstants.resetMode, ModuleConstants.persistMode);
+    this.motor1 = new SparkMax(ElevatorConstants.motor1ID, ElevatorConstants.motor1type);
+    this.motor1.configure(ElevatorConstants.motor1Config, MotorConstants.resetMode, MotorConstants.persistMode);
 
-    this.elevatorMotor2 = new SparkMax(ElevatorConstants.elevatorMotor2ID, ElevatorConstants.elevatorMotor2type);
-    this.elevatorMotor1.configure(ElevatorConstants.motor2Config, ModuleConstants.resetMode, ModuleConstants.persistMode);
+    this.motor2 = new SparkMax(ElevatorConstants.motor2ID, ElevatorConstants.motor2type);
+    this.motor1.configure(ElevatorConstants.motor2Config, MotorConstants.resetMode, MotorConstants.persistMode);
     
     this.encoder = new CANCoderWrapper(new CANcoder(ElevatorConstants.encoderID));
 
@@ -38,17 +38,16 @@ public class ElevatorSubsystem extends SubsystemBase {
   }
 
   public void setSpeeds(double speed) {
-    this.elevatorMotor1.set(speed);
-    this.elevatorMotor2.set(speed);
+    this.motor1.set(speed);
+    this.motor2.set(speed);
   }
 
   public void setElevatorPosition(double desiredPosition) {
 
-    if (desiredPosition > ElevatorConstants.elevatorHeight) {
-      System.err.println("Desired position is too high");
-      
-      return;
-      
+    if (desiredPosition > ElevatorConstants.elevatorHeight || desiredPosition < 0) {
+      System.err.println("İstenen pozisyon ya çok büyük ya da 0'dan küçük");
+    
+      return;  
     }
 
     double currentPosition = encoder.getPosition();
@@ -65,7 +64,4 @@ public class ElevatorSubsystem extends SubsystemBase {
   public double getEncoderVelocity() {
     return encoder.getVelocity();
   }
-
-
-
 }

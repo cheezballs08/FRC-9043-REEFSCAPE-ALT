@@ -5,8 +5,8 @@ import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.Constants.AutoConstants;
-import frc.robot.Constants.ControllerConsants;
+import frc.robot.constants.AutoConstants;
+import frc.robot.constants.ControllerConstants;
 import frc.robot.subsystems.swerve.DrivetrainSubsystem;
 import frc.robot.units.VisionProcessingUnit;
 import frc.robot.utils.DriveType;
@@ -43,9 +43,9 @@ public class SetPositionRelativeToApriltagCommand extends Command {
 
     this.drivetrainSubsystem = drivetrainSubsystem;
     
-    this.xLimiter = new SlewRateLimiter(ControllerConsants.maxAllowedDriveAcceleration);
-    this.yLimiter = new SlewRateLimiter(ControllerConsants.maxAllowedDriveAcceleration);
-    this.rLimiter = new SlewRateLimiter(ControllerConsants.maxAllowedAngleAcceleration);
+    this.xLimiter = new SlewRateLimiter(ControllerConstants.maxAllowedDriveAcceleration);
+    this.yLimiter = new SlewRateLimiter(ControllerConstants.maxAllowedDriveAcceleration);
+    this.rLimiter = new SlewRateLimiter(ControllerConstants.maxAllowedAngleAcceleration);
 
     this.targetId = targetId;
 
