@@ -10,6 +10,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.system.plant.DCMotor;
 
 public class ModuleConstants {
+  
   public static final double wheelDiameter = 0;
 
   public static final double wheelCoefficientOfFriction = 0;
