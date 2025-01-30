@@ -233,13 +233,14 @@ public class Constants {
     .smartCurrentLimit(elevatorMotor1ID)
     .idleMode(IdleMode.kBrake);
 
-
     public static final SparkBaseConfig motor1Config = new SparkMaxConfig()
     .inverted(false);
-
     
     public static final SparkBaseConfig motor2Config = new SparkMaxConfig()
     .inverted(false);
+
+    public static final double encoderSpeedConversionFactor = 0.0;
+    public static final double encoderAccelerationConversionFactor = 0.0;
 
     public static final int elevatorMotor2ID = 0;
     public static final MotorType elevatorMotor2type = MotorType.kBrushless;

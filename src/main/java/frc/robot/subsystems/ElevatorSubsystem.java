@@ -3,6 +3,8 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.revrobotics.spark.SparkMax;
 import frc.robot.Constants.ElevatorConstants;
+import frc.robot.Constants.ModuleConstants;
+import frc.robot.utils.CANCoderWrapper;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -10,20 +12,21 @@ public class ElevatorSubsystem extends SubsystemBase {
   
   SparkMax elevatorMotor1, elevatorMotor2;
 
-  CANcoder encoder;
+  CANCoderWrapper encoder;
 
   PIDController controller;
 
   public ElevatorSubsystem() {
-    // TODO: Düzgün konfigüre et
     this.elevatorMotor1 = new SparkMax(ElevatorConstants.elevatorMotor1ID, ElevatorConstants.elevatorMotor1type);
-    this.elevatorMotor1.setInverted(true);
+    this.elevatorMotor1.configure(ElevatorConstants.motor1Config, ModuleConstants.resetMode, ModuleConstants.persistMode);
 
     this.elevatorMotor2 = new SparkMax(ElevatorConstants.elevatorMotor2ID, ElevatorConstants.elevatorMotor2type);
-    this.elevatorMotor2.setInverted(true);
+    this.elevatorMotor1.configure(ElevatorConstants.motor2Config, ModuleConstants.resetMode, ModuleConstants.persistMode);
     
-    // TODO: Encoder util sınıf yaz
-    this.encoder = new CANcoder(ElevatorConstants.encoderID);
+    this.encoder = new CANCoderWrapper(new CANcoder(ElevatorConstants.encoderID));
+
+    this.encoder.setPositionConversionConstant(ElevatorConstants.encoderSpeedConversionFactor);
+    this.encoder.setVelocityConversionConstant(ElevatorConstants.encoderAccelerationConversionFactor);
 
     this.controller = new PIDController(ElevatorConstants.kP, ElevatorConstants.kI, ElevatorConstants.kD);
     this.controller.setIZone(ElevatorConstants.kIZ);
@@ -48,7 +51,7 @@ public class ElevatorSubsystem extends SubsystemBase {
       
     }
 
-    double currentPosition = encoder.getPosition().getValueAsDouble();
+    double currentPosition = encoder.getPosition();
 
     double output = controller.calculate(currentPosition, desiredPosition);
 
@@ -56,11 +59,11 @@ public class ElevatorSubsystem extends SubsystemBase {
   }
 
   public double getEncoderPosition() {
-    return encoder.getPosition().getValueAsDouble();
+    return encoder.getPosition();
   }
 
   public double getEncoderVelocity() {
-    return encoder.getVelocity().getValueAsDouble();
+    return encoder.getVelocity();
   }
 
 
