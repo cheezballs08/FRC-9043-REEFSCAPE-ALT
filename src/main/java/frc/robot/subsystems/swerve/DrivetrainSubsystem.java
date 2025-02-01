@@ -6,6 +6,7 @@ package frc.robot.subsystems.swerve;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.pathplanner.lib.util.DriveFeedforwards;
 import com.studica.frc.AHRS;
 
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
@@ -105,8 +106,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
       this::getPose, 
       this::resetOdometry, 
       this::getRobotRelativeSpeeds, 
-      // TODO: Bunu feedforwardları da kullanacak şekilde ayarla.
-      (speeds, feedworwards) -> this.drive(speeds), 
+      (speeds, feedworwards) -> this.drive(speeds, feedworwards), 
       controller, 
       RobotConstants.config, 
       () -> DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == DriverStation.Alliance.Red, 
@@ -217,6 +217,11 @@ public class DrivetrainSubsystem extends SubsystemBase {
     }
 
     this.setModuleStates(DrivetrainConstants.kinematics.toSwerveModuleStates(speeds));
+  }
+
+  //  TODO: Bunu çalışır duruma getir.
+  public void drive(ChassisSpeeds speeds, DriveFeedforwards feedforwards) {
+  
   }
 
 }
