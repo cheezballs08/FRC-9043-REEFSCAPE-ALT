@@ -2,12 +2,16 @@ package frc.robot.subsystems;
 
 import com.revrobotics.spark.SparkMax;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.constants.AlgeaIntakeConstants;
 import frc.robot.constants.MotorConstants;
+import frc.robot.utils.PhotoelectricSensor;
 
 public class AlgaeIntakeSubsystem extends SubsystemBase {
   
   SparkMax motor1, motor2;
+
+  PhotoelectricSensor sensor;
 
   public AlgaeIntakeSubsystem() {
     this.motor1 = new SparkMax(AlgeaIntakeConstants.motor1ID, AlgeaIntakeConstants.motor1Type);
@@ -15,6 +19,8 @@ public class AlgaeIntakeSubsystem extends SubsystemBase {
 
     this.motor2 = new SparkMax(AlgeaIntakeConstants.motor2ID, AlgeaIntakeConstants.motor2Type);
     this.motor2.configure(AlgeaIntakeConstants.motor1Config, MotorConstants.resetMode, MotorConstants.persistMode);
+  
+    this.sensor = new PhotoelectricSensor(AlgeaIntakeConstants.sensorID);
   }
 
   @Override
@@ -25,9 +31,11 @@ public class AlgaeIntakeSubsystem extends SubsystemBase {
     motor2.set(speed);
   }
 
-  public void setMotorRotation(double speed, boolean isIntake){
-    if(!(isIntake)) speed *= -1; 
-    setMotorSpeeds(speed);
+  public boolean getSensorState(){
+    return sensor.isActivated();
   }
 
+  public Trigger getSensorAsTrigger() {
+    return sensor.asTrigger();
+  }
 }

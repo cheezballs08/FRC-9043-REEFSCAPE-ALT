@@ -24,4 +24,6 @@ public class AlgeaIntakeConstants {
   public static final SparkBaseConfig motor2Config = new SparkMaxConfig()
   .apply(motorDefaultConfig)
   .inverted(false);
+
+  public static final int sensorID = 0;
 }
