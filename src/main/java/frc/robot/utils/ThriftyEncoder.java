@@ -1,19 +1,21 @@
 package frc.robot.utils;
 
+import com.revrobotics.spark.SparkAnalogSensor;
+
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.RobotController;
 
 // TODO: Bu sınıf doğru tanımlanmış mı bak
 public class ThriftyEncoder {
 	
-  private AnalogInput analogInput;
+  private SparkAnalogSensor analogSensor;
 
   private boolean inverted;
 
   private double positionOffset;
 
-	public ThriftyEncoder(int port) {
-		this.analogInput = new AnalogInput(port);
+	public ThriftyEncoder(SparkAnalogSensor sensor) {
+		this.analogSensor = sensor;
 		this.inverted = false;
 		this.positionOffset = 0.0;
 	}
@@ -26,7 +28,7 @@ public class ThriftyEncoder {
 	public double getPosition() {
 		// ! Özellike bu.
 		//average filtreleme uygular değere kendi içinde, amaca göre ya oaky ya yanlış
-		return (inverted ? -1.0 : 1.0) * ((analogInput.getAverageVoltage() / RobotController.getVoltage5V()) * (Math.PI * 2) - Math.PI);
+		return (inverted ? -1.0 : 1.0) * ((analogSensor.getVoltage() / RobotController.getVoltage5V()) * (Math.PI * 2) - Math.PI);
 	}
 
 	/**

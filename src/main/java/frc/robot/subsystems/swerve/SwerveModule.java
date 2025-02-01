@@ -64,7 +64,7 @@ public class SwerveModule {
     angleController.setIZone(ModuleConstants.IZAngle);
     angleController.enableContinuousInput(-Math.PI, Math.PI);
 
-    absoluteEncoder = new ThriftyEncoder(absoluteEncoderID);
+    absoluteEncoder = new ThriftyEncoder(angleMotor.getAnalog());
     absoluteEncoder.setInverted(invertAbsoluteEncoder);
     absoluteEncoder.setPositionOffset(absoluteEncoderOffset);
   }
