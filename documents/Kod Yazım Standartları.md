@@ -7,20 +7,20 @@
 ### 1.1 Klasörler
 
 - Başka bir yazılım tarafından belirtilmediği sürece klasör isimleri:
-  1. Hepsi küçük harf
-  2. Kısaltmasız
-  3. Açıklayıcı
-  4. Ingilizce  
+  - Hepsi küçük harf
+  - Kısaltmasız
+  - Açıklayıcı
+  - Ingilizce  
 
   yazılmalıdır.
 
 ### 1.2 Dosyalar
 
 - Dosya isimleri java için:
-  1. PascalCase
-  2. Kısaltmasız
-  3. Açıklayıcı
-  4. Ingilizce
+  - PascalCase
+  - Kısaltmasız
+  - Açıklayıcı
+  - Ingilizce
 
   yazılmalıdır.
 
@@ -29,20 +29,20 @@
 ### 1.3 Veri Tipleri
 
 - Her sınıf, enum ve interface'in isimleri:
-  1. PascalCase
-  2. Kısaltmasız
-  3. Açıklayıcı
-  4. Ingilizce
+  - PascalCase
+  - Kısaltmasız
+  - Açıklayıcı
+  - Ingilizce
 
   yazılmalıdır. Enum üyeleri de yukarıdaki kurallara göre yazılmalıdır.
 
 ### 1.4 Değişkenler
 
 - Değişkenlerin isimleri:
-  1. camelCase
-  2. Kısaltmasız
-  3. Açıklayıcı
-  4. Ingilizce
+  - camelCase
+  - Kısaltmasız
+  - Açıklayıcı
+  - Ingilizce
 
   yazılmalıdır.
 
@@ -51,38 +51,38 @@
 *Bu kısmın değişmesi kuvvetle muhtemel, camelCase yerine UPPER_SNAKE_CASE kullanımı daha uygun olur gibi geldi.*
 
 - Sabitlerin isimleri:
-  1. camelCase
-  2. Kısaltmasız
-  3. Açıklayıcı
-  4. Ingilizce
+  - camelCase
+  - Kısaltmasız
+  - Açıklayıcı
+  - Ingilizce
 
   yazılmalıdır.
 
 ### 1.6 Metodlar
 
 - Metodların isimleri:
-  1. camelCase
-  2. Kısaltmasız
-  3. Açıklayıcı
-  4. Ingilizce
+  - camelCase
+  - Kısaltmasız
+  - Açıklayıcı
+  - Ingilizce
 
   yazılmalıdır. Metodun parametreleri de yukarıdaki kurallara göre yazılmalıdır. Eğer metod sınıfın constructorü ise metod PascalCase ve sınıf ismiyle aynı yazılmalıdır.
 
 ### 1.7 Github Branchleri
 
 - Branchlerin isimleri:
-  1. kebab-case
-  2. Açıklayıcı
-  3. Kısa
-  4. Ingilizce
+  - kebab-case
+  - Açıklayıcı
+  - Kısa (Maksimum 15 harf civarı olacak şekilde özen gösteriniz)
+  - Ingilizce
 
-  yazılmalıdır. Kısaltmalara anlam kaybı olmadıkça izin var.
+  yazılmalıdır. Kısaltmalara büyük anlam kayıpları olmadıkça izin var.
 
 ## 2. Kod Açıklamaları
 
 - Kod açıklamaları:
-  1. Açıklayıcı
-  2. Türkçe
+  - Açıklayıcı
+  - Türkçe
 
   yazılmalıdır.
 
