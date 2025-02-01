@@ -9,36 +9,36 @@ public class SparkEncoder {
 
   boolean inverted;
 
-  double positionConversionConstant;
-  double velocityConversionConstant;
+  double positionConversionFactor;
+  double velocityConversionFactor;
 
   public SparkEncoder(RelativeEncoder encoder) {
     this.encoder = encoder;
     this.inverted = false;
 
-    this.positionConversionConstant = 1.0;
-    this.velocityConversionConstant = 1.0;
+    this.positionConversionFactor = 1.0;
+    this.velocityConversionFactor = 1.0;
   }
 
   public double getPosition() {
     // ! Özellike bu.
-    return (inverted ? -1.0 : 1.0) * encoder.getPosition() * positionConversionConstant;
+    return (inverted ? -1.0 : 1.0) * encoder.getPosition() * positionConversionFactor;
   }
 
   public double getVelocity() {
     // ! Ve bu.
-    return (inverted ? -1.0 : 1.0) * encoder.getVelocity() * velocityConversionConstant;
+    return (inverted ? -1.0 : 1.0) * encoder.getVelocity() * velocityConversionFactor;
   }
 
   public void setInverted(boolean inverted) {
     this.inverted = inverted;
   }
 
-  public void setPositionConversionConstant(double positionConversionConstant) {
-    this.positionConversionConstant = positionConversionConstant;
+  public void setPositionConversionFactor(double positionConversionFactor) {
+    this.positionConversionFactor = positionConversionFactor;
   }
 
-  public void setVelocityConversionConstant(double velocityConversionConstant) {
-    this.velocityConversionConstant = velocityConversionConstant;
+  public void setVelocityConversionFactor(double velocityConversionFactor) {
+    this.velocityConversionFactor = velocityConversionFactor;
   }
 }

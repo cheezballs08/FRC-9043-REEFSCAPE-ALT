@@ -34,7 +34,6 @@ public class SwerveModule {
     SparkBaseConfig angleMotorConfig,
     boolean invertAngleEncoder,
 
-    int absoluteEncoderID,
     double absoluteEncoderOffset,
     boolean invertAbsoluteEncoder
   ) {
@@ -46,8 +45,8 @@ public class SwerveModule {
 
     driveEncoder = new SparkEncoder(driveMotor.getEncoder());
     driveEncoder.setInverted(invertDriveEncoder);
-    driveEncoder.setPositionConversionConstant(ModuleConstants.driveEncoderSpeedConversionFactor);
-    driveEncoder.setVelocityConversionConstant(ModuleConstants.driveEncoderAcclerationConversionFactor);
+    driveEncoder.setPositionConversionFactor(ModuleConstants.driveEncoderPositionConversionFactor);
+    driveEncoder.setVelocityConversionFactor(ModuleConstants.driveEncoderSpeedConversionFactor);
 
     driveController = new PIDController(ModuleConstants.PDrive, ModuleConstants.IDrive, ModuleConstants.DDrive);
     driveController.setIZone(ModuleConstants.IZDrive);
@@ -57,16 +56,19 @@ public class SwerveModule {
 
     angleEncoder = new SparkEncoder(angleMotor.getEncoder());
     angleEncoder.setInverted(invertAngleEncoder);
-    angleEncoder.setPositionConversionConstant(ModuleConstants.angleEncoderSpeedConversionFactor);
-    angleEncoder.setVelocityConversionConstant(ModuleConstants.angleEncoderAccelerationConversionFactor);
+    angleEncoder.setPositionConversionFactor(ModuleConstants.angleEncoderPositionConversionFactor);
+    angleEncoder.setVelocityConversionFactor(ModuleConstants.angleEncoderSpeedConversionFactor);
   
     angleController = new PIDController(ModuleConstants.PAngle, ModuleConstants.IAngle, ModuleConstants.DAngle);
     angleController.setIZone(ModuleConstants.IZAngle);
     angleController.enableContinuousInput(-Math.PI, Math.PI);
 
+    // TODO: Encoder'in alındığı motoru duruma göre değiştir. 
     absoluteEncoder = new ThriftyEncoder(angleMotor.getAnalog());
     absoluteEncoder.setInverted(invertAbsoluteEncoder);
     absoluteEncoder.setPositionOffset(absoluteEncoderOffset);
+    absoluteEncoder.setPositionConversionFactor(ModuleConstants.mangeticEncoderPositionConversionFactor);
+    absoluteEncoder.setVelocityConversionFactor(ModuleConstants.mangeticEncoderSpeedConversionFactor);
   }
 
   public SwerveModuleState getState() {

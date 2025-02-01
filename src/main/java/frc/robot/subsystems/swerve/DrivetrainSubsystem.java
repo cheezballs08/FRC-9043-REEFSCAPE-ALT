@@ -32,8 +32,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     DrivetrainConstants.frontLeftInvertDriveEncoder, 
     DrivetrainConstants.frontLeftAngleMotorID, 
     DrivetrainConstants.frontLeftAngleMotorConfig, 
-    DrivetrainConstants.frontLeftInvertAngleEncoder, 
-    DrivetrainConstants.frontLeftAbsoluteEncoderID, 
+    DrivetrainConstants.frontLeftInvertAngleEncoder,  
     DrivetrainConstants.frontLeftAbsoluteEncoderOffset, 
     DrivetrainConstants.frontLeftInvertAbsoluteEncoder
   );
@@ -44,8 +43,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     DrivetrainConstants.frontRightInvertDriveEncoder, 
     DrivetrainConstants.frontRightAngleMotorID, 
     DrivetrainConstants.frontRightAngleMotorConfig, 
-    DrivetrainConstants.frontRightInvertAngleEncoder, 
-    DrivetrainConstants.frontRightAbsoluteEncoderID, 
+    DrivetrainConstants.frontRightInvertAngleEncoder,  
     DrivetrainConstants.frontRightAbsoluteEncoderOffset, 
     DrivetrainConstants.frontRightInvertAbsoluteEncoder
   );
@@ -56,8 +54,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     DrivetrainConstants.backLeftInvertDriveEncoder, 
     DrivetrainConstants.backLeftAngleMotorID, 
     DrivetrainConstants.backLeftAngleMotorConfig, 
-    DrivetrainConstants.backLeftInvertAngleEncoder, 
-    DrivetrainConstants.backLeftAbsoluteEncoderID,  
+    DrivetrainConstants.backLeftInvertAngleEncoder,   
     DrivetrainConstants.backLeftAbsoluteEncoderOffset, 
     DrivetrainConstants.backLeftInvertAbsoluteEncoder
   );
@@ -68,8 +65,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     DrivetrainConstants.backRightInvertDriveEncoder, 
     DrivetrainConstants.backRightAngleMotorID, 
     DrivetrainConstants.backRightAngleMotorConfig, 
-    DrivetrainConstants.backRightInvertAngleEncoder, 
-    DrivetrainConstants.backRightAbsoluteEncoderID, 
+    DrivetrainConstants.backRightInvertAngleEncoder,  
     DrivetrainConstants.backRightAbsoluteEncoderOffset, 
     DrivetrainConstants.backRightInvertAbsoluteEncoder
   );

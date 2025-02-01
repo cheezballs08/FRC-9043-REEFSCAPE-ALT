@@ -41,15 +41,18 @@ public class ModuleConstants {
 
   public static final double driveMotorGearRatio = 0;
   // Rotation to meters.
-  public static final double driveEncoderSpeedConversionFactor = 0;
+  public static final double driveEncoderPositionConversionFactor = 0;
   // Rotation per minute to meters per second
-  public static final double driveEncoderAcclerationConversionFactor = 0;
+  public static final double driveEncoderSpeedConversionFactor = 0;
 
   public static final double angleMotorGearRatio = 0;
   // Rotations to radians
-  public static final double angleEncoderSpeedConversionFactor = 0;
+  public static final double angleEncoderPositionConversionFactor = 0;
   // rotations per minute to radians per second
-  public static final double angleEncoderAccelerationConversionFactor = 0;
+  public static final double angleEncoderSpeedConversionFactor = 0;
+
+  public static final double mangeticEncoderPositionConversionFactor = 0;
+  public static final double mangeticEncoderSpeedConversionFactor = 0;
 
   public static final double PDrive = 0;
   public static final double IDrive = 0;

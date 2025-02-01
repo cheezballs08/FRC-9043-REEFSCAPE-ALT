@@ -23,7 +23,6 @@ public class DrivetrainConstants {
   .inverted(false);
   public static final boolean frontLeftInvertAngleEncoder = false;
 
-  public static final int frontLeftAbsoluteEncoderID = 0;
   public static final double frontLeftAbsoluteEncoderOffset = 0.0;
   public static final boolean frontLeftInvertAbsoluteEncoder = false;
 
@@ -43,7 +42,6 @@ public class DrivetrainConstants {
   .inverted(false);
   public static final boolean frontRightInvertAngleEncoder = false;
 
-  public static final int frontRightAbsoluteEncoderID = 0;
   public static final double frontRightAbsoluteEncoderOffset = 0.0;
   public static final boolean frontRightInvertAbsoluteEncoder = false;  
 
@@ -63,7 +61,6 @@ public class DrivetrainConstants {
   .inverted(false);
   public static final boolean backLeftInvertAngleEncoder = false;
 
-  public static final int backLeftAbsoluteEncoderID = 0;
   public static final double backLeftAbsoluteEncoderOffset = 0.0;
   public static final boolean backLeftInvertAbsoluteEncoder = false;
 
@@ -83,7 +80,6 @@ public class DrivetrainConstants {
   .inverted(false);
   public static final boolean backRightInvertAngleEncoder = false;
 
-  public static final int backRightAbsoluteEncoderID = 0;
   public static final double backRightAbsoluteEncoderOffset = 0.0;
   public static final boolean backRightInvertAbsoluteEncoder = false;
 
