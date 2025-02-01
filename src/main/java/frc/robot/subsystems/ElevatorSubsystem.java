@@ -25,11 +25,11 @@ public class ElevatorSubsystem extends SubsystemBase {
     
     this.encoder = new CANCoderWrapper(new CANcoder(ElevatorConstants.encoderID));
 
-    this.encoder.setPositionConversionConstant(ElevatorConstants.encoderSpeedConversionFactor);
-    this.encoder.setVelocityConversionConstant(ElevatorConstants.encoderAccelerationConversionFactor);
+    this.encoder.setPositionConversionFactor(ElevatorConstants.encoderSpeedConversionFactor);
+    this.encoder.setVelocityConversionFactor(ElevatorConstants.encoderAccelerationConversionFactor);
 
-    this.controller = new PIDController(ElevatorConstants.kP, ElevatorConstants.kI, ElevatorConstants.kD);
-    this.controller.setIZone(ElevatorConstants.kIZ);
+    this.controller = new PIDController(ElevatorConstants.P, ElevatorConstants.I, ElevatorConstants.D);
+    this.controller.setIZone(ElevatorConstants.IZ);
   }
 
   @Override

@@ -28,10 +28,10 @@ public class ElevatorConstants {
   public static final double encoderSpeedConversionFactor = 0.0;
   public static final double encoderAccelerationConversionFactor = 0.0;
 
-  public static final double kP = 0.0;
-  public static final double kI = 0.0;
-  public static final double kIZ = 0.0;
-  public static final double kD = 0.0;
+  public static final double P = 0.0;
+  public static final double I = 0.0;
+  public static final double IZ = 0.0;
+  public static final double D = 0.0;
 
   public static final double elevatorHeight = 0.0;
 
