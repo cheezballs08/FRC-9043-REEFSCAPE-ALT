@@ -25,6 +25,7 @@ public class ThriftyEncoder {
 	 */
 	public double getPosition() {
 		// ! Özellike bu.
+		//average filtreleme uygular değere kendi içinde, amaca göre ya oaky ya yanlış
 		return (inverted ? -1.0 : 1.0) * ((analogInput.getAverageVoltage() / RobotController.getVoltage5V()) * (Math.PI * 2) - Math.PI);
 	}
 

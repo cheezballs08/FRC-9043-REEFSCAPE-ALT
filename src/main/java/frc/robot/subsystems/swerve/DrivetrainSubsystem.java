@@ -127,6 +127,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
     if (vision.canEstimatePose()) {
 
       // TODO: timestampSeconds değerinin bu iş için uygun olup olmadığına bak.
+      // değişmediyse bildiğim kadarıyla yanlış, addVisionMeasurement ın üstüne gidinceki açılamada anlatıyor ne kullanman gerektiğini ama bildiğim kadarıyla
+      //senin yaptığın vision başladığından beri bir süre, ihtiyacın olan roborio yazılımı başladığından beri geçen süre.
       odometer.addVisionMeasurement(vision.getEstimatedPose2d(), vision.getEstimate().timestampSeconds);
     }
 
@@ -140,6 +142,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   public double getRobotAngle() {
     // TODO: Bunu yapmalımıyım yoksa otomatik olarak yapılıyor mu?
+    // navxin getangle ı accumilated yani 360tan öteye gidiyor, illa ieeeremainder ile yapmana gerek yok modülüs (%) ile de olur ama hangisi daha hızlı ona emin değilim.
     return Math.IEEEremainder(gyroscope.getAngle(), 360);
   }
 
@@ -158,6 +161,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
 
   // TODO: Bu iki metod baya yanlış olabilir. Kontrol et.
+  // doğru gibi ama wpilib dokümanlarından bakmakta fayda var
   public ChassisSpeeds getFieldRelativeSpeeds() {
     return DrivetrainConstants.kinematics.toChassisSpeeds(this.getModuleStates());
   }
@@ -167,6 +171,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   }
 
   // TODO: Bu böyle doğru mu kontrol et.
+  // okay gibi duruyor
   public void resetOdometry(Pose2d pose) {
     odometer.resetPosition(this.getRotation2d(), this.getModulePositions(), pose);
   }

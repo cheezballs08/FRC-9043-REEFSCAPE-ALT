@@ -3,6 +3,7 @@ package frc.robot.utils;
 import com.revrobotics.RelativeEncoder;
 
 // TODO: Bu doğru yapılmış mı bak
+// eğer quadrature encoderi sparka takmak içinse iş görebilir gibi, eğer thrifty encoderleri sparka takmak içinse yanlış çünkü onlar absolute encoder ve analoglar
 public class SparkEncoder {
   RelativeEncoder encoder;
 

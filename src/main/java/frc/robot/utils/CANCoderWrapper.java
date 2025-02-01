@@ -3,6 +3,7 @@ package frc.robot.utils;
 import com.ctre.phoenix6.hardware.CANcoder;
 
 // TODO: Bu doğru yapılmış mı bak
+// amacını tam anlayamadım ama cancoder bunları kendi yapabiliyor, pehonix6 api doc lardan cancoderconfigurator a bak. invert gibi şeyleri genelde pehonix tunerdan yapmak gerekiyo
 public class CANCoderWrapper {
   CANcoder encoder;
 
