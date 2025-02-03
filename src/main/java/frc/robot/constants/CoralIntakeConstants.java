@@ -28,7 +28,16 @@ public class CoralIntakeConstants {
   .apply(motorDefaultConfig)
   .inverted(false);
 
+  public static final double intakeSpeed = 0.0;
+
+  public static final double outtakeSpeed = 0.0;
+
   public static final double maxAngle = 0;
+
+  public static final double L1Angle = 0;
+  public static final double L2Angle = 0;
+  public static final double L3Angle = 0;
+  public static final double L4Angle = 0;
 
   public static final int sensorID = 0; 
   
@@ -41,5 +50,7 @@ public class CoralIntakeConstants {
   public static final double I = 0.0;
   public static final double D = 0.0;
   public static final double IZ = 0.0;
+
+
 
 }

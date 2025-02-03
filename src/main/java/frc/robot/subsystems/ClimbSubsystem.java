@@ -14,8 +14,8 @@ public class ClimbSubsystem extends SubsystemBase {
     this.motor.configure(ClimbCostants.motorConfig, MotorConstants.resetMode, MotorConstants.persistMode);
   }
 
-  //Motor hızı ayarlama
-  public void setMotorSpeed(double speed){
+  // Motor hızı ayarlama
+  public void setSpeed(double speed){
     this.motor.set(speed);
   }
 

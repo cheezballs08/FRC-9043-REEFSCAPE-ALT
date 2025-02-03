@@ -1,36 +1,32 @@
 package frc.robot.commands.teleop.climb;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.constants.ClimbCostants;
 import frc.robot.subsystems.ClimbSubsystem;
 
-public class ClimbCommand extends Command {
+public class ClimbBackward extends Command {
 
   ClimbSubsystem subsystem;
 
-  double speed = 0.0;
-
-  public ClimbCommand(ClimbSubsystem subsystem, double speed) {
-
+  public ClimbBackward(ClimbSubsystem subsystem) {
     this.subsystem = subsystem;
-
-    this.speed = speed;
 
     addRequirements(this.subsystem);
   }
 
   @Override
   public void initialize() {
-    subsystem.setMotorSpeed(speed);
+    subsystem.setSpeed(ClimbCostants.climbSpeed);
   }
 
   @Override
   public void execute() {
-    subsystem.setMotorSpeed(speed);
+    subsystem.setSpeed(ClimbCostants.climbSpeed);
   }
 
   @Override
   public void end(boolean interrupted) {
-    subsystem.setMotorSpeed(0);
+    subsystem.setSpeed(0);
   }
 
   @Override

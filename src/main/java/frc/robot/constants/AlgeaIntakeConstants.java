@@ -12,8 +12,11 @@ public class AlgeaIntakeConstants {
 
   public static final MotorType motor1Type = null;
   public static final MotorType motor2Type = null;
+
+  public static final double intakeSpeed = 0.0;
+  public static final double outtakeSpeed = 0.0;
   
-   public static final SparkBaseConfig motorDefaultConfig = new SparkMaxConfig()
+  public static final SparkBaseConfig motorDefaultConfig = new SparkMaxConfig()
   .smartCurrentLimit(0)
   .idleMode(IdleMode.kBrake);
 

@@ -31,7 +31,6 @@ public class CoralIntakeSubsystem extends SubsystemBase {
     
     this.angleMotor = new SparkMax(CoralIntakeConstants.angleMotorID, CoralIntakeConstants.motorType);
     this.angleMotor.configure(CoralIntakeConstants.angleMotorConfig, MotorConstants.resetMode, MotorConstants.persistMode);
-    
 
     this.angleEncoder = new CANCoderWrapper(new CANcoder(CoralIntakeConstants.encoderID));
     this.angleEncoder.setPositionConversionFactor(CoralIntakeConstants.positionConversionConstant);
@@ -53,11 +52,20 @@ public class CoralIntakeSubsystem extends SubsystemBase {
   }
 
   /** Radian girdili */
-  public void setIntakeAngle(double angle) {
-    this.angleMotor.set(this.angleController.calculate(this.angleEncoder.getPosition()));
+  public void setAngle(double angle) {
+    this.angleMotor.set(this.angleController.calculate(this.angleEncoder.getPosition(), angle));
   }
 
-  public boolean getSensorState() {
+  public void setPosition(double speed, double angle) {
+    this.setSpeeds(speed);
+    this.setAngle(angle);
+  }
+
+  public boolean isAtSetpoint() {
+    return this.angleController.atSetpoint();
+  }
+
+  public boolean isSensorActive() {
     return this.sensor.isActivated();
   }
 

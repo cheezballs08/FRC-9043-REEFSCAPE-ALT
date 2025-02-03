@@ -9,13 +9,13 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.constants.MathConstants;
 import frc.robot.subsystems.ElevatorSubsystem;
 
-public class SetElevatorPostitionCommand extends Command {
+public class SetElevatorPositionCommand extends Command {
 
   ElevatorSubsystem subsystem;
   
   double desiredPosition;
 
-  public SetElevatorPostitionCommand(ElevatorSubsystem subsystem, double desiredPosition) {
+  public SetElevatorPositionCommand(ElevatorSubsystem subsystem, double desiredPosition) {
     this.subsystem = subsystem;
     this.desiredPosition = desiredPosition;
 

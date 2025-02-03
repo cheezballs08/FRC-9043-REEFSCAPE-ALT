@@ -26,12 +26,12 @@ public class AlgaeIntakeSubsystem extends SubsystemBase {
   @Override
   public void periodic() {}
 
-  public void setMotorSpeeds(double speed){
+  public void setSpeeds(double speed){
     motor1.set(speed);
     motor2.set(speed);
   }
 
-  public boolean getSensorState(){
+  public boolean isSensorActive(){
     return sensor.isActivated();
   }
 

@@ -35,8 +35,8 @@ public class ElevatorConstants {
 
   public static final double elevatorHeight = 0.0;
 
-  public static final double level1Height = 0.0;
-  public static final double level2Height = 0.0;
-  public static final double level3Height = 0.0;
-  public static final double level4Height = 0.0;
+  public static final double L1Height = 0.0;
+  public static final double L2Height = 0.0;
+  public static final double L3Height = 0.0;
+  public static final double L4Height = 0.0;
 }
