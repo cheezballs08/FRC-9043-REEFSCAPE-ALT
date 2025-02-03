@@ -17,4 +17,6 @@ public class ClimbCostants {
   public static final SparkBaseConfig motorConfig = new SparkMaxConfig()
   .apply(motorDefaultConfig)
   .inverted(false);
+
+  public static final double climbSpeed = 0;
 }

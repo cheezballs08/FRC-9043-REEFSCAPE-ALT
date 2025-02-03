@@ -7,27 +7,26 @@ public class ClimbCommand extends Command {
 
   ClimbSubsystem subsystem;
 
-  double motorSpeed = 0.5;
-  boolean isReverse = false;
+  double speed = 0.0;
 
-  public ClimbCommand(ClimbSubsystem subsystem, boolean isReverse) {
+  public ClimbCommand(ClimbSubsystem subsystem, double speed) {
 
     this.subsystem = subsystem;
 
-    this.isReverse = isReverse;
+    this.speed = speed;
 
     addRequirements(this.subsystem);
   }
 
   @Override
   public void initialize() {
-    // Eğer kıskaç açılma tuşuna basılı tutulursa motor rötasyonunu tersine döndürür.
-    motorSpeed = isReverse ? motorSpeed : motorSpeed * -1;
-    subsystem.setMotorSpeed(motorSpeed);
+    subsystem.setMotorSpeed(speed);
   }
 
   @Override
-  public void execute() {}
+  public void execute() {
+    subsystem.setMotorSpeed(speed);
+  }
 
   @Override
   public void end(boolean interrupted) {
