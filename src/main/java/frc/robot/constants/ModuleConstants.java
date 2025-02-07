@@ -32,11 +32,11 @@ public class ModuleConstants {
   .idleMode(idleMode);
 
   // Meters
-  public static final double driveMaxSpeed = 0;
+  public static final double driveMaxSpeed = 7;
   public static final double driveMaxAcceleration = 0;
 
   // Radians
-  public static final double angleMaxSpeed = 0;
+  public static final double angleMaxSpeed = 4;
   public static final double angleMaxAcceleration = 0;
 
   public static final double driveMotorGearRatio = 0;
@@ -54,14 +54,14 @@ public class ModuleConstants {
   public static final double mangeticEncoderPositionConversionFactor = 0;
   public static final double mangeticEncoderSpeedConversionFactor = 0;
 
-  public static final double PDrive = 0;
-  public static final double IDrive = 0;
-  public static final double DDrive = 0;
+  public static final double PDrive = 0.00023;
+  public static final double IDrive = 0.0000002;
+  public static final double DDrive = 1;
   public static final double IZDrive = 0;
 
   public static final PIDConstants drivePID = new PIDConstants(PDrive, IDrive, DDrive, IZDrive);
 
-  public static final double PAngle = 0;
+  public static final double PAngle = 0.0020645;
   public static final double IAngle = 0;
   public static final double DAngle = 0;
   public static final double IZAngle = 0;

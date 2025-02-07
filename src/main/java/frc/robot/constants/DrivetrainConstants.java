@@ -1,11 +1,14 @@
 package frc.robot.constants;
 
+import java.io.File;
+
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.studica.frc.AHRS.NavXComType;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.wpilibj.Filesystem;
 
 public class DrivetrainConstants {
   
@@ -101,4 +104,5 @@ public class DrivetrainConstants {
       new Translation2d(-moduleLateralDistance / 2, -moduleLongitudinalDistance / 2) // Back Right
   );
  
+  public static final File jsonDirectory = new File(Filesystem.getDeployDirectory(),"swerve");
 }

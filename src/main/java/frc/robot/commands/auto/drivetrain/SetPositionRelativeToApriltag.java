@@ -1,22 +1,19 @@
 package frc.robot.commands.auto.drivetrain;
 
-import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.constants.AutoConstants;
-import frc.robot.constants.ControllerConstants;
-import frc.robot.subsystems.swerve.DrivetrainSubsystem;
+import frc.robot.utils.DrivetrainSubsystem;
 import frc.robot.units.VisionProcessingUnit;
+import frc.robot.utils.CameraPosition;
 import frc.robot.utils.DriveType;
 
-public class SetPositionRelativeToApriltagCommand extends Command {
+public class SetPositionRelativeToApriltag extends Command {
 
   DrivetrainSubsystem drivetrainSubsystem;
 
-  VisionProcessingUnit vision = VisionProcessingUnit.getInstance();
-
-  SlewRateLimiter xLimiter, yLimiter, rLimiter;
+  VisionProcessingUnit vision = VisionProcessingUnit.getUnit(CameraPosition.Front);
 
   double xSpeed, ySpeed, rSpeed;
 
@@ -31,7 +28,7 @@ public class SetPositionRelativeToApriltagCommand extends Command {
   Pose3d cameraPose;
   
 
-  public SetPositionRelativeToApriltagCommand(
+  public SetPositionRelativeToApriltag(
     DrivetrainSubsystem drivetrainSubsystem,
     DriveType driveType,
     int targetId,
@@ -41,10 +38,6 @@ public class SetPositionRelativeToApriltagCommand extends Command {
     ) {
 
     this.drivetrainSubsystem = drivetrainSubsystem;
-    
-    this.xLimiter = new SlewRateLimiter(ControllerConstants.maxAllowedDriveAcceleration);
-    this.yLimiter = new SlewRateLimiter(ControllerConstants.maxAllowedDriveAcceleration);
-    this.rLimiter = new SlewRateLimiter(ControllerConstants.maxAllowedAngleAcceleration);
 
     this.targetId = targetId;
 
@@ -78,10 +71,6 @@ public class SetPositionRelativeToApriltagCommand extends Command {
     xError = desiredXOffset - currentXOffset;
     yError = desiredYOffset - currentYOffset;
     angleError = desiredAngle - currentAngle;
-
-    xSpeed = xLimiter.calculate(xError * AutoConstants.aprilTagDriveReductionFactor);
-    ySpeed = yLimiter.calculate(yError * AutoConstants.aprilTagDriveReductionFactor);
-    rSpeed = rLimiter.calculate(angleError * AutoConstants.aprilTagAimReductionFactor);
 
     drivetrainSubsystem.drive(xSpeed, ySpeed, rSpeed, DriveType.FieldRelative);
   }

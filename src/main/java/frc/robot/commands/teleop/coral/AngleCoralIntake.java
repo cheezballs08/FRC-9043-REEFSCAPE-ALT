@@ -16,7 +16,6 @@ public class AngleCoralIntake extends Command {
   public AngleCoralIntake(CoralIntakeSubsystem subsystem, double angle) {
 
     this.subsystem = subsystem;
-
     this.angle = angle;
 
     addRequirements(subsystem);

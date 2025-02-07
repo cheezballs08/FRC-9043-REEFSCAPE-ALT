@@ -64,4 +64,8 @@ public class ElevatorSubsystem extends SubsystemBase {
   public double getEncoderVelocity() {
     return encoder.getVelocity();
   }
+
+  public boolean isAtSetpoint() {
+    return controller.atSetpoint();
+  }
 }

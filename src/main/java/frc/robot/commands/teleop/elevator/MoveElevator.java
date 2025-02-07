@@ -6,16 +6,15 @@ package frc.robot.commands.teleop.elevator;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.constants.MathConstants;
 import frc.robot.subsystems.ElevatorSubsystem;
 
-public class SetElevatorPositionCommand extends Command {
+public class MoveElevator extends Command {
 
   ElevatorSubsystem subsystem;
   
   double desiredPosition;
 
-  public SetElevatorPositionCommand(ElevatorSubsystem subsystem, double desiredPosition) {
+  public MoveElevator(ElevatorSubsystem subsystem, double desiredPosition) {
     this.subsystem = subsystem;
     this.desiredPosition = desiredPosition;
 
@@ -41,10 +40,7 @@ public class SetElevatorPositionCommand extends Command {
 
   @Override
   public boolean isFinished() {
-    
-    double error = desiredPosition - subsystem.getEncoderPosition();
-
-    if (Math.abs(error) < MathConstants.epsilon && subsystem.getEncoderVelocity() < MathConstants.epsilon) {
+    if (subsystem.isAtSetpoint()) {
       return true;
     }
 

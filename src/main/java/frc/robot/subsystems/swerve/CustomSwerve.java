@@ -21,11 +21,13 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.ModuleConstants;
 import frc.robot.constants.RobotConstants;
 import frc.robot.units.VisionProcessingUnit;
+import frc.robot.utils.CameraPosition;
 import frc.robot.utils.DriveType;
+import frc.robot.utils.DrivetrainSubsystem;
 import frc.robot.utils.Gyroscope;
 import frc.robot.constants.DrivetrainConstants;
 
-public class DrivetrainSubsystem extends SubsystemBase {
+public class CustomSwerve extends SubsystemBase implements DrivetrainSubsystem {
   
   private SwerveModule frontLeftModule = new SwerveModule(
     DrivetrainConstants.frontLeftDriveMotorID, 
@@ -75,7 +77,12 @@ public class DrivetrainSubsystem extends SubsystemBase {
   
   private PPHolonomicDriveController controller = new PPHolonomicDriveController(ModuleConstants.drivePID, ModuleConstants.anglePID);
 
-  private VisionProcessingUnit vision = VisionProcessingUnit.getInstance();
+  private VisionProcessingUnit frontUnit = VisionProcessingUnit.getUnit(CameraPosition.Front);
+
+  private VisionProcessingUnit leftUnit = VisionProcessingUnit.getUnit(CameraPosition.Left);
+
+  private VisionProcessingUnit rightUnit = VisionProcessingUnit.getUnit(CameraPosition.Right);
+
 
   SwerveDrivePoseEstimator odometer = new SwerveDrivePoseEstimator(
     DrivetrainConstants.kinematics, 
@@ -84,7 +91,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     RobotConstants.initialPose
     );
 
-  public DrivetrainSubsystem() {
+  public CustomSwerve() {
     // For reseting the gyro.
     new Thread( 
     () -> {
@@ -120,12 +127,14 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   public void updateOdometer() {
 
-    if (vision.canEstimatePose()) {
-
-      // TODO: timestampSeconds değerinin bu iş için uygun olup olmadığına bak.
-      // değişmediyse bildiğim kadarıyla yanlış, addVisionMeasurement ın üstüne gidinceki açılamada anlatıyor ne kullanman gerektiğini ama bildiğim kadarıyla
-      //senin yaptığın vision başladığından beri bir süre, ihtiyacın olan roborio yazılımı başladığından beri geçen süre.
-      odometer.addVisionMeasurement(vision.getEstimatedPose2d(), vision.getEstimate().timestampSeconds);
+    if (frontUnit.canEstimatePose()) {
+      odometer.addVisionMeasurement(frontUnit.getEstimatedPose2d(), frontUnit.getEstimate().timestampSeconds);
+    }
+    if (leftUnit.canEstimatePose()) {
+      odometer.addVisionMeasurement(frontUnit.getEstimatedPose2d(), frontUnit.getEstimate().timestampSeconds);
+    }
+    if (rightUnit.canEstimatePose()) {
+      odometer.addVisionMeasurement(frontUnit.getEstimatedPose2d(), frontUnit.getEstimate().timestampSeconds);
     }
 
     odometer.update(this.getRotation2d(), this.getModulePositions());
@@ -220,7 +229,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
   }
 
   //  TODO: Bunu çalışır duruma getir.
-  public void drive(ChassisSpeeds speeds, DriveFeedforwards feedforwards) {
-    
+  public void drive(ChassisSpeeds speeds, DriveFeedforwards feedforwards) {}
+
+  public Pose2d getSimPose() {
+    return new Pose2d();
   }
 }

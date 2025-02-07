@@ -5,20 +5,44 @@
 package frc.robot.units;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
+import org.photonvision.simulation.PhotonCameraSim;
+import org.photonvision.simulation.SimCameraProperties;
+import org.photonvision.simulation.VisionSystemSim;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Transform3d;
 import frc.robot.constants.VisionConstants;
+import frc.robot.utils.CameraPosition;
 
 public class VisionProcessingUnit {
 
-  private static  VisionProcessingUnit instance;
+  private static VisionProcessingUnit frontUnit = new VisionProcessingUnit(VisionConstants.frontCameraName, VisionConstants.robotToFrontCameraTransform, VisionConstants.frontCameraProperties);
+
+  private static VisionProcessingUnit leftUnit = new VisionProcessingUnit(VisionConstants.leftCameraName, VisionConstants.robotToLeftCameraTransform, VisionConstants.leftCameraProperties);
+
+  private static VisionProcessingUnit rightUnit = new VisionProcessingUnit(VisionConstants.rightCameraName, VisionConstants.robotToRightCameraTransform, VisionConstants.rightCameraProperties);
   
+  private static VisionSystemSim simulation;
+
+  static {
+    simulation = new VisionSystemSim(VisionConstants.simulationName);
+
+    simulation.addAprilTags(VisionConstants.fieldLayout);
+
+    simulation.addCamera(frontUnit.getCameraSimulation(), VisionConstants.robotToFrontCameraTransform);
+
+    simulation.addCamera(leftUnit.getCameraSimulation(), VisionConstants.robotToLeftCameraTransform);
+
+    simulation.addCamera(rightUnit.getCameraSimulation(), VisionConstants.robotToRightCameraTransform);
+  }
+
   private PhotonCamera camera;
 
   private PhotonTrackedTarget bestTarget;
@@ -31,30 +55,40 @@ public class VisionProcessingUnit {
 
   private EstimatedRobotPose estimatedPose;
 
-  private VisionProcessingUnit(String cameraName) {
+  private PhotonCameraSim cameraSimulation;
+
+  private VisionProcessingUnit(String cameraName, Transform3d robotToCamTransform, SimCameraProperties cameraProperties) {
     camera = new PhotonCamera(cameraName);
 
-    poseEstimator = new PhotonPoseEstimator(VisionConstants.fieldLayout, VisionConstants.poseEstimationStrategy, VisionConstants.robotToCamTransform);
+    poseEstimator = new PhotonPoseEstimator(VisionConstants.fieldLayout, VisionConstants.poseEstimationStrategy, robotToCamTransform);
+  
+    cameraSimulation = new PhotonCameraSim(camera, cameraProperties);
+
+    cameraSimulation.enableDrawWireframe(true);
   }
 
-  public static VisionProcessingUnit getInstance() {
-    if (instance == null) {
-      instance = new VisionProcessingUnit(VisionConstants.cameraName);
+  public static VisionProcessingUnit getUnit(CameraPosition position) {
+    if (position == CameraPosition.Front) {
+      return frontUnit;
+    } else if (position == CameraPosition.Left) {
+      return leftUnit;
+    } else {
+      return rightUnit;
     }
-    return instance;
+  }
+
+  public static VisionSystemSim getSimulation() {
+    return simulation;
   }
 
   public void updateResult() {
-    this.seenSargets.removeAll(seenSargets);
-
-    this.result = new PhotonPipelineResult();
-    
     List<PhotonPipelineResult> results = camera.getAllUnreadResults();
-
+    
     if (results.isEmpty()) {
+      this.result = new PhotonPipelineResult();
       return;
     }
-    
+
     this.result = results.get(results.size() - 1);
   }
 
@@ -101,7 +135,13 @@ public class VisionProcessingUnit {
 
   public void updatePoseEstimator() {
     // TODO: Pose estimator direk böyle çalışıyor mu? Kalibreye ihtiyacı yok mudur?
-    estimatedPose = poseEstimator.update(result).isPresent() ? poseEstimator.update(result).get() : null;  
+    Optional<EstimatedRobotPose> estimateOptional = poseEstimator.update(result); 
+
+    if (estimateOptional.isPresent()) {
+      this.estimatedPose = estimateOptional.get();
+    } else {
+      this.estimatedPose = null;
+    }
   }
 
   public boolean canEstimatePose() {
@@ -114,6 +154,14 @@ public class VisionProcessingUnit {
 
   public Pose2d getEstimatedPose2d() {
     return estimatedPose.estimatedPose.toPose2d();
+  }
+
+  public static void updateSimulation(Pose2d robotSimPose) {
+    simulation.update(robotSimPose);
+  }
+
+  private PhotonCameraSim getCameraSimulation() {
+    return cameraSimulation;
   }
 
 }
