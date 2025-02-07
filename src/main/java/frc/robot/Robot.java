@@ -83,7 +83,7 @@ public class Robot extends TimedRobot {
   @Override
   public void simulationInit() {
    DriverStationSim.setAllianceStationId(AllianceStationID.Blue1);
-  visionSimulation.update(robotContainer.drivetrainSubsystem.getSimPose());
+    visionSimulation.update(robotContainer.drivetrainSubsystem.getSimPose());
   }
 
   @Override

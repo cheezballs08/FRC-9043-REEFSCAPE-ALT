@@ -131,10 +131,10 @@ public class CustomSwerve extends SubsystemBase implements DrivetrainSubsystem {
       odometer.addVisionMeasurement(frontUnit.getEstimatedPose2d(), frontUnit.getEstimate().timestampSeconds);
     }
     if (leftUnit.canEstimatePose()) {
-      odometer.addVisionMeasurement(frontUnit.getEstimatedPose2d(), frontUnit.getEstimate().timestampSeconds);
+      odometer.addVisionMeasurement(leftUnit.getEstimatedPose2d(), rightUnit.getEstimate().timestampSeconds);
     }
     if (rightUnit.canEstimatePose()) {
-      odometer.addVisionMeasurement(frontUnit.getEstimatedPose2d(), frontUnit.getEstimate().timestampSeconds);
+      odometer.addVisionMeasurement(rightUnit.getEstimatedPose2d(), rightUnit.getEstimate().timestampSeconds);
     }
 
     odometer.update(this.getRotation2d(), this.getModulePositions());

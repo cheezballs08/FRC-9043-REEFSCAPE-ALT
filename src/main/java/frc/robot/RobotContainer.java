@@ -5,6 +5,8 @@ import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.auto.drivetrain.SetPositionRelativeToApriltag;
 import frc.robot.commands.base.DriveCommand;
 import frc.robot.commands.teleop.algea.IntakeAlgea;
 import frc.robot.commands.teleop.algea.OuttakeAlgea;
@@ -30,17 +32,17 @@ import frc.robot.utils.DrivetrainSubsystem;
 public class RobotContainer {
 
   CommandXboxController controller = new CommandXboxController(ControllerConstants.controllerPort);
-  
+
   DrivetrainSubsystem drivetrainSubsystem = new DefaultSwerve();
 
+  // Bunların hepsi sabitlere atılacak, şuanlık test amaçlı böyle, aynı zamanda şuan her şey blue alliance a göre.
   DriveCommand teleopDriveCommand = new DriveCommand(
     drivetrainSubsystem,
-    DriveType.RobotRelative,
+    DriveType.FieldRelative,
     () -> -controller.getLeftX() * 5,
     () -> -controller.getLeftY() * 5,
-    () -> -controller.getLeftTriggerAxis() * 5
+    () -> -controller.getRightX() * 5
   );
-
   
   /*AlgaeIntakeSubsystem algaeIntakeSubsystem = new AlgaeIntakeSubsystem();
 

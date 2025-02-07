@@ -6,6 +6,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.util.DriveFeedforwards;
 
+import dev.doglog.DogLog;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -47,18 +48,20 @@ public class DefaultSwerve extends SubsystemBase implements DrivetrainSubsystem 
       this::getPose, 
       this::resetOdometry, 
       this::getRobotRelativeSpeeds, 
-      (speeds, feedworwards) -> this.drive(speeds, feedworwards), 
+      // TODO: bunu feedforwardları da kullanack şekilde değiştir
+      (speeds, feedworwards) -> this.drive(speeds), 
       controller, 
       RobotConstants.config, 
-      () -> DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == DriverStation.Alliance.Red, 
+      () -> RobotConstants.alliance != DriverStation.Alliance.Blue, 
       this
     );
   }
 
   @Override
   public void periodic() {
-    swerveDrive.updateOdometry();
+    this.updateOdometer();
   }
+
 
   public ChassisSpeeds getFieldRelativeSpeeds() {
     return swerveDrive.getFieldVelocity();
@@ -89,6 +92,7 @@ public class DefaultSwerve extends SubsystemBase implements DrivetrainSubsystem 
     }
   }
 
+  // TODO: Bunun niye çalışmadığına bak.
   public void drive(ChassisSpeeds speeds, DriveFeedforwards feedforwards) {
     swerveDrive.drive(speeds, swerveDrive.getStates(), feedforwards.linearForces());
   }
@@ -105,12 +109,12 @@ public class DefaultSwerve extends SubsystemBase implements DrivetrainSubsystem 
     if (frontUnit.canEstimatePose()) {
       swerveDrive.addVisionMeasurement(frontUnit.getEstimatedPose2d(), frontUnit.getEstimate().timestampSeconds);
     }
-    if (leftUnit.canEstimatePose()) {
-      swerveDrive.addVisionMeasurement(frontUnit.getEstimatedPose2d(), frontUnit.getEstimate().timestampSeconds);
+    /*if (leftUnit.canEstimatePose()) {
+      swerveDrive.addVisionMeasurement(leftUnit.getEstimatedPose2d(), leftUnit.getEstimate().timestampSeconds);
     }
     if (rightUnit.canEstimatePose()) {
-      swerveDrive.addVisionMeasurement(frontUnit.getEstimatedPose2d(), frontUnit.getEstimate().timestampSeconds);
-    }
+      swerveDrive.addVisionMeasurement(rightUnit.getEstimatedPose2d(), rightUnit.getEstimate().timestampSeconds);
+    }*/
 
     swerveDrive.updateOdometry();
   }

@@ -9,9 +9,8 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout.OriginPosition;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Robot;
 
 public class VisionConstants {
   public static final String frontCameraName = "frontcamera";
@@ -34,11 +33,7 @@ public class VisionConstants {
   
   static {
 
-    //Alliance alliance = DriverStation.getAlliance().get();
-    
-    Alliance alliance = Alliance.Blue;
-
-    if (alliance == Alliance.Red) {
+    if (RobotConstants.alliance == Alliance.Red) {
       fieldLayout.setOrigin(OriginPosition.kRedAllianceWallRightSide);
     } else {
       fieldLayout.setOrigin(OriginPosition.kBlueAllianceWallRightSide);

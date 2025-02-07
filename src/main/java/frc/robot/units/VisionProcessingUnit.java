@@ -55,6 +55,8 @@ public class VisionProcessingUnit {
 
   private EstimatedRobotPose estimatedPose;
 
+  private Optional<EstimatedRobotPose> estimateOptional;
+
   private PhotonCameraSim cameraSimulation;
 
   private VisionProcessingUnit(String cameraName, Transform3d robotToCamTransform, SimCameraProperties cameraProperties) {
@@ -135,7 +137,7 @@ public class VisionProcessingUnit {
 
   public void updatePoseEstimator() {
     // TODO: Pose estimator direk böyle çalışıyor mu? Kalibreye ihtiyacı yok mudur?
-    Optional<EstimatedRobotPose> estimateOptional = poseEstimator.update(result); 
+    estimateOptional = poseEstimator.update(result); 
 
     if (estimateOptional.isPresent()) {
       this.estimatedPose = estimateOptional.get();
@@ -145,7 +147,7 @@ public class VisionProcessingUnit {
   }
 
   public boolean canEstimatePose() {
-    return estimatedPose != null;
+    return estimateOptional.isPresent();
   }
 
   public EstimatedRobotPose getEstimate() {

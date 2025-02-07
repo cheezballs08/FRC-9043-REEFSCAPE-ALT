@@ -4,7 +4,7 @@ import com.pathplanner.lib.config.RobotConfig;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 public class RobotConstants {
   
@@ -21,7 +21,19 @@ public class RobotConstants {
   public static final double robotMass = 74.088;
   public static final double robotMomentOfInertia = 0.883;
 
-  public static final RobotConfig config = new RobotConfig(
+  public static final Alliance alliance = Alliance.Blue;
+
+  public static RobotConfig config;
+  
+  static {
+    try{
+      config = RobotConfig.fromGUISettings();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+  /*public static final RobotConfig config = new RobotConfig(
     robotMass, 
     robotMomentOfInertia, 
     ModuleConstants.moduleConfig, 
@@ -29,5 +41,5 @@ public class RobotConstants {
     new Translation2d(-DrivetrainConstants.moduleLateralDistance / 2, DrivetrainConstants.moduleLongitudinalDistance / 2), // Front Right
     new Translation2d(DrivetrainConstants.moduleLateralDistance / 2, -DrivetrainConstants.moduleLongitudinalDistance / 2), // Back Left
     new Translation2d(-DrivetrainConstants.moduleLateralDistance / 2, -DrivetrainConstants.moduleLongitudinalDistance / 2) // Back Right
-  );
+  );*/
 }
