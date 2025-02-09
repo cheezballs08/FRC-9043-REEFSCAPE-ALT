@@ -33,16 +33,25 @@ public class RobotContainer {
 
   CommandXboxController controller = new CommandXboxController(ControllerConstants.controllerPort);
 
+  Trigger a = controller.a();
+
   DrivetrainSubsystem drivetrainSubsystem = new DefaultSwerve();
 
   // Bunların hepsi sabitlere atılacak, şuanlık test amaçlı böyle, aynı zamanda şuan her şey blue alliance a göre.
   DriveCommand teleopDriveCommand = new DriveCommand(
     drivetrainSubsystem,
     DriveType.FieldRelative,
-    () -> -controller.getLeftX() * 5,
-    () -> -controller.getLeftY() * 5,
-    () -> -controller.getRightX() * 5
+    () -> -controller.getLeftX() * 3,
+    () -> -controller.getLeftY() * 3,
+    () -> -controller.getRightX() * 3
   );
+
+  SetPositionRelativeToApriltag setPositionRelativeToApriltag = new SetPositionRelativeToApriltag(
+    drivetrainSubsystem, 
+    20,
+    0.5, 
+    0.0, 
+    0.0);
   
   /*AlgaeIntakeSubsystem algaeIntakeSubsystem = new AlgaeIntakeSubsystem();
 
@@ -95,6 +104,9 @@ public class RobotContainer {
 
   private void configureBindings() {
     drivetrainSubsystem.setDefaultCommand(teleopDriveCommand);
+
+    a.toggleOnTrue(setPositionRelativeToApriltag);
+
   }
 
   public Command getAutonomousCommand() {

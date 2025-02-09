@@ -3,6 +3,8 @@ package frc.robot.constants;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
+
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 public class ElevatorConstants {
@@ -22,11 +24,13 @@ public class ElevatorConstants {
   public static final SparkBaseConfig motor2Config = new SparkMaxConfig()
   .apply(motorDefaultConfig)
   .inverted(false);
+
+  public static final Constraints constraints = new Constraints(0.0, 0.0);
         
   public static final int encoderID = 0;
 
-  public static final double encoderSpeedConversionFactor = 0.0;
-  public static final double encoderAccelerationConversionFactor = 0.0;
+  public static final double encoderPositionConversionFactor = 0.0;
+  public static final double encoderVelocityConversionFactor = 0.0;
 
   public static final double P = 0.0;
   public static final double I = 0.0;

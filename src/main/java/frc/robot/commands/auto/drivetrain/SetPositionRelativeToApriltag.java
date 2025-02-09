@@ -2,11 +2,15 @@
 
 package frc.robot.commands.auto.drivetrain;
 
+import org.photonvision.targeting.PhotonTrackedTarget;
+
 import dev.doglog.DogLog;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.constants.AutoConstants;
+import frc.robot.constants.VisionConstants;
 import frc.robot.utils.DrivetrainSubsystem;
 import frc.robot.units.VisionProcessingUnit;
 import frc.robot.utils.CameraPosition;
@@ -22,14 +26,15 @@ public class SetPositionRelativeToApriltag extends Command {
 
   int targetId;
 
+  PhotonTrackedTarget target;
+
   double desiredXOffset, currentXOffset;
   double desiredYOffset, currentYOffset;
   double desiredAngle, currentAngle;
   double xError, yError, angleError;
 
-  Pose3d targetPose;
-  Pose3d cameraPose;
-  
+  Transform3d targetToCamera;
+  Transform3d robotToTarget;
 
   public SetPositionRelativeToApriltag(
     DrivetrainSubsystem drivetrainSubsystem,
@@ -51,11 +56,7 @@ public class SetPositionRelativeToApriltag extends Command {
   }
 
   @Override
-  public void initialize() {
-    if (!frontUnit.isSeen(targetId)) {
-      CommandScheduler.getInstance().cancel(this);
-    }
-  }
+  public void initialize() {}
 
   @Override
   public void execute() {
@@ -64,14 +65,15 @@ public class SetPositionRelativeToApriltag extends Command {
       return;
     }
 
-    // TODO: Robot yüksekliği önemli mi?
-    cameraPose = new Pose3d(drivetrainSubsystem.getPose());
+    target = frontUnit.getTarget(20);
 
-    targetPose = cameraPose.transformBy(frontUnit.getTarget(targetId).getBestCameraToTarget());
+    targetToCamera = target.getBestCameraToTarget();
 
-    currentXOffset = targetPose.getX();
-    currentYOffset = targetPose.getY();
-    currentAngle = targetPose.getRotation().getAngle() * 0;
+    robotToTarget = VisionConstants.robotToFrontCameraTransform.inverse().plus(targetToCamera); 
+
+    currentXOffset = robotToTarget.getX();
+    currentYOffset = robotToTarget.getY();
+    currentAngle = target.getYaw();
 
     DogLog.log("CurX", currentXOffset);
     DogLog.log("CurY", currentYOffset);
@@ -86,11 +88,11 @@ public class SetPositionRelativeToApriltag extends Command {
     DogLog.log("yError", yError);
     DogLog.log("angleError", angleError);
 
-    xSpeed = 0;
-    ySpeed = 0;
-    rSpeed = 0;
+    xSpeed = - xError;
+    ySpeed = - yError;
+    rSpeed = Math.toRadians(angleError) * 2;
 
-    drivetrainSubsystem.drive(xSpeed, ySpeed, rSpeed, DriveType.FieldRelative);
+    drivetrainSubsystem.drive(xSpeed, ySpeed, rSpeed, DriveType.RobotRelative);
   }
 
   @Override
@@ -105,9 +107,7 @@ public class SetPositionRelativeToApriltag extends Command {
       && 
       Math.abs(yError) < AutoConstants.aprilTagDistanceTolerance
       &&
-      Math.abs(angleError) < AutoConstants.aprilTagAngleTolerance 
-      ||
-      !frontUnit.isSeen(targetId)) {
+      Math.abs(angleError) < AutoConstants.aprilTagAngleTolerance) {
       return true;
     }
     return false;

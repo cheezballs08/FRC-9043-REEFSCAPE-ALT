@@ -1,11 +1,11 @@
-package frc.robot.subsystems;
+package frc.robot.subsystems.elevator;
 
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.revrobotics.spark.SparkMax;
 import frc.robot.constants.ElevatorConstants;
 import frc.robot.constants.MotorConstants;
 import frc.robot.utils.CANCoderWrapper;
-import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ElevatorSubsystem extends SubsystemBase {
@@ -14,7 +14,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   CANCoderWrapper encoder;
 
-  PIDController controller;
+  ProfiledPIDController controller;
 
   public ElevatorSubsystem() {
     this.motor1 = new SparkMax(ElevatorConstants.motor1ID, ElevatorConstants.motor1type);
@@ -25,10 +25,10 @@ public class ElevatorSubsystem extends SubsystemBase {
     
     this.encoder = new CANCoderWrapper(new CANcoder(ElevatorConstants.encoderID));
 
-    this.encoder.setPositionConversionFactor(ElevatorConstants.encoderSpeedConversionFactor);
-    this.encoder.setVelocityConversionFactor(ElevatorConstants.encoderAccelerationConversionFactor);
+    this.encoder.setPositionConversionFactor(ElevatorConstants.encoderPositionConversionFactor);
+    this.encoder.setVelocityConversionFactor(ElevatorConstants.encoderVelocityConversionFactor);
 
-    this.controller = new PIDController(ElevatorConstants.P, ElevatorConstants.I, ElevatorConstants.D);
+    this.controller = new ProfiledPIDController(ElevatorConstants.P, ElevatorConstants.I, ElevatorConstants.D, ElevatorConstants.constraints);
     this.controller.setIZone(ElevatorConstants.IZ);
   }
 
