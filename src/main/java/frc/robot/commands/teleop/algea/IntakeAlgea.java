@@ -7,7 +7,7 @@ package frc.robot.commands.teleop.algea;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.constants.AlgeaIntakeConstants;
 import frc.robot.constants.CoralIntakeConstants;
-import frc.robot.subsystems.AlgaeIntakeSubsystem;
+import frc.robot.subsystems.algea.AlgaeIntakeSubsystem;
 
 public class IntakeAlgea extends Command {
 

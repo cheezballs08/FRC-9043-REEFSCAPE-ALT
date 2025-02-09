@@ -20,11 +20,11 @@ import frc.robot.constants.AutoConstants;
 import frc.robot.constants.ControllerConstants;
 import frc.robot.constants.CoralIntakeConstants;
 import frc.robot.constants.ElevatorConstants;
-import frc.robot.subsystems.AlgaeIntakeSubsystem;
-import frc.robot.subsystems.ClimbSubsystem;
-import frc.robot.subsystems.CoralIntakeSubsystem;
-import frc.robot.subsystems.ElevatorSubsystem;
-import frc.robot.subsystems.swerve.DefaultSwerve;
+import frc.robot.subsystems.algea.AlgaeIntakeSubsystem;
+import frc.robot.subsystems.climb.ClimbSubsystem;
+import frc.robot.subsystems.coral.CoralIntakeSubsystem;
+import frc.robot.subsystems.drivetrain.DefaultSwerve;
+import frc.robot.subsystems.elevator.ElevatorSubsystem;
 import frc.robot.utils.DriveType;
 import frc.robot.utils.DrivetrainSubsystem;
 

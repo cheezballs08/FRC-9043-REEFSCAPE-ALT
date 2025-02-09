@@ -1,6 +1,8 @@
-package frc.robot.subsystems;
+package frc.robot.subsystems.algea;
 
 import com.revrobotics.spark.SparkMax;
+
+import dev.doglog.DogLog;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.constants.AlgeaIntakeConstants;
@@ -24,7 +26,15 @@ public class AlgaeIntakeSubsystem extends SubsystemBase {
   }
 
   @Override
-  public void periodic() {}
+  public void periodic() {
+    DogLog.log("AlgeaIntake/Speeds/Motor1", motor1.get());
+    DogLog.log("AlgeaIntake/Speeds/Motor2", motor2.get());
+    
+    DogLog.log("AlgeaIntake/Voltages/Motor1", motor1.getAppliedOutput());
+    DogLog.log("AlgeaIntake/Voltages/Motor2", motor2.getAppliedOutput());
+
+    DogLog.log("AlgeaIntake/Sensor", this.isSensorActive());
+  }
 
   public void setSpeeds(double speed){
     motor1.set(speed);

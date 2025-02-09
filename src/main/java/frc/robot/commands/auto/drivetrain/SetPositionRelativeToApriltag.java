@@ -5,10 +5,8 @@ package frc.robot.commands.auto.drivetrain;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 import dev.doglog.DogLog;
-import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.constants.AutoConstants;
 import frc.robot.constants.VisionConstants;
 import frc.robot.utils.DrivetrainSubsystem;
@@ -87,6 +85,7 @@ public class SetPositionRelativeToApriltag extends Command {
     DogLog.log("xError", xError);
     DogLog.log("yError", yError);
     DogLog.log("angleError", angleError);
+    
 
     xSpeed = - xError;
     ySpeed = - yError;

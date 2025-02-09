@@ -6,7 +6,7 @@ package frc.robot.commands.teleop.elevator;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.subsystems.ElevatorSubsystem;
+import frc.robot.subsystems.elevator.ElevatorSubsystem;
 
 public class MoveElevator extends Command {
 

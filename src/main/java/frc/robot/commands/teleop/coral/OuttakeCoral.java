@@ -6,7 +6,7 @@ package frc.robot.commands.teleop.coral;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.constants.CoralIntakeConstants;
-import frc.robot.subsystems.CoralIntakeSubsystem;
+import frc.robot.subsystems.coral.CoralIntakeSubsystem;
 
 /** Bunu withTimeout ile kullanın! */
 public class OuttakeCoral extends Command {

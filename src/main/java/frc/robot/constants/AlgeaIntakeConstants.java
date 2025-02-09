@@ -6,7 +6,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 public class AlgeaIntakeConstants {
-  
+
   public static final int motor1ID = 0;
   public static final int motor2ID = 0;
 

@@ -1,7 +1,9 @@
-package frc.robot.subsystems;
+package frc.robot.subsystems.coral;
 
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.revrobotics.spark.SparkMax;
+
+import dev.doglog.DogLog;
 import frc.robot.constants.CoralIntakeConstants;
 import frc.robot.constants.MotorConstants;
 import frc.robot.utils.CANCoderWrapper;
@@ -40,11 +42,29 @@ public class CoralIntakeSubsystem extends SubsystemBase {
     this.angleController.setIZone(CoralIntakeConstants.IZ);
   
     this.sensor = new PhotoelectricSensor(CoralIntakeConstants.sensorID);
-  
   }
 
   @Override
-  public void periodic() {}
+  public void periodic() {
+    DogLog.log("AlgeaIntake/Speeds/IntakeMotor1", intakeMotor1.get());
+    DogLog.log("AlgeaIntake/Speeds/IntakeMotor2", intakeMotor2.get());
+    DogLog.log("AlgeaIntake/Speeds/AngleMotor", angleMotor.get());
+    
+    DogLog.log("AlgeaIntake/Voltages/IntakeMotor1", intakeMotor1.getAppliedOutput());
+    DogLog.log("AlgeaIntake/Voltages/IntakeMotor2", intakeMotor2.getAppliedOutput());
+    DogLog.log("AlgeaIntake/Voltages/AngleMotor", angleMotor.getAppliedOutput());
+
+    DogLog.log("AlgeaIntake/Encoder/Position", angleEncoder.getPosition());
+    DogLog.log("AlgeaIntake/Encoder/Velocity", angleEncoder.getVelocity());
+
+    DogLog.log("AlgeaIntake/Controller/SetpointPosition", angleController.getSetpoint());
+    DogLog.log("AlgeaIntake/Controller/PositionError", angleController.getPositionError());
+    DogLog.log("AlgeaIntake/Controller/VelocityError", angleController.getVelocityError());
+    DogLog.log("AlgeaIntake/Controller/AccumulatedError", angleController.getAccumulatedError());
+    DogLog.log("AlgeaIntake/Controller/AtSetpoint", angleController.atSetpoint());
+
+    DogLog.log("AlgeaIntake/Sensor", this.isSensorActive());
+  }
 
   public void setSpeeds(double speed) {
     this.intakeMotor1.set(speed);

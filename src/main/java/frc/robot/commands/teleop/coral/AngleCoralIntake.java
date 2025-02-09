@@ -5,7 +5,7 @@
 package frc.robot.commands.teleop.coral;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.CoralIntakeSubsystem;
+import frc.robot.subsystems.coral.CoralIntakeSubsystem;
 
 public class AngleCoralIntake extends Command {
 
