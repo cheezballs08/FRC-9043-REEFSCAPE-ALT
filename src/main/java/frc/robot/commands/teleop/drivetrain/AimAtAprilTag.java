@@ -5,7 +5,7 @@ import java.util.function.Supplier;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.constants.AutoConstants;
-import frc.robot.utils.DrivetrainSubsystem;
+import frc.robot.subsystems.drivetrain.DrivetrainSubsystem;
 import frc.robot.units.VisionProcessingUnit;
 import frc.robot.utils.CameraPosition;
 import frc.robot.utils.DriveType;

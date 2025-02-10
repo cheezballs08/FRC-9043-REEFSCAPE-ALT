@@ -4,12 +4,12 @@ package frc.robot.commands.auto.drivetrain;
 
 import org.photonvision.targeting.PhotonTrackedTarget;
 
-import dev.doglog.DogLog;
+import frc.robot.utils.Logger;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.constants.AutoConstants;
 import frc.robot.constants.VisionConstants;
-import frc.robot.utils.DrivetrainSubsystem;
+import frc.robot.subsystems.drivetrain.DrivetrainSubsystem;
 import frc.robot.units.VisionProcessingUnit;
 import frc.robot.utils.CameraPosition;
 import frc.robot.utils.DriveType;
@@ -73,18 +73,18 @@ public class SetPositionRelativeToApriltag extends Command {
     currentYOffset = robotToTarget.getY();
     currentAngle = target.getYaw();
 
-    DogLog.log("CurX", currentXOffset);
-    DogLog.log("CurY", currentYOffset);
-    DogLog.log("CurAngle", currentAngle);
+    Logger.log("CurX", currentXOffset);
+    Logger.log("CurY", currentYOffset);
+    Logger.log("CurAngle", currentAngle);
 
     // TODO: Deneme yanılmayla bunları düzelt.
     xError = desiredXOffset - currentXOffset;
     yError = desiredYOffset - currentYOffset;
     angleError = desiredAngle - currentAngle;
 
-    DogLog.log("xError", xError);
-    DogLog.log("yError", yError);
-    DogLog.log("angleError", angleError);
+    Logger.log("xError", xError);
+    Logger.log("yError", yError);
+    Logger.log("angleError", angleError);
     
 
     xSpeed = - xError;

@@ -7,7 +7,31 @@
         {
           "type": "path",
           "data": {
-            "pathName": "mid-1"
+            "pathName": "mid-6"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "6-feedleft"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "feedleft-6"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "6-feedleft"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "feedleft-6"
           }
         }
       ]

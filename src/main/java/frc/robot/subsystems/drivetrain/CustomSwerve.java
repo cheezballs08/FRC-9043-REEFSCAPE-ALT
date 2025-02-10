@@ -23,7 +23,6 @@ import frc.robot.constants.RobotConstants;
 import frc.robot.units.VisionProcessingUnit;
 import frc.robot.utils.CameraPosition;
 import frc.robot.utils.DriveType;
-import frc.robot.utils.DrivetrainSubsystem;
 import frc.robot.utils.Gyroscope;
 import frc.robot.constants.DrivetrainConstants;
 

@@ -4,6 +4,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.auto.drivetrain.SetPositionRelativeToApriltag;
@@ -20,20 +21,25 @@ import frc.robot.constants.AutoConstants;
 import frc.robot.constants.ControllerConstants;
 import frc.robot.constants.CoralIntakeConstants;
 import frc.robot.constants.ElevatorConstants;
+import frc.robot.constants.RobotConstants;
 import frc.robot.subsystems.algea.AlgaeIntakeSubsystem;
 import frc.robot.subsystems.climb.ClimbSubsystem;
+import frc.robot.subsystems.coral.CoralIntakeSimSubsystem;
 import frc.robot.subsystems.coral.CoralIntakeSubsystem;
 import frc.robot.subsystems.drivetrain.DefaultSwerve;
+import frc.robot.subsystems.drivetrain.DrivetrainSubsystem;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
 import frc.robot.utils.DriveType;
-import frc.robot.utils.DrivetrainSubsystem;
 
 @SuppressWarnings("unused")
 public class RobotContainer {
 
   CommandXboxController controller = new CommandXboxController(ControllerConstants.controllerPort);
 
+  Trigger x = controller.x();
   Trigger a = controller.a();
+  Trigger b = controller.b();
+  Trigger y = controller.y();
 
   DrivetrainSubsystem drivetrainSubsystem = new DefaultSwerve();
 
@@ -46,12 +52,21 @@ public class RobotContainer {
     () -> -controller.getRightX() * 3
   );
 
-  SetPositionRelativeToApriltag setPositionRelativeToApriltag = new SetPositionRelativeToApriltag(
-    drivetrainSubsystem, 
-    20,
-    0.5, 
-    0.0, 
-    0.0);
+  InstantCommand resetOdometry = new InstantCommand(() -> drivetrainSubsystem.resetOdometry(RobotConstants.initialPose));
+
+
+  CoralIntakeSubsystem coralIntakeSubsystem = new CoralIntakeSimSubsystem();
+
+  IntakeCoral intakeCoral = new IntakeCoral(coralIntakeSubsystem);
+  OuttakeCoral outtakeCoral = new OuttakeCoral(coralIntakeSubsystem);
+
+  AngleCoralIntake angleToL1 = new AngleCoralIntake(coralIntakeSubsystem, CoralIntakeConstants.L1Angle);
+  AngleCoralIntake angleToL2 = new AngleCoralIntake(coralIntakeSubsystem, CoralIntakeConstants.L2Angle);
+  AngleCoralIntake angleToL3 = new AngleCoralIntake(coralIntakeSubsystem, CoralIntakeConstants.L3Angle);
+  AngleCoralIntake angleToL4 = new AngleCoralIntake(coralIntakeSubsystem, CoralIntakeConstants.L4Angle);
+
+
+  MechansimSim mechansimSim = new MechansimSim(coralIntakeSubsystem);
   
   /*AlgaeIntakeSubsystem algaeIntakeSubsystem = new AlgaeIntakeSubsystem();
 
@@ -63,16 +78,6 @@ public class RobotContainer {
 
   ClimbForward climbForward = new ClimbForward(climbSubsystem);
   ClimbBackward climbBackward = new ClimbBackward(climbSubsystem);
-
-
-  CoralIntakeSubsystem coralIntakeSubsystem = new CoralIntakeSubsystem();
-
-  IntakeCoral intakeCoral = new IntakeCoral(coralIntakeSubsystem);
-  OuttakeCoral outtakeCoral = new OuttakeCoral(coralIntakeSubsystem);
-  AngleCoralIntake angleToL1 = new AngleCoralIntake(coralIntakeSubsystem, CoralIntakeConstants.L1Angle);
-  AngleCoralIntake angleToL2 = new AngleCoralIntake(coralIntakeSubsystem, CoralIntakeConstants.L2Angle);
-  AngleCoralIntake angleToL3 = new AngleCoralIntake(coralIntakeSubsystem, CoralIntakeConstants.L3Angle);
-  AngleCoralIntake angleToL4 = new AngleCoralIntake(coralIntakeSubsystem, CoralIntakeConstants.L4Angle);
 
   
   ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
@@ -104,8 +109,11 @@ public class RobotContainer {
 
   private void configureBindings() {
     drivetrainSubsystem.setDefaultCommand(teleopDriveCommand);
-
-    a.toggleOnTrue(setPositionRelativeToApriltag);
+    
+    x.onTrue(angleToL1);
+    a.onTrue(angleToL2);
+    b.onTrue(angleToL3);
+    y.onTrue(angleToL4);
 
   }
 

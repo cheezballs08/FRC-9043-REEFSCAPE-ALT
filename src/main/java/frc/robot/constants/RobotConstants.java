@@ -18,7 +18,7 @@ public class RobotConstants {
   public static final Pose2d redStart2 = new Pose2d();
   public static final Pose2d redStart3 = new Pose2d();
 
-  public static final Pose2d initialPose = blueStart1;
+  public static final Pose2d initialPose = blueStart2;
 
   public static final double robotMass = 74.088;
   public static final double robotMomentOfInertia = 0.883;
@@ -26,6 +26,8 @@ public class RobotConstants {
   public static final Alliance alliance = Alliance.Blue;
 
   public static RobotConfig config;
+
+  public static double robotVoltage = 12;
   
   static {
     try{

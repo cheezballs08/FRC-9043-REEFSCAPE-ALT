@@ -3,7 +3,7 @@ package frc.robot.subsystems.elevator;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.revrobotics.spark.SparkMax;
 
-import dev.doglog.DogLog;
+import frc.robot.utils.Logger;
 import frc.robot.constants.ElevatorConstants;
 import frc.robot.constants.MotorConstants;
 import frc.robot.utils.CANCoderWrapper;
@@ -36,21 +36,21 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    DogLog.log("ElevatorSubsystem/Speeds/Motor1", motor1.get());
-    DogLog.log("ElevatorSubsystem/Speeds/Motor2", motor2.get());
+    Logger.log("ElevatorSubsystem/Speeds/Motor1", motor1.get());
+    Logger.log("ElevatorSubsystem/Speeds/Motor2", motor2.get());
     
-    DogLog.log("ElevatorSubsystem/Voltages/Motor1", motor1.getAppliedOutput());
-    DogLog.log("ElevatorSubsystem/Voltages/Motor2", motor2.getAppliedOutput());
+    Logger.log("ElevatorSubsystem/Voltages/Motor1", motor1.getAppliedOutput());
+    Logger.log("ElevatorSubsystem/Voltages/Motor2", motor2.getAppliedOutput());
 
-    DogLog.log("ElevatorSubsystem/Encoder/Position", encoder.getPosition());
-    DogLog.log("ElevatorSubsystem/Encoder/Velocity", encoder.getVelocity());
+    Logger.log("ElevatorSubsystem/Encoder/Position", encoder.getPosition());
+    Logger.log("ElevatorSubsystem/Encoder/Velocity", encoder.getVelocity());
 
-    DogLog.log("ElevatorSubsystem/Controller/SetpointPosition", controller.getSetpoint().position);
-    DogLog.log("ElevatorSubsystem/Controller/SetpointVelocity", controller.getSetpoint().velocity);
-    DogLog.log("ElevatorSubsystem/Controller/PositionError", controller.getPositionError());
-    DogLog.log("ElevatorSubsystem/Controller/VelocityError", controller.getVelocityError());
-    DogLog.log("ElevatorSubsystem/Controller/AccumulatedError", controller.getAccumulatedError());
-    DogLog.log("ElevatorSubsystem/Controller/AtSetpoint", controller.atSetpoint());
+    Logger.log("ElevatorSubsystem/Controller/SetpointPosition", controller.getSetpoint().position);
+    Logger.log("ElevatorSubsystem/Controller/SetpointVelocity", controller.getSetpoint().velocity);
+    Logger.log("ElevatorSubsystem/Controller/PositionError", controller.getPositionError());
+    Logger.log("ElevatorSubsystem/Controller/VelocityError", controller.getVelocityError());
+    Logger.log("ElevatorSubsystem/Controller/AccumulatedError", controller.getAccumulatedError());
+    Logger.log("ElevatorSubsystem/Controller/AtSetpoint", controller.atSetpoint());
   }
 
   public void setSpeeds(double speed) {
