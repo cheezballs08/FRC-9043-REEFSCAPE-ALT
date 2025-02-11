@@ -109,6 +109,8 @@ public class RobotContainer {
 
   private void configureBindings() {
     drivetrainSubsystem.setDefaultCommand(teleopDriveCommand);
+
+    coralIntakeSubsystem.setDefaultCommand(angleToL1);
     
     x.onTrue(angleToL1);
     a.onTrue(angleToL2);

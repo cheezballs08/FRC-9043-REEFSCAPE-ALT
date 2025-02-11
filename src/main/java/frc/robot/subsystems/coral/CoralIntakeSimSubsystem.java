@@ -5,6 +5,7 @@
 package frc.robot.subsystems.coral;
 
 import frc.robot.utils.Logger;
+import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
@@ -22,6 +23,8 @@ public class CoralIntakeSimSubsystem extends SubsystemBase implements CoralIntak
   SingleJointedArmSim simulation;
 
   ProfiledPIDController angleController;
+
+  ArmFeedforward feedforward;
 
   MechanismLigament2d ligament;
 
@@ -46,6 +49,12 @@ public class CoralIntakeSimSubsystem extends SubsystemBase implements CoralIntak
       CoralIntakeConstants.constraints
     );
 
+    this.feedforward = new ArmFeedforward(
+      CoralIntakeConstants.S, 
+      CoralIntakeConstants.G, 
+      CoralIntakeConstants.V
+    );
+
     this.ligament = new MechanismLigament2d("IntakeLigament", CoralIntakeConstants.intakeLength, CoralIntakeConstants.startingAngle);
   }
 
@@ -60,19 +69,30 @@ public class CoralIntakeSimSubsystem extends SubsystemBase implements CoralIntak
     return voltage;
   }
 
+  public double speedToVoltage(double speed) {
+  
+    if (speed > 1) {
+      speed = 1;
+    }
+    else if (speed < -1) {
+      speed = -1;
+    }
+
+    return speed * RobotConstants.robotVoltage;
+  }
+
 
   @Override
   public void periodic() {
+    simulation.update(0.020);
+
     // TODO: Bunlar niye değişmiyor
     Logger.log("CoralIntake/Speeds/IntakeMotor", intakeSpeed);
     Logger.log("CoralIntake/Speeds/AngleMotor", simulation.getVelocityRadPerSec());
 
-    Logger.log("CoralIntake/Voltages/IntakeMotor", intakeSpeed * RobotConstants.robotVoltage);
-    Logger.log("CoralIntake/Voltages/AngleMotor", simulation.getVelocityRadPerSec() * RobotConstants.robotVoltage);
-    
-    Logger.log("CoralIntake/Encoder/Position", simulation.getAngleRads());
-    Logger.log("CoralIntake/Encoder/Velocity", simulation.getVelocityRadPerSec());
-    
+    Logger.log("CoralIntake/Encoder/Position", Units.radiansToDegrees(simulation.getAngleRads()));
+    Logger.log("CoralIntake/Encoder/Velocity", Units.radiansToDegrees(simulation.getVelocityRadPerSec()));
+
     // Bunlarda problem yok
     Logger.log("CoralIntake/Controller/SetpointPosition", angleController.getSetpoint().position);
     Logger.log("CoralIntake/Controller/SetpointVelocity", angleController.getSetpoint().velocity);
@@ -91,9 +111,9 @@ public class CoralIntakeSimSubsystem extends SubsystemBase implements CoralIntak
 
   @Override
   public void setAngle(double angle) {
-    double speed = angleController.calculate(Units.radiansToDegrees(simulation.getAngleRads()), angle);
+    double speed = angleController.calculate(Units.radiansToDegrees(simulation.getAngleRads()), angle) + feedforward.calculate(simulation.getAngleRads(), simulation.getVelocityRadPerSec() / RobotConstants.robotVoltage);
 
-    double output = this.clampVoltage(speed * 12);
+    double output = this.speedToVoltage(speed);
 
     simulation.setInputVoltage(output);
   }

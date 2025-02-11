@@ -13,15 +13,15 @@ public class MechansimSim {
 
   MechanismRoot2d root;
 
-  MechanismLigament2d ligament;;
+  MechanismLigament2d ligament;
 
   public MechansimSim(CoralIntakeSubsystem coralIntakeSubsystem) {
     
     this.coralIntakeSubsystem = coralIntakeSubsystem;
     
-    this.ui = new Mechanism2d(100,100);
+    this.ui = new Mechanism2d(2,2);
     
-    this.root  = ui.getRoot("MechansimRoot", 0.20, 0.25);
+    this.root = ui.getRoot("MechansimRoot", 0.5, 0.5);
 
     this.ligament = coralIntakeSubsystem.getLigament();
   

@@ -23,9 +23,9 @@ public class CoralIntakeConstants {
 
   public static final double startingAngle = 0;
 
-  public static final double maximumAngle = Units.degreesToRadians(180);
+  public static final double maximumAngle = Units.degreesToRadians(90);
 
-  public static final double minimumAngle = Units.degreesToRadians(0);
+  public static final double minimumAngle = Units.degreesToRadians(-90);
 
   public static final MotorType motorType = MotorType.kBrushless; 
 
@@ -53,9 +53,9 @@ public class CoralIntakeConstants {
   public static final double outtakeSpeed = 0.0;
   
   public static final double L1Angle = 0;
-  public static final double L2Angle = 60;
-  public static final double L3Angle = 120;
-  public static final double L4Angle = 180;
+  public static final double L2Angle = -30;
+  public static final double L3Angle = -60;
+  public static final double L4Angle = -80;
   
   public static final int sensorID = 0; 
   
@@ -64,10 +64,16 @@ public class CoralIntakeConstants {
   public static final double positionConversionConstant = 0;
   public static final double velocityConversionConstant = 0;
   
-  public static final double P = 1000;
-  public static final double I = 10;
-  public static final double D = 0;
-  public static final double IZ = 5;
+  public static final double P = 0.025;
+  public static final double I = 0.083;
+  public static final double D = 0.0023;
+  public static final double IZ = 0.1;
   
   public static final Constraints constraints = new Constraints(1000, 1000);
+
+  public static final double S = 0;
+
+  public static final double G = 0.1;
+
+  public static final double V = 0;
 }
