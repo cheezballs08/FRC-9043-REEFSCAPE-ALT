@@ -86,14 +86,12 @@ public class CoralIntakeSimSubsystem extends SubsystemBase implements CoralIntak
   public void periodic() {
     simulation.update(0.020);
 
-    // TODO: Bunlar niye değişmiyor
     Logger.log("CoralIntake/Speeds/IntakeMotor", intakeSpeed);
     Logger.log("CoralIntake/Speeds/AngleMotor", simulation.getVelocityRadPerSec());
 
     Logger.log("CoralIntake/Encoder/Position", Units.radiansToDegrees(simulation.getAngleRads()));
     Logger.log("CoralIntake/Encoder/Velocity", Units.radiansToDegrees(simulation.getVelocityRadPerSec()));
 
-    // Bunlarda problem yok
     Logger.log("CoralIntake/Controller/SetpointPosition", angleController.getSetpoint().position);
     Logger.log("CoralIntake/Controller/SetpointVelocity", angleController.getSetpoint().velocity);
     Logger.log("CoralIntake/Controller/PositionError", angleController.getPositionError());
@@ -120,7 +118,6 @@ public class CoralIntakeSimSubsystem extends SubsystemBase implements CoralIntak
 
   @Override
   public boolean isAtSetpoint() {
-    // TODO: nedese bu doğru düzgün çalışmıyor, buna bir çözüm bul.
     return angleController.atGoal();
   }
 
