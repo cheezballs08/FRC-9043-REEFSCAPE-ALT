@@ -19,9 +19,9 @@ public class MechansimSim {
     
     this.coralIntakeSubsystem = coralIntakeSubsystem;
     
-    this.ui = new Mechanism2d(2,2);
+    this.ui = new Mechanism2d(2, 2);
     
-    this.root = ui.getRoot("MechansimRoot", 0.5, 0.5);
+    this.root = ui.getRoot("MechansimRoot", 1.25, 0.80);
 
     this.ligament = coralIntakeSubsystem.getLigament();
   

@@ -40,10 +40,6 @@ public class MoveElevator extends Command {
 
   @Override
   public boolean isFinished() {
-    if (subsystem.isAtSetpoint()) {
-      return true;
-    }
-
     return false;
   }
 }

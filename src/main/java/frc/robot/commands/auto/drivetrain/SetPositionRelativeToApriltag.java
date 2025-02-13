@@ -4,9 +4,16 @@ package frc.robot.commands.auto.drivetrain;
 
 import org.photonvision.targeting.PhotonTrackedTarget;
 
-import frc.robot.utils.Logger;
+import dev.doglog.DogLog;
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.constants.AutoConstants;
 import frc.robot.constants.VisionConstants;
 import frc.robot.subsystems.drivetrain.DrivetrainSubsystem;
@@ -26,13 +33,11 @@ public class SetPositionRelativeToApriltag extends Command {
 
   PhotonTrackedTarget target;
 
-  double desiredXOffset, currentXOffset;
-  double desiredYOffset, currentYOffset;
-  double desiredAngle, currentAngle;
-  double xError, yError, angleError;
+  ProfiledPIDController xController;
+  ProfiledPIDController yController;
+  ProfiledPIDController rController;
 
-  Transform3d targetToCamera;
-  Transform3d robotToTarget;
+  Transform3d apriltagToGoal;
 
   public SetPositionRelativeToApriltag(
     DrivetrainSubsystem drivetrainSubsystem,
@@ -46,52 +51,69 @@ public class SetPositionRelativeToApriltag extends Command {
 
     this.targetId = targetId;
 
-    this.desiredXOffset = desiredXOffset;
-    this.desiredYOffset = desiredYOffset;
-    this.desiredAngle = desiredAngle;
+    this.apriltagToGoal = new Transform3d(desiredXOffset, desiredYOffset, 0, new Rotation3d(new Rotation2d(Units.degreesToRadians(desiredAngle))));
+
+    this.xController = new ProfiledPIDController(AutoConstants.PDrive, AutoConstants.IDrive, AutoConstants.DDrive, AutoConstants.driveConstraints);
+    this.xController.setIZone(AutoConstants.IZDrive);
+    this.xController.setTolerance(AutoConstants.distanceTolerance);
+
+    this.yController = new ProfiledPIDController(AutoConstants.PDrive, AutoConstants.IDrive, AutoConstants.DDrive, AutoConstants.driveConstraints);
+    this.yController.setIZone(AutoConstants.IZDrive);
+    this.yController.setTolerance(AutoConstants.distanceTolerance);
+
+    this.rController = new ProfiledPIDController(AutoConstants.PAngle, AutoConstants.IAngle, AutoConstants.DAngle, AutoConstants.angleConstraints);
+    this.rController.setIZone(AutoConstants.IZAngle);
+    this.rController.enableContinuousInput(-Math.PI, Math.PI);
+    this.rController.setTolerance(AutoConstants.angleTolerance);
 
     addRequirements(drivetrainSubsystem);
   }
 
   @Override
-  public void initialize() {}
+  public void initialize() {
+    if (frontUnit.isSeen(targetId)) {
+      target = frontUnit.getTarget(targetId);  
+      return;
+    }
+    CommandScheduler.getInstance().cancel(this); 
+  }
 
   @Override
   public void execute() {
 
-    if (!frontUnit.isSeen(targetId)) {
+    if (frontUnit.isSeen(targetId)) {
+      target = frontUnit.getTarget(targetId);  
+      
+    } else {
       return;
     }
 
-    target = frontUnit.getTarget(20);
+    Pose3d robotPose = new Pose3d(drivetrainSubsystem.getPose());
 
-    targetToCamera = target.getBestCameraToTarget();
+    Pose3d cameraPose = robotPose.transformBy(VisionConstants.robotToFrontCameraTransform);
 
-    robotToTarget = VisionConstants.robotToFrontCameraTransform.inverse().plus(targetToCamera); 
-
-    currentXOffset = robotToTarget.getX();
-    currentYOffset = robotToTarget.getY();
-    currentAngle = target.getYaw();
-
-    Logger.log("CurX", currentXOffset);
-    Logger.log("CurY", currentYOffset);
-    Logger.log("CurAngle", currentAngle);
-
-    // TODO: Deneme yanılmayla bunları düzelt.
-    xError = desiredXOffset - currentXOffset;
-    yError = desiredYOffset - currentYOffset;
-    angleError = desiredAngle - currentAngle;
-
-    Logger.log("xError", xError);
-    Logger.log("yError", yError);
-    Logger.log("angleError", angleError);
+    Transform3d cameraToTargetTransform = target.getBestCameraToTarget();
     
+    Pose3d targetPose = cameraPose.transformBy(cameraToTargetTransform);
+    
+    Pose2d goalPose = cameraPose.transformBy(apriltagToGoal).toPose2d();
+    
+    xSpeed = xController.calculate(robotPose.getX(), goalPose.getX());
+    ySpeed = yController.calculate(robotPose.getY(), goalPose.getY());
+    rSpeed = rController.calculate(robotPose.getRotation().getAngle(), goalPose.getRotation().getRadians());
 
-    xSpeed = - xError;
-    ySpeed = - yError;
-    rSpeed = Math.toRadians(angleError) * 2;
+    DogLog.log("Command/SetPositionRelativeToApriltag/RobotToCamera", VisionConstants.robotToFrontCameraTransform);
+    DogLog.log("Command/SetPositionRelativeToApriltag/CameraToTarget", cameraToTargetTransform);
+    DogLog.log("Command/SetPositionRelativeToApriltag/TargetToGoal", apriltagToGoal);
+    DogLog.log("Command/SetPositionRelativeToApriltag/CameraPose", cameraPose);
+    DogLog.log("Command/SetPositionRelativeToApriltag/TargetPose", targetPose);
+    DogLog.log("Command/SetPositionRelativeToApriltag/GoalPose", goalPose);
+    DogLog.log("Command/SetPositionRelativeToApriltag/RobotPose", robotPose);
+    DogLog.log("Command/SetPositionRelativeToApriltag/xSpeed", xSpeed);
+    DogLog.log("Command/SetPositionRelativeToApriltag/ySpeed", ySpeed);
+    DogLog.log("Command/SetPositionRelativeToApriltag/rSpeed", rSpeed);
 
-    drivetrainSubsystem.drive(xSpeed, ySpeed, rSpeed, DriveType.RobotRelative);
+    drivetrainSubsystem.drive(xSpeed, ySpeed, rSpeed, DriveType.FieldRelative);
   }
 
   @Override
@@ -101,14 +123,10 @@ public class SetPositionRelativeToApriltag extends Command {
 
   @Override
   public boolean isFinished() {
-    if (
-      Math.abs(xError) < AutoConstants.aprilTagDistanceTolerance
-      && 
-      Math.abs(yError) < AutoConstants.aprilTagDistanceTolerance
-      &&
-      Math.abs(angleError) < AutoConstants.aprilTagAngleTolerance) {
+    if (xController.atSetpoint() && yController.atSetpoint() && rController.atSetpoint()) {
       return true;
-    }
+    }  
+    
     return false;
   }
 }

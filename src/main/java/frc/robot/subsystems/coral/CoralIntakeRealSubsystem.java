@@ -9,6 +9,7 @@ import frc.robot.constants.MotorConstants;
 import frc.robot.utils.CANCoderWrapper;
 import frc.robot.utils.PhotoelectricSensor;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -96,6 +97,11 @@ public class CoralIntakeRealSubsystem extends SubsystemBase implements CoralInta
   }
 
   public MechanismLigament2d getLigament() {
-    return null;
+      throw new UnsupportedOperationException("Sim dışı kullanılan metod 'getLigament'");
+  }
+
+  @Override
+  public Pose3d getPose() {
+    throw new UnsupportedOperationException("Sim dışı kullanılan metod 'getPose'");
   }
 }

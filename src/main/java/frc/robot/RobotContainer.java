@@ -47,10 +47,18 @@ public class RobotContainer {
   DriveCommand teleopDriveCommand = new DriveCommand(
     drivetrainSubsystem,
     DriveType.FieldRelative,
-    () -> -controller.getLeftX() * 3,
-    () -> -controller.getLeftY() * 3,
-    () -> -controller.getRightX() * 3
+    () -> controller.getLeftX() * 2.4,
+    () -> controller.getLeftY() * 2.4,
+    () -> controller.getRightX() * 2.4
   );
+
+  SetPositionRelativeToApriltag zeroApriltag20 = new SetPositionRelativeToApriltag(
+    drivetrainSubsystem, 
+    18, 
+    1, 
+    0, 
+    0
+    );
 
   InstantCommand resetOdometry = new InstantCommand(() -> drivetrainSubsystem.resetOdometry(RobotConstants.initialPose));
 
@@ -60,9 +68,9 @@ public class RobotContainer {
   IntakeCoral intakeCoral = new IntakeCoral(coralIntakeSubsystem);
   OuttakeCoral outtakeCoral = new OuttakeCoral(coralIntakeSubsystem);
 
+  AngleCoralIntake angleToFeed = new AngleCoralIntake(coralIntakeSubsystem, CoralIntakeConstants.feedAngle);
   AngleCoralIntake angleToL1 = new AngleCoralIntake(coralIntakeSubsystem, CoralIntakeConstants.L1Angle);
-  AngleCoralIntake angleToL2 = new AngleCoralIntake(coralIntakeSubsystem, CoralIntakeConstants.L2Angle);
-  AngleCoralIntake angleToL3 = new AngleCoralIntake(coralIntakeSubsystem, CoralIntakeConstants.L3Angle);
+  AngleCoralIntake angleToL2L3 = new AngleCoralIntake(coralIntakeSubsystem, CoralIntakeConstants.L2Angle);
   AngleCoralIntake angleToL4 = new AngleCoralIntake(coralIntakeSubsystem, CoralIntakeConstants.L4Angle);
 
 
@@ -88,20 +96,21 @@ public class RobotContainer {
   MoveElevator heightToL4 = new MoveElevator(elevatorSubsystem, ElevatorConstants.L4Height);*/
 
   public RobotContainer() {
-    /*NamedCommands.registerCommand("outtakeAlgea", outtakeAlgea);
-    NamedCommands.registerCommand("intakeAlgea", intakeAlgea);
-    NamedCommands.registerCommand("climbForward", climbForward);
-    NamedCommands.registerCommand("climbBackward", climbBackward);
-    NamedCommands.registerCommand("intakeCoral", intakeCoral);
-    NamedCommands.registerCommand("outtakeCoral", outtakeCoral);
+    //NamedCommands.registerCommand("outtakeAlgea", outtakeAlgea);
+    //NamedCommands.registerCommand("intakeAlgea", intakeAlgea);
+    //NamedCommands.registerCommand("climbForward", climbForward);
+    //NamedCommands.registerCommand("climbBackward", climbBackward);
+    //NamedCommands.registerCommand("intakeCoral", intakeCoral);
+    //NamedCommands.registerCommand("outtakeCoral", outtakeCoral);
     NamedCommands.registerCommand("angleToL1", angleToL1);
-    NamedCommands.registerCommand("angleToL2", angleToL2);
-    NamedCommands.registerCommand("angleToL3", angleToL3);
+    NamedCommands.registerCommand("angleToL2", angleToL2L3);
+    NamedCommands.registerCommand("angleToL3", angleToL2L3);
     NamedCommands.registerCommand("angleToL4", angleToL4);
-    NamedCommands.registerCommand("heightToL1", heightToL1);
-    NamedCommands.registerCommand("heightToL2", heightToL2);
-    NamedCommands.registerCommand("heightToL3", heightToL3);
-    NamedCommands.registerCommand("heightToL4", heightToL4);*/
+    NamedCommands.registerCommand("angleToFeed", angleToFeed);
+    //NamedCommands.registerCommand("heightToL1", heightToL1);
+    //NamedCommands.registerCommand("heightToL2", heightToL2);
+    //NamedCommands.registerCommand("heightToL3", heightToL3);
+    //NamedCommands.registerCommand("heightToL4", heightToL4);
 
     this.configureBindings();
 
@@ -112,10 +121,13 @@ public class RobotContainer {
 
     coralIntakeSubsystem.setDefaultCommand(angleToL1);
     
-    x.onTrue(angleToL1);
-    a.onTrue(angleToL2);
-    b.onTrue(angleToL3);
+    x.toggleOnTrue(zeroApriltag20);
+    // x.onTrue(angleToFeed);
+    a.onTrue(angleToL1);
+    b.onTrue(angleToL2L3);
     y.onTrue(angleToL4);
+
+    x.and(a).and(b).and(y).onTrue(resetOdometry);
 
   }
 

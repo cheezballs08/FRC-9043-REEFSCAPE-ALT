@@ -1,0 +1,23 @@
+{
+  "name": "Valkyrie",
+  "disableSimplification": true,
+  "rotations": [
+    {
+      "axis": "x",
+      "degrees": 90
+    },
+    {
+      "axis":"y",
+      "degrees": 0
+    },
+    {
+      "axis": "z",
+      "degrees": 90 
+    }
+  ],
+  "position": [
+    0.50,
+    0.27,
+    0.03
+  ]
+}

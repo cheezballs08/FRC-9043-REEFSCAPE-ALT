@@ -52,9 +52,10 @@ public class CoralIntakeConstants {
   
   public static final double outtakeSpeed = 0.0;
   
+
+  public static final double feedAngle = 45;
   public static final double L1Angle = 0;
   public static final double L2Angle = -30;
-  public static final double L3Angle = -60;
   public static final double L4Angle = -80;
   
   public static final int sensorID = 0; 

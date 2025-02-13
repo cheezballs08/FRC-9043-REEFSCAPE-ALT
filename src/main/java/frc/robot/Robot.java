@@ -53,6 +53,10 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
+    frontUnit.disableVisionEstimation(true);
+    leftUnit.disableVisionEstimation(true);
+    rightUnit.disableVisionEstimation(true);
+
     autonomousCommand = robotContainer.getAutonomousCommand();
 
     if (autonomousCommand != null) {
@@ -64,7 +68,11 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {}
 
   @Override
-  public void autonomousExit() {}
+  public void autonomousExit() {
+    frontUnit.disableVisionEstimation(false);
+    leftUnit.disableVisionEstimation(false);
+    rightUnit.disableVisionEstimation(false);
+  }
 
   @Override
   public void teleopInit() {

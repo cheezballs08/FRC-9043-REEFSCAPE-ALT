@@ -5,8 +5,10 @@
 package frc.robot.subsystems.coral;
 
 import frc.robot.utils.Logger;
+import dev.doglog.DogLog;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
@@ -27,6 +29,8 @@ public class CoralIntakeSimSubsystem extends SubsystemBase implements CoralIntak
   ArmFeedforward feedforward;
 
   MechanismLigament2d ligament;
+
+  Pose3d armPose;
 
   public CoralIntakeSimSubsystem() {
     this.simulation = new SingleJointedArmSim(
@@ -56,6 +60,9 @@ public class CoralIntakeSimSubsystem extends SubsystemBase implements CoralIntak
     );
 
     this.ligament = new MechanismLigament2d("IntakeLigament", CoralIntakeConstants.intakeLength, CoralIntakeConstants.startingAngle);
+  
+    this.armPose = new Pose3d();
+  
   }
 
   public double clampVoltage(double voltage) {
@@ -87,7 +94,6 @@ public class CoralIntakeSimSubsystem extends SubsystemBase implements CoralIntak
     simulation.update(0.020);
 
     Logger.log("CoralIntake/Speeds/IntakeMotor", intakeSpeed);
-    Logger.log("CoralIntake/Speeds/AngleMotor", simulation.getVelocityRadPerSec());
 
     Logger.log("CoralIntake/Encoder/Position", Units.radiansToDegrees(simulation.getAngleRads()));
     Logger.log("CoralIntake/Encoder/Velocity", Units.radiansToDegrees(simulation.getVelocityRadPerSec()));
@@ -110,6 +116,7 @@ public class CoralIntakeSimSubsystem extends SubsystemBase implements CoralIntak
   @Override
   public void setAngle(double angle) {
     double speed = angleController.calculate(Units.radiansToDegrees(simulation.getAngleRads()), angle) + feedforward.calculate(simulation.getAngleRads(), simulation.getVelocityRadPerSec() / RobotConstants.robotVoltage);
+    DogLog.log("CoralIntake/Speeds/AngleMotor", speed);
 
     double output = this.speedToVoltage(speed);
 
@@ -133,5 +140,10 @@ public class CoralIntakeSimSubsystem extends SubsystemBase implements CoralIntak
 
   public MechanismLigament2d getLigament() {
     return ligament;
+  }
+
+  public Pose3d getPose() {
+      return null;
+
   }
 }
