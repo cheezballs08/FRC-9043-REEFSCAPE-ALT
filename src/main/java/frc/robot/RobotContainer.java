@@ -52,14 +52,6 @@ public class RobotContainer {
     () -> controller.getRightX() * 2.4
   );
 
-  SetPositionRelativeToApriltag zeroApriltag20 = new SetPositionRelativeToApriltag(
-    drivetrainSubsystem, 
-    18, 
-    1, 
-    0, 
-    0
-    );
-
   InstantCommand resetOdometry = new InstantCommand(() -> drivetrainSubsystem.resetOdometry(RobotConstants.initialPose));
 
 
@@ -121,8 +113,7 @@ public class RobotContainer {
 
     coralIntakeSubsystem.setDefaultCommand(angleToL1);
     
-    x.toggleOnTrue(zeroApriltag20);
-    // x.onTrue(angleToFeed);
+    x.onTrue(angleToFeed);
     a.onTrue(angleToL1);
     b.onTrue(angleToL2L3);
     y.onTrue(angleToL4);

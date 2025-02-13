@@ -8,8 +8,8 @@ import frc.robot.constants.ElevatorConstants;
 import frc.robot.constants.MotorConstants;
 import frc.robot.utils.CANCoderWrapper;
 import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+// TODO: Feedforward kullanımı ekle.
 public class ElevatorRealSubsystem implements ElevatorSubsystem {
   
   SparkMax motor1, motor2;
@@ -56,6 +56,11 @@ public class ElevatorRealSubsystem implements ElevatorSubsystem {
   public void setSpeeds(double speed) {
     this.motor1.set(speed);
     this.motor2.set(speed);
+  }
+
+  public void setVoltages(double voltage) {
+    this.motor1.setVoltage(voltage);
+    this.motor2.setVoltage(voltage);
   }
 
   public void setElevatorPosition(double desiredPosition) {

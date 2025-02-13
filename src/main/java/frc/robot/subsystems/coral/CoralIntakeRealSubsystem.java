@@ -74,9 +74,19 @@ public class CoralIntakeRealSubsystem extends SubsystemBase implements CoralInta
     this.intakeMotor2.set(speed);
   }
 
+  public void setVoltages(double voltage) {
+    this.intakeMotor1.setVoltage(voltage);
+    this.intakeMotor2.setVoltage(voltage);
+  }
+
   /** Radian girdili */
   public void setAngle(double angle) {
-    this.angleMotor.set(this.angleController.calculate(this.angleEncoder.getPosition(), angle));
+
+    double position = this.angleEncoder.getPosition();
+    
+    double output = this.angleController.calculate(position, angle);
+
+    this.angleMotor.set(output);
   }
 
   public void setPosition(double speed, double angle) {

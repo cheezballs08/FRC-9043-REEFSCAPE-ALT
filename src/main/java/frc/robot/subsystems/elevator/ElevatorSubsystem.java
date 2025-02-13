@@ -7,4 +7,6 @@ public interface ElevatorSubsystem extends Subsystem {
   void setElevatorPosition(double desiredPosition);
   
   public void setSpeeds(double speed);
+
+  public void setVoltages(double voltage);
 }
