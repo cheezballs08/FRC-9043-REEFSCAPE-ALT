@@ -2,6 +2,8 @@
 
 package frc.robot.commands.auto.drivetrain;
 
+import java.lang.annotation.Target;
+
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 import dev.doglog.DogLog;
@@ -10,6 +12,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -21,7 +24,7 @@ import frc.robot.units.VisionProcessingUnit;
 import frc.robot.utils.CameraPosition;
 import frc.robot.utils.DriveType;
 
-public class SetPositionRelativeToApriltag extends Command {
+public class ChaseApriltag extends Command {
 
   DrivetrainSubsystem drivetrainSubsystem;
 
@@ -39,7 +42,7 @@ public class SetPositionRelativeToApriltag extends Command {
 
   Transform3d apriltagToGoal;
 
-  public SetPositionRelativeToApriltag(
+  public ChaseApriltag(
     DrivetrainSubsystem drivetrainSubsystem,
     int targetId,
     double desiredXOffset,
@@ -51,17 +54,37 @@ public class SetPositionRelativeToApriltag extends Command {
 
     this.targetId = targetId;
 
-    this.apriltagToGoal = new Transform3d(desiredXOffset, desiredYOffset, 0, new Rotation3d(new Rotation2d(Units.degreesToRadians(desiredAngle))));
+    this.apriltagToGoal = new Transform3d(
+      desiredXOffset, 
+      desiredYOffset, 
+      0,
+      new Rotation3d(new Rotation2d(Units.degreesToRadians(desiredAngle)))
+    );
 
-    this.xController = new ProfiledPIDController(AutoConstants.PDrive, AutoConstants.IDrive, AutoConstants.DDrive, AutoConstants.driveConstraints);
+    this.xController = new ProfiledPIDController(
+      AutoConstants.PDrive, 
+      AutoConstants.IDrive, 
+      AutoConstants.DDrive, 
+      AutoConstants.driveConstraints
+    );
     this.xController.setIZone(AutoConstants.IZDrive);
     this.xController.setTolerance(AutoConstants.distanceTolerance);
 
-    this.yController = new ProfiledPIDController(AutoConstants.PDrive, AutoConstants.IDrive, AutoConstants.DDrive, AutoConstants.driveConstraints);
+    this.yController = new ProfiledPIDController(
+      AutoConstants.PDrive, 
+      AutoConstants.IDrive, 
+      AutoConstants.DDrive, 
+      AutoConstants.driveConstraints
+    );
     this.yController.setIZone(AutoConstants.IZDrive);
     this.yController.setTolerance(AutoConstants.distanceTolerance);
 
-    this.rController = new ProfiledPIDController(AutoConstants.PAngle, AutoConstants.IAngle, AutoConstants.DAngle, AutoConstants.angleConstraints);
+    this.rController = new ProfiledPIDController(
+      AutoConstants.PAngle, 
+      AutoConstants.IAngle, 
+      AutoConstants.DAngle, 
+      AutoConstants.angleConstraints
+    );
     this.rController.setIZone(AutoConstants.IZAngle);
     this.rController.enableContinuousInput(-Math.PI, Math.PI);
     this.rController.setTolerance(AutoConstants.angleTolerance);
@@ -89,31 +112,33 @@ public class SetPositionRelativeToApriltag extends Command {
     }
 
     Pose3d robotPose = new Pose3d(drivetrainSubsystem.getPose());
+    DogLog.log("ChaseApriltag/RobotPose", robotPose);
+
+    Transform3d camToTarget = target.getBestCameraToTarget();
 
     Pose3d cameraPose = robotPose.transformBy(VisionConstants.robotToFrontCameraTransform);
+    DogLog.log("ChaseApriltag/CameraPose", cameraPose);
 
-    Transform3d cameraToTargetTransform = target.getBestCameraToTarget();
-    
-    Pose3d targetPose = cameraPose.transformBy(cameraToTargetTransform);
-    
-    Pose2d goalPose = cameraPose.transformBy(apriltagToGoal).toPose2d();
-    
+    Pose3d targetPose = cameraPose.transformBy(camToTarget);
+    DogLog.log("ChaseApriltag/TargetPose", targetPose);
+
+    Pose3d goalPose = targetPose.transformBy(apriltagToGoal);
+    DogLog.log("ChaseApriltag/GoalPose", goalPose);
+
+
     xSpeed = xController.calculate(robotPose.getX(), goalPose.getX());
+    DogLog.log("ChaseApriltag/XSpeed", xSpeed);
+    DogLog.log("ChaseApriltag/XError", xController.getPositionError());
+
     ySpeed = yController.calculate(robotPose.getY(), goalPose.getY());
-    rSpeed = rController.calculate(robotPose.getRotation().getAngle(), goalPose.getRotation().getRadians());
+    DogLog.log("ChaseApriltag/YSpeed", ySpeed);
+    DogLog.log("ChaseApriltag/YError", yController.getPositionError());
 
-    DogLog.log("Command/SetPositionRelativeToApriltag/RobotToCamera", VisionConstants.robotToFrontCameraTransform);
-    DogLog.log("Command/SetPositionRelativeToApriltag/CameraToTarget", cameraToTargetTransform);
-    DogLog.log("Command/SetPositionRelativeToApriltag/TargetToGoal", apriltagToGoal);
-    DogLog.log("Command/SetPositionRelativeToApriltag/CameraPose", cameraPose);
-    DogLog.log("Command/SetPositionRelativeToApriltag/TargetPose", targetPose);
-    DogLog.log("Command/SetPositionRelativeToApriltag/GoalPose", goalPose);
-    DogLog.log("Command/SetPositionRelativeToApriltag/RobotPose", robotPose);
-    DogLog.log("Command/SetPositionRelativeToApriltag/xSpeed", xSpeed);
-    DogLog.log("Command/SetPositionRelativeToApriltag/ySpeed", ySpeed);
-    DogLog.log("Command/SetPositionRelativeToApriltag/rSpeed", rSpeed);
+    rSpeed = rController.calculate(robotPose.getRotation().getAngle(), goalPose.getRotation().getAngle());
+    DogLog.log("ChaseApriltag/RSpeed", rSpeed);
+    DogLog.log("ChaseApriltag/RError", rController.getPositionError());
 
-    drivetrainSubsystem.drive(xSpeed, ySpeed, rSpeed, DriveType.FieldRelative);
+    drivetrainSubsystem.drive(xSpeed, ySpeed, rSpeed, DriveType.RobotRelative);
   }
 
   @Override

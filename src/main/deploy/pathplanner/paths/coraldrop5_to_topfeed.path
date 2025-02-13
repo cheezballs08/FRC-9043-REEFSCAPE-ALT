@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.439278715099369,
-        "y": 5.18183949509613
+        "x": 3.4343649722050578,
+        "y": 5.6730291633838155
       },
       "isLocked": false,
       "linkedName": null
@@ -20,8 +20,8 @@
         "y": 6.752202868852459
       },
       "prevControl": {
-        "x": 1.895494794235853,
-        "y": 6.784947184735782
+        "x": 2.4009692575776285,
+        "y": 6.6570765015326065
       },
       "nextControl": null,
       "isLocked": false,
@@ -45,7 +45,7 @@
     "rotation": 126.02737338510362
   },
   "reversed": false,
-  "folder": "Coral Dropoff to Coral Feed",
+  "folder": "Dropoff to Feed",
   "idealStartingState": {
     "velocity": 0,
     "rotation": -60.0463918321985

@@ -20,7 +20,7 @@
         "y": 2.5924692622950816
       },
       "prevControl": {
-        "x": 1.837780473224483,
+        "x": 1.8377804732244831,
         "y": 2.356894534424919
       },
       "nextControl": null,
@@ -45,7 +45,7 @@
     "rotation": 59.26451229807987
   },
   "reversed": false,
-  "folder": "Coral Feed to Coral Dropoff",
+  "folder": "Feed To Dropoff",
   "idealStartingState": {
     "velocity": 0,
     "rotation": -131.30861401354886

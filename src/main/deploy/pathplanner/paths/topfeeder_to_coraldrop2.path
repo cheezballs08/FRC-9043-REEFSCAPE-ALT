@@ -61,7 +61,7 @@
     "rotation": 123.31063082456082
   },
   "reversed": false,
-  "folder": "Coral Feed to Coral Dropoff",
+  "folder": "Feed To Dropoff",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 133.80651057601796

@@ -5,9 +5,11 @@ import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.auto.drivetrain.SetPositionRelativeToApriltag;
+import frc.robot.commands.auto.drivetrain.ChaseApriltag;
 import frc.robot.commands.base.DriveCommand;
 import frc.robot.commands.teleop.algea.IntakeAlgea;
 import frc.robot.commands.teleop.algea.OuttakeAlgea;
@@ -28,11 +30,14 @@ import frc.robot.subsystems.coral.CoralIntakeSimSubsystem;
 import frc.robot.subsystems.coral.CoralIntakeSubsystem;
 import frc.robot.subsystems.drivetrain.DefaultSwerve;
 import frc.robot.subsystems.drivetrain.DrivetrainSubsystem;
+import frc.robot.subsystems.elevator.ElevatorSimSubsystem;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
 import frc.robot.utils.DriveType;
 
 @SuppressWarnings("unused")
 public class RobotContainer {
+
+  /* <--------------------------------------------------------------------------------------------------------------------> */
 
   CommandXboxController controller = new CommandXboxController(ControllerConstants.controllerPort);
 
@@ -41,82 +46,128 @@ public class RobotContainer {
   Trigger b = controller.b();
   Trigger y = controller.y();
 
+  /* <--------------------------------------------------------------------------------------------------------------------> */
+
   DrivetrainSubsystem drivetrainSubsystem = new DefaultSwerve();
 
-  // Bunların hepsi sabitlere atılacak, şuanlık test amaçlı böyle, aynı zamanda şuan her şey blue alliance a göre.
   DriveCommand teleopDriveCommand = new DriveCommand(
     drivetrainSubsystem,
     DriveType.FieldRelative,
-    () -> controller.getLeftX() * 2.4,
-    () -> controller.getLeftY() * 2.4,
-    () -> controller.getRightX() * 2.4
+    () -> controller.getLeftX(),
+    () -> controller.getLeftY(),
+    () -> controller.getRightX()
   );
+
+  ChaseApriltag chaseApriltag18 = new ChaseApriltag(
+    drivetrainSubsystem,
+    18,
+    0,
+    0,
+    0
+  );
+
 
   InstantCommand resetOdometry = new InstantCommand(() -> drivetrainSubsystem.resetOdometry(RobotConstants.initialPose));
 
+  /* <--------------------------------------------------------------------------------------------------------------------> */
 
-  CoralIntakeSubsystem coralIntakeSubsystem = new CoralIntakeSimSubsystem();
+  /* CoralIntakeSubsystem coralIntakeSubsystem = new CoralIntakeSimSubsystem();
 
+  AngleCoralIntake toRestAngle = new AngleCoralIntake(coralIntakeSubsystem, CoralIntakeConstants.restAngle);
+  AngleCoralIntake toFeedAngle = new AngleCoralIntake(coralIntakeSubsystem, CoralIntakeConstants.feedAngle);
+  AngleCoralIntake toL1Angle = new AngleCoralIntake(coralIntakeSubsystem, CoralIntakeConstants.L1Angle);
+  AngleCoralIntake toL2Angle = new AngleCoralIntake(coralIntakeSubsystem, CoralIntakeConstants.L2Angle);
+  AngleCoralIntake toL3Angle = new AngleCoralIntake(coralIntakeSubsystem, CoralIntakeConstants.L2Angle);
+  AngleCoralIntake toL4Angle = new AngleCoralIntake(coralIntakeSubsystem, CoralIntakeConstants.L4Angle);
+  
   IntakeCoral intakeCoral = new IntakeCoral(coralIntakeSubsystem);
-  OuttakeCoral outtakeCoral = new OuttakeCoral(coralIntakeSubsystem);
+  OuttakeCoral outtakeCoral = new OuttakeCoral(coralIntakeSubsystem);*/
 
-  AngleCoralIntake angleToFeed = new AngleCoralIntake(coralIntakeSubsystem, CoralIntakeConstants.feedAngle);
-  AngleCoralIntake angleToL1 = new AngleCoralIntake(coralIntakeSubsystem, CoralIntakeConstants.L1Angle);
-  AngleCoralIntake angleToL2L3 = new AngleCoralIntake(coralIntakeSubsystem, CoralIntakeConstants.L2Angle);
-  AngleCoralIntake angleToL4 = new AngleCoralIntake(coralIntakeSubsystem, CoralIntakeConstants.L4Angle);
+  /* <--------------------------------------------------------------------------------------------------------------------> */
 
+  /* ElevatorSubsystem elevatorSubsystem = new ElevatorSimSubsystem();
 
-  MechansimSim mechansimSim = new MechansimSim(coralIntakeSubsystem);
-  
-  /*AlgaeIntakeSubsystem algaeIntakeSubsystem = new AlgaeIntakeSubsystem();
+  MoveElevator toRestHeight = new MoveElevator(elevatorSubsystem, ElevatorConstants.restHeight);
+  MoveElevator toFeedHeight = new MoveElevator(elevatorSubsystem, ElevatorConstants.feedHeight);
+  MoveElevator toL1Height = new MoveElevator(elevatorSubsystem, ElevatorConstants.L1Height);
+  MoveElevator toL2Height = new MoveElevator(elevatorSubsystem, ElevatorConstants.L2Height);
+  MoveElevator toL3Height = new MoveElevator(elevatorSubsystem, ElevatorConstants.L3Height);
+  MoveElevator toL4Height = new MoveElevator(elevatorSubsystem, ElevatorConstants.L4Height);
 
-  IntakeAlgea intakeAlgea = new IntakeAlgea(algaeIntakeSubsystem);
-  OuttakeAlgea outtakeAlgea = new OuttakeAlgea(algaeIntakeSubsystem);
+  /* <--------------------------------------------------------------------------------------------------------------------> */
 
-  
-  ClimbSubsystem climbSubsystem = new ClimbSubsystem();
+  /* ParallelCommandGroup restPosition = new ParallelCommandGroup(
+    toRestAngle,
+    toRestHeight
+  );
 
-  ClimbForward climbForward = new ClimbForward(climbSubsystem);
-  ClimbBackward climbBackward = new ClimbBackward(climbSubsystem);
+  ParallelCommandGroup feedPosition = new ParallelCommandGroup(
+    toFeedAngle,
+    toFeedHeight
+  );
 
-  
-  ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
+  ParallelCommandGroup L1Position = new ParallelCommandGroup(
+    toL1Angle,
+    toL1Height
+  );
 
-  MoveElevator heightToL1 = new MoveElevator(elevatorSubsystem, ElevatorConstants.L1Height);
-  MoveElevator heightToL2 = new MoveElevator(elevatorSubsystem, ElevatorConstants.L2Height);
-  MoveElevator heightToL3 = new MoveElevator(elevatorSubsystem, ElevatorConstants.L3Height);
-  MoveElevator heightToL4 = new MoveElevator(elevatorSubsystem, ElevatorConstants.L4Height);*/
+  ParallelCommandGroup L2Position = new ParallelCommandGroup(
+    toL2Angle,
+    toL2Height
+  );
 
-  public RobotContainer() {
-    //NamedCommands.registerCommand("outtakeAlgea", outtakeAlgea);
-    //NamedCommands.registerCommand("intakeAlgea", intakeAlgea);
-    //NamedCommands.registerCommand("climbForward", climbForward);
-    //NamedCommands.registerCommand("climbBackward", climbBackward);
-    //NamedCommands.registerCommand("intakeCoral", intakeCoral);
-    //NamedCommands.registerCommand("outtakeCoral", outtakeCoral);
-    NamedCommands.registerCommand("angleToL1", angleToL1);
-    NamedCommands.registerCommand("angleToL2", angleToL2L3);
-    NamedCommands.registerCommand("angleToL3", angleToL2L3);
-    NamedCommands.registerCommand("angleToL4", angleToL4);
-    NamedCommands.registerCommand("angleToFeed", angleToFeed);
-    //NamedCommands.registerCommand("heightToL1", heightToL1);
-    //NamedCommands.registerCommand("heightToL2", heightToL2);
-    //NamedCommands.registerCommand("heightToL3", heightToL3);
-    //NamedCommands.registerCommand("heightToL4", heightToL4);
+  ParallelCommandGroup L3Position = new ParallelCommandGroup(
+    toL3Angle,
+    toL3Height
+  );
 
-    this.configureBindings();
+  ParallelCommandGroup L4Position = new ParallelCommandGroup(
+    toL4Angle,
+    toL4Height
+  );
 
-  }
+  /* <--------------------------------------------------------------------------------------------------------------------> */
+
+  /*SequentialCommandGroup takeCoral = new SequentialCommandGroup(
+    intakeCoral,
+    restPosition
+  );
+
+  SequentialCommandGroup putCoralToL1 = new SequentialCommandGroup(
+    L1Position,
+    outtakeCoral
+  );
+
+  SequentialCommandGroup putCoralToL2 = new SequentialCommandGroup(
+    L2Position,
+    outtakeCoral
+  );
+
+  SequentialCommandGroup putCoralToL3 = new SequentialCommandGroup(
+    L3Position,
+    outtakeCoral
+  );
+
+  SequentialCommandGroup putCoralToL4 = new SequentialCommandGroup(
+    L4Position,
+    outtakeCoral
+  );
+
+  /* <--------------------------------------------------------------------------------------------------------------------> */
+
+  /* MechansimSim mechansimSim = new MechansimSim();
+
+  MechansimSim algeaMechansimSim = new MechansimSim();
+
+  /* <--------------------------------------------------------------------------------------------------------------------> */
 
   private void configureBindings() {
     drivetrainSubsystem.setDefaultCommand(teleopDriveCommand);
 
-    coralIntakeSubsystem.setDefaultCommand(angleToL1);
-    
-    x.onTrue(angleToFeed);
-    a.onTrue(angleToL1);
-    b.onTrue(angleToL2L3);
-    y.onTrue(angleToL4);
+    /*CoralIntakeSubsystem.setDefaultCommand(restPosition);
+    elevatorSubsystem.setDefaultCommand(restPosition);*/
+
+    x.toggleOnTrue(chaseApriltag18);
 
     x.and(a).and(b).and(y).onTrue(resetOdometry);
 

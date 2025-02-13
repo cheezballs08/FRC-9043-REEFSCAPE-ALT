@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.9779713114754096,
-        "y": 6.80015368852459
+        "x": 2.257001690372758,
+        "y": 6.875245673346412
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.613793146541166,
-        "y": 6.533041731046293
+        "x": 2.9605489686041047,
+        "y": 6.073413026756503
       },
       "isLocked": false,
       "linkedName": null
@@ -20,8 +20,8 @@
         "y": 5.481506147540983
       },
       "prevControl": {
-        "x": 1.6090304436412826,
-        "y": 5.470639192101804
+        "x": 2.537015465937361,
+        "y": 6.13535925433176
       },
       "nextControl": null,
       "isLocked": false,
@@ -45,7 +45,7 @@
     "rotation": -60.164460899738415
   },
   "reversed": false,
-  "folder": "Coral Feed to Coral Dropoff",
+  "folder": "Feed To Dropoff",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 129.13687151755042

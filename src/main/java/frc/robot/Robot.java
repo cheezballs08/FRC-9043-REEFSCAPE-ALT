@@ -6,9 +6,7 @@ package frc.robot;
 
 import org.photonvision.simulation.VisionSystemSim;
 
-import edu.wpi.first.hal.AllianceStationID;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.simulation.DriverStationSim;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.units.VisionProcessingUnit;
@@ -76,6 +74,9 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    frontUnit.disableVisionEstimation(false);
+    leftUnit.disableVisionEstimation(false);
+    rightUnit.disableVisionEstimation(false);
  
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
@@ -90,15 +91,12 @@ public class Robot extends TimedRobot {
 
   @Override
   public void simulationInit() {
-   DriverStationSim.setAllianceStationId(AllianceStationID.Blue1);
     visionSimulation.update(robotContainer.drivetrainSubsystem.getSimPose());
-    robotContainer.mechansimSim.update();
   }
 
   @Override
   public void simulationPeriodic() {
     visionSimulation.update(robotContainer.drivetrainSubsystem.getSimPose());
-    robotContainer.mechansimSim.update();
   }
 
   @Override

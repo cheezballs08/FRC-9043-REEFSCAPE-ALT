@@ -4,7 +4,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 
 public class AutoConstants {
 
-  public static final String autoName = "auto";
+  public static final String autoName = "chaos";
 
   public static final double PDrive = 1;
   public static final double IDrive = 0;

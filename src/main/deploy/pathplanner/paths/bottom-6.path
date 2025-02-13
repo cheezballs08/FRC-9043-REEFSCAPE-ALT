@@ -45,7 +45,7 @@
     "rotation": -118.67903626938065
   },
   "reversed": false,
-  "folder": "bottom starting position",
+  "folder": "Start To Dropoff",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 180.0

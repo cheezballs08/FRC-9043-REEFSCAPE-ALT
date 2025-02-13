@@ -8,6 +8,7 @@ import frc.robot.constants.CoralIntakeConstants;
 import frc.robot.constants.MotorConstants;
 import frc.robot.utils.CANCoderWrapper;
 import frc.robot.utils.PhotoelectricSensor;
+import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
@@ -23,6 +24,8 @@ public class CoralIntakeRealSubsystem extends SubsystemBase implements CoralInta
   CANCoderWrapper angleEncoder;
   
   ProfiledPIDController angleController;
+
+  ArmFeedforward feedforward;
 
   PhotoelectricSensor sensor;
   
@@ -43,6 +46,13 @@ public class CoralIntakeRealSubsystem extends SubsystemBase implements CoralInta
     this.angleController = new ProfiledPIDController(CoralIntakeConstants.P, CoralIntakeConstants.I, CoralIntakeConstants.D, CoralIntakeConstants.constraints);
     this.angleController.setIZone(CoralIntakeConstants.IZ);
   
+    this.feedforward = new ArmFeedforward(
+      CoralIntakeConstants.S, 
+      CoralIntakeConstants.G,
+      CoralIntakeConstants.V,
+      CoralIntakeConstants.A 
+    );
+
     this.sensor = new PhotoelectricSensor(CoralIntakeConstants.sensorID);
   }
 
@@ -74,17 +84,14 @@ public class CoralIntakeRealSubsystem extends SubsystemBase implements CoralInta
     this.intakeMotor2.set(speed);
   }
 
-  public void setVoltages(double voltage) {
-    this.intakeMotor1.setVoltage(voltage);
-    this.intakeMotor2.setVoltage(voltage);
-  }
-
   /** Radian girdili */
   public void setAngle(double angle) {
 
     double position = this.angleEncoder.getPosition();
     
     double output = this.angleController.calculate(position, angle);
+
+    output += this.feedforward.calculate(position, this.angleEncoder.getVelocity());
 
     this.angleMotor.set(output);
   }

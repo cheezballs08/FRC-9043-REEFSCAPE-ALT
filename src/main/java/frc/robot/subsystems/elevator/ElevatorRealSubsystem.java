@@ -7,7 +7,9 @@ import frc.robot.utils.Logger;
 import frc.robot.constants.ElevatorConstants;
 import frc.robot.constants.MotorConstants;
 import frc.robot.utils.CANCoderWrapper;
+import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
 
 // TODO: Feedforward kullanımı ekle.
 public class ElevatorRealSubsystem implements ElevatorSubsystem {
@@ -17,6 +19,8 @@ public class ElevatorRealSubsystem implements ElevatorSubsystem {
   CANCoderWrapper encoder;
 
   ProfiledPIDController controller;
+
+  ElevatorFeedforward feedforward;
 
   public ElevatorRealSubsystem() {
     this.motor1 = new SparkMax(ElevatorConstants.motor1ID, ElevatorConstants.motor1type);
@@ -30,8 +34,21 @@ public class ElevatorRealSubsystem implements ElevatorSubsystem {
     this.encoder.setPositionConversionFactor(ElevatorConstants.encoderPositionConversionFactor);
     this.encoder.setVelocityConversionFactor(ElevatorConstants.encoderVelocityConversionFactor);
 
-    this.controller = new ProfiledPIDController(ElevatorConstants.P, ElevatorConstants.I, ElevatorConstants.D, ElevatorConstants.constraints);
+    this.controller = new ProfiledPIDController(
+      ElevatorConstants.P, 
+      ElevatorConstants.I, 
+      ElevatorConstants.D, 
+      ElevatorConstants.constraints
+    );
+    
     this.controller.setIZone(ElevatorConstants.IZ);
+  
+    this.feedforward = new ElevatorFeedforward(
+      ElevatorConstants.S, 
+      ElevatorConstants.G, 
+      ElevatorConstants.V,
+      ElevatorConstants.A
+    );
   }
 
   @Override
@@ -53,14 +70,9 @@ public class ElevatorRealSubsystem implements ElevatorSubsystem {
     Logger.log("ElevatorSubsystem/Controller/AtSetpoint", controller.atSetpoint());
   }
 
-  public void setSpeeds(double speed) {
-    this.motor1.set(speed);
-    this.motor2.set(speed);
-  }
-
   public void setVoltages(double voltage) {
-    this.motor1.setVoltage(voltage);
-    this.motor2.setVoltage(voltage);
+    motor1.setVoltage(voltage);
+    motor2.setVoltage(voltage);
   }
 
   public void setElevatorPosition(double desiredPosition) {
@@ -75,7 +87,9 @@ public class ElevatorRealSubsystem implements ElevatorSubsystem {
 
     double output = controller.calculate(currentPosition, desiredPosition);
 
-    this.setSpeeds(output);
+    output += feedforward.calculate(encoder.getVelocity());
+
+    this.setVoltages(output);
   }
 
   public double getEncoderPosition() {
@@ -88,5 +102,10 @@ public class ElevatorRealSubsystem implements ElevatorSubsystem {
 
   public boolean isAtSetpoint() {
     return controller.atSetpoint();
+  }
+
+  @Override
+  public MechanismLigament2d getLigament() {
+    throw new UnsupportedOperationException("Sim dışı kullanılmış metod 'getLigament'");   
   }
 }

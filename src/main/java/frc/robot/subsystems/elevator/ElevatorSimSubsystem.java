@@ -4,6 +4,7 @@ import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.simulation.ElevatorSim;
+import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
 import frc.robot.constants.ElevatorConstants;
 
 public class ElevatorSimSubsystem implements ElevatorSubsystem {
@@ -13,6 +14,9 @@ public class ElevatorSimSubsystem implements ElevatorSubsystem {
   ProfiledPIDController controller;
 
   ElevatorFeedforward feedforward;
+
+  MechanismLigament2d ligament;
+
 
   public ElevatorSimSubsystem() {
     this.simulation  = new ElevatorSim(
@@ -41,21 +45,40 @@ public class ElevatorSimSubsystem implements ElevatorSubsystem {
       ElevatorConstants.V, 
       ElevatorConstants.A
     );
+    
+    this.ligament = new MechanismLigament2d(
+      "elevator", 
+      ElevatorConstants.startingHeight, 
+      90
+    );  
   }
+
+  @Override
+  public void periodic() {}
 
   @Override
   public void setElevatorPosition(double desiredPosition) {
+    double currentPosition = simulation.getPositionMeters();
+    this.ligament.setLength(currentPosition);
     
-  }
+    double currentVelocity = simulation.getVelocityMetersPerSecond();
 
-  @Override
-  public void setSpeeds(double speed) {
-    
-  
+    double output = controller.calculate(currentPosition, desiredPosition);
+
+    output += feedforward.calculate(currentVelocity);
+
+    this.setVoltages(output);
+
   }
 
   @Override
   public void setVoltages(double voltage) {
+    simulation.setInputVoltage(voltage);
+  }
+
+  @Override
+  public MechanismLigament2d getLigament() {
+    return ligament;
   }
   
 }

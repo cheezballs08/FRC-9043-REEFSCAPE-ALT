@@ -17,11 +17,9 @@ public class CoralIntakeConstants {
   
   public static final double intakeWidth = 0.02;
 
-  public static final double intakeMass = 5;
+  public static final double intakeMass = 4;
   
   public static final double momentOfInertia = SingleJointedArmSim.estimateMOI(intakeLength, intakeMass);
-
-  public static final double startingAngle = 0;
 
   public static final double maximumAngle = Units.degreesToRadians(90);
 
@@ -52,12 +50,12 @@ public class CoralIntakeConstants {
   
   public static final double outtakeSpeed = 0.0;
   
-
   public static final double feedAngle = 45;
   public static final double L1Angle = 0;
   public static final double L2Angle = -30;
   public static final double L4Angle = -80;
   public static final double restAngle = 90;
+  public static final double startingAngle = restAngle;
   
   public static final int sensorID = 0; 
   
@@ -74,8 +72,7 @@ public class CoralIntakeConstants {
   public static final Constraints constraints = new Constraints(1000, 1000);
 
   public static final double S = 0;
-
   public static final double G = 0.1;
-
   public static final double V = 0;
+  public static final double A = 0;
 }

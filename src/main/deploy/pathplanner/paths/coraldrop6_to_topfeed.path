@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 2.073872950819672,
-        "y": 6.812141393442622
+        "x": 2.0987956094100335,
+        "y": 6.767879195277467
       },
       "prevControl": {
-        "x": 1.8142306326350517,
-        "y": 6.8812715353448155
+        "x": 1.8391532912254132,
+        "y": 6.83700933717966
       },
       "nextControl": null,
       "isLocked": false,
@@ -45,7 +45,7 @@
     "rotation": 128.92754359279232
   },
   "reversed": false,
-  "folder": "Coral Dropoff to Coral Feed",
+  "folder": "Dropoff to Feed",
   "idealStartingState": {
     "velocity": 0,
     "rotation": -119.74488129694213
