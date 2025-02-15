@@ -4,9 +4,6 @@ import java.io.IOException;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
-import com.pathplanner.lib.util.DriveFeedforwards;
-
-import dev.doglog.DogLog;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -48,7 +45,7 @@ public class DefaultSwerve extends SubsystemBase implements DrivetrainSubsystem 
       this::getPose, 
       this::resetOdometry, 
       this::getRobotRelativeSpeeds, 
-      (speeds, feedforwards) -> this.drive(speeds, feedforwards),
+      (speeds, feedforwards) -> this.drive(speeds),
       controller, 
       RobotConstants.config, 
       () -> RobotConstants.alliance != DriverStation.Alliance.Blue, 
@@ -84,24 +81,24 @@ public class DefaultSwerve extends SubsystemBase implements DrivetrainSubsystem 
 
   public void drive(double xSpeed, double ySpeed, double rSpeed, DriveType driveType) {
     if (driveType == DriveType.FieldRelative) {
-      // TODO: Bunları unutma
-      swerveDrive.driveFieldOriented(new ChassisSpeeds(-xSpeed, -ySpeed, -rSpeed));
+      swerveDrive.driveFieldOriented(new ChassisSpeeds(xSpeed, ySpeed, rSpeed));
     
     } else {
-      swerveDrive.drive(new ChassisSpeeds(-xSpeed, -ySpeed, -rSpeed));  
+      swerveDrive.drive(new ChassisSpeeds(xSpeed, ySpeed, rSpeed));  
     }
   }
 
-  // TODO: Bunun niye çalışmadığına bak.
-  public void drive(ChassisSpeeds speeds, DriveFeedforwards feedforwards) {
-    DogLog.log("/Dirty/Speeds", speeds);
-    DogLog.log("/Dirty/Accels", feedforwards.accelerationsMPSSq());
+/*  public void drive(ChassisSpeeds speeds, DriveFeedforwards feedforwards) {
+    DogLog.recordOutput("/Dirty/Speeds", speeds);
+    DogLog.recordOutput("/Dirty/Accels", feedforwards.accelerationsMPSSq());
+    DogLog.recordOutput("/Dirty/Forces", feedforwards.linearForces().toString());
+    
     swerveDrive.drive(
       speeds,
       swerveDrive.kinematics.toSwerveModuleStates(speeds),
       feedforwards.linearForces()
       );
-  }
+  }*/
 
   public Pose2d getPose() {
     return swerveDrive.getPose();

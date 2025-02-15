@@ -53,20 +53,18 @@ public class RobotContainer {
   DriveCommand teleopDriveCommand = new DriveCommand(
     drivetrainSubsystem,
     DriveType.FieldRelative,
-    () -> controller.getLeftX(),
-    () -> controller.getLeftY(),
-    () -> controller.getRightX() 
+    () -> -controller.getLeftX(),
+    () -> -controller.getLeftY(),
+    () -> -controller.getRightX() 
   );
 
-  /* Daha bitmedi
   ChaseApriltag chaseApriltag18 = new ChaseApriltag(
     drivetrainSubsystem,
     18,
-    0,
+    0.5,
     0,
     0
-  );*/
-
+  );
 
   InstantCommand resetOdometry = new InstantCommand(() -> drivetrainSubsystem.resetOdometry(RobotConstants.initialPose));
 
@@ -168,7 +166,7 @@ public class RobotContainer {
     /*CoralIntakeSubsystem.setDefaultCommand(restPosition);
     elevatorSubsystem.setDefaultCommand(restPosition);*/
 
-    // x.toggleOnTrue(chaseApriltag18);
+    x.toggleOnTrue(chaseApriltag18);
 
     x.and(a).and(b).and(y).onTrue(resetOdometry);
 

@@ -3,7 +3,7 @@ package frc.robot.subsystems.drivetrain;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig;
 
-import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -20,8 +20,9 @@ public class SwerveModule {
   private SparkEncoder driveEncoder;
   private SparkEncoder angleEncoder;
   
-  private PIDController driveController;
-  private PIDController angleController;
+  private ProfiledPIDController driveController;
+  private ProfiledPIDController angleController;
+
 
   private ThriftyEncoder absoluteEncoder;
 
@@ -38,7 +39,6 @@ public class SwerveModule {
     boolean invertAbsoluteEncoder
   ) {
 
-    // ? Im assuming we don't have to burn the flash with persist parameters, I hope Im right
     driveMotor = new SparkMax(driveMotorID, ModuleConstants.driveMotorType);
 
     driveMotor.configure(driveMotorConfig, MotorConstants.resetMode, MotorConstants.persistMode);
@@ -48,7 +48,7 @@ public class SwerveModule {
     driveEncoder.setPositionConversionFactor(ModuleConstants.driveEncoderPositionConversionFactor);
     driveEncoder.setVelocityConversionFactor(ModuleConstants.driveEncoderSpeedConversionFactor);
 
-    driveController = new PIDController(ModuleConstants.PDrive, ModuleConstants.IDrive, ModuleConstants.DDrive);
+    driveController = new ProfiledPIDController(ModuleConstants.PDrive, ModuleConstants.IDrive, ModuleConstants.DDrive, ModuleConstants.driveConstraints);
     driveController.setIZone(ModuleConstants.IZDrive);
     
     angleMotor = new SparkMax(angleMotorID, ModuleConstants.angleMotorType);
@@ -59,7 +59,7 @@ public class SwerveModule {
     angleEncoder.setPositionConversionFactor(ModuleConstants.angleEncoderPositionConversionFactor);
     angleEncoder.setVelocityConversionFactor(ModuleConstants.angleEncoderSpeedConversionFactor);
   
-    angleController = new PIDController(ModuleConstants.PAngle, ModuleConstants.IAngle, ModuleConstants.DAngle);
+    angleController = new ProfiledPIDController(ModuleConstants.PAngle, ModuleConstants.IAngle, ModuleConstants.DAngle, ModuleConstants.angleConstraints);
     angleController.setIZone(ModuleConstants.IZAngle);
     angleController.enableContinuousInput(-Math.PI, Math.PI);
 
@@ -80,7 +80,6 @@ public class SwerveModule {
 
   public void setDesiredState(SwerveModuleState desiredState) {
    
-    // TODO: Sadece hıza bakmanın yetip yetmeyeceğine bak. Önemsiz ama neyse.
     if (Math.abs(desiredState.speedMetersPerSecond) < MathConstants.epsilon && Math.abs(desiredState.angle.getRadians()) < MathConstants.epsilon) {
       stop();
       return;
@@ -88,8 +87,8 @@ public class SwerveModule {
 
     desiredState.optimize(this.getState().angle);
 
-    double driveSpeed = driveController.calculate(this.getState().speedMetersPerSecond, desiredState.speedMetersPerSecond) / ModuleConstants.driveMaxSpeed;
-    double angleSpeed = angleController.calculate(this.getState().angle.getRadians(), desiredState.angle.getRadians()) / ModuleConstants.angleMaxSpeed;
+    double driveSpeed = driveController.calculate(driveEncoder.getVelocity(), desiredState.speedMetersPerSecond);
+    double angleSpeed = angleController.calculate(absoluteEncoder.getPosition(), desiredState.angle.getRadians());
 
     driveMotor.set(driveSpeed);
     angleMotor.set(angleSpeed);

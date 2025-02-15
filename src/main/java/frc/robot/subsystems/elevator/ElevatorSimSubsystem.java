@@ -1,5 +1,7 @@
 package frc.robot.subsystems.elevator;
 
+import org.littletonrobotics.junction.mechanism.LoggedMechanismLigament2d;
+
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.system.plant.DCMotor;
@@ -15,7 +17,7 @@ public class ElevatorSimSubsystem implements ElevatorSubsystem {
 
   ElevatorFeedforward feedforward;
 
-  MechanismLigament2d ligament;
+  LoggedMechanismLigament2d ligament;
 
 
   public ElevatorSimSubsystem() {
@@ -46,7 +48,7 @@ public class ElevatorSimSubsystem implements ElevatorSubsystem {
       ElevatorConstants.A
     );
     
-    this.ligament = new MechanismLigament2d(
+    this.ligament = new LoggedMechanismLigament2d(
       "elevator", 
       ElevatorConstants.startingHeight, 
       90
@@ -77,7 +79,7 @@ public class ElevatorSimSubsystem implements ElevatorSubsystem {
   }
 
   @Override
-  public MechanismLigament2d getLigament() {
+  public LoggedMechanismLigament2d getLigament() {
     return ligament;
   }
   

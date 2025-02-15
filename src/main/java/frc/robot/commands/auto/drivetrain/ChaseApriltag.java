@@ -2,17 +2,11 @@
 
 package frc.robot.commands.auto.drivetrain;
 
-import java.lang.annotation.Target;
-
 import org.photonvision.targeting.PhotonTrackedTarget;
-
-import dev.doglog.DogLog;
 import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -23,6 +17,7 @@ import frc.robot.subsystems.drivetrain.DrivetrainSubsystem;
 import frc.robot.units.VisionProcessingUnit;
 import frc.robot.utils.CameraPosition;
 import frc.robot.utils.DriveType;
+import org.littletonrobotics.junction.Logger;
 
 public class ChaseApriltag extends Command {
 
@@ -112,31 +107,31 @@ public class ChaseApriltag extends Command {
     }
 
     Pose3d robotPose = new Pose3d(drivetrainSubsystem.getPose());
-    DogLog.log("ChaseApriltag/RobotPose", robotPose);
+    Logger.recordOutput("ChaseApriltag/RobotPose", robotPose);
 
     Transform3d camToTarget = target.getBestCameraToTarget();
 
     Pose3d cameraPose = robotPose.transformBy(VisionConstants.robotToFrontCameraTransform);
-    DogLog.log("ChaseApriltag/CameraPose", cameraPose);
+    Logger.recordOutput("ChaseApriltag/CameraPose", cameraPose);
 
     Pose3d targetPose = cameraPose.transformBy(camToTarget);
-    DogLog.log("ChaseApriltag/TargetPose", targetPose);
+    Logger.recordOutput("ChaseApriltag/TargetPose", targetPose);
 
-    Pose3d goalPose = targetPose.transformBy(apriltagToGoal);
-    DogLog.log("ChaseApriltag/GoalPose", goalPose);
+    Pose3d goalPose = targetPose.transformBy(apriltagToGoal.inverse());
+    Logger.recordOutput("ChaseApriltag/GoalPose", goalPose);
 
 
     xSpeed = xController.calculate(robotPose.getX(), goalPose.getX());
-    DogLog.log("ChaseApriltag/XSpeed", xSpeed);
-    DogLog.log("ChaseApriltag/XError", xController.getPositionError());
+    Logger.recordOutput("ChaseApriltag/XSpeed", xSpeed);
+    Logger.recordOutput("ChaseApriltag/XError", xController.getPositionError());
 
     ySpeed = yController.calculate(robotPose.getY(), goalPose.getY());
-    DogLog.log("ChaseApriltag/YSpeed", ySpeed);
-    DogLog.log("ChaseApriltag/YError", yController.getPositionError());
+    Logger.recordOutput("ChaseApriltag/YSpeed", ySpeed);
+    Logger.recordOutput("ChaseApriltag/YError", yController.getPositionError());
 
     rSpeed = rController.calculate(robotPose.getRotation().getAngle(), goalPose.getRotation().getAngle());
-    DogLog.log("ChaseApriltag/RSpeed", rSpeed);
-    DogLog.log("ChaseApriltag/RError", rController.getPositionError());
+    Logger.recordOutput("ChaseApriltag/RSpeed", rSpeed);
+    Logger.recordOutput("ChaseApriltag/RError", rController.getPositionError());
 
     drivetrainSubsystem.drive(xSpeed, ySpeed, rSpeed, DriveType.RobotRelative);
   }

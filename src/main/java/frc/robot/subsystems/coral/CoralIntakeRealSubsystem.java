@@ -1,9 +1,11 @@
 package frc.robot.subsystems.coral;
 
+import org.littletonrobotics.junction.mechanism.LoggedMechanismLigament2d;
+
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.revrobotics.spark.SparkMax;
 
-import frc.robot.utils.Logger;
+import org.littletonrobotics.junction.Logger;
 import frc.robot.constants.CoralIntakeConstants;
 import frc.robot.constants.MotorConstants;
 import frc.robot.utils.CANCoderWrapper;
@@ -58,25 +60,25 @@ public class CoralIntakeRealSubsystem extends SubsystemBase implements CoralInta
 
   @Override
   public void periodic() {
-    Logger.log("CoralIntake/Speeds/IntakeMotor1", intakeMotor1.get());
-    Logger.log("CoralIntake/Speeds/IntakeMotor2", intakeMotor2.get());
-    Logger.log("CoralIntake/Speeds/AngleMotor", angleMotor.get());
+    Logger.recordOutput("CoralIntake/Speeds/IntakeMotor1", intakeMotor1.get());
+    Logger.recordOutput("CoralIntake/Speeds/IntakeMotor2", intakeMotor2.get());
+    Logger.recordOutput("CoralIntake/Speeds/AngleMotor", angleMotor.get());
     
-    Logger.log("CoralIntake/Voltages/IntakeMotor1", intakeMotor1.getAppliedOutput());
-    Logger.log("CoralIntake/Voltages/IntakeMotor2", intakeMotor2.getAppliedOutput());
-    Logger.log("CoralIntake/Voltages/AngleMotor", angleMotor.getAppliedOutput());
+    Logger.recordOutput("CoralIntake/Voltages/IntakeMotor1", intakeMotor1.getAppliedOutput());
+    Logger.recordOutput("CoralIntake/Voltages/IntakeMotor2", intakeMotor2.getAppliedOutput());
+    Logger.recordOutput("CoralIntake/Voltages/AngleMotor", angleMotor.getAppliedOutput());
 
-    Logger.log("CoralIntake/Encoder/Position", angleEncoder.getPosition());
-    Logger.log("CoralIntake/Encoder/Velocity", angleEncoder.getVelocity());
+    Logger.recordOutput("CoralIntake/Encoder/Position", angleEncoder.getPosition());
+    Logger.recordOutput("CoralIntake/Encoder/Velocity", angleEncoder.getVelocity());
 
-    Logger.log("CoralIntake/Controller/SetpointPosition", angleController.getSetpoint().position);
-    Logger.log("CoralIntake/Controller/SetpointVelocity", angleController.getSetpoint().velocity);
-    Logger.log("CoralIntake/Controller/PositionError", angleController.getPositionError());
-    Logger.log("CoralIntake/Controller/VelocityError", angleController.getVelocityError());
-    Logger.log("CoralIntake/Controller/AccumulatedError", angleController.getAccumulatedError());
-    Logger.log("CoralIntake/Controller/AtSetpoint", angleController.atSetpoint());
+    Logger.recordOutput("CoralIntake/Controller/SetpointPosition", angleController.getSetpoint().position);
+    Logger.recordOutput("CoralIntake/Controller/SetpointVelocity", angleController.getSetpoint().velocity);
+    Logger.recordOutput("CoralIntake/Controller/PositionError", angleController.getPositionError());
+    Logger.recordOutput("CoralIntake/Controller/VelocityError", angleController.getVelocityError());
+    Logger.recordOutput("CoralIntake/Controller/AccumulatedError", angleController.getAccumulatedError());
+    Logger.recordOutput("CoralIntake/Controller/AtSetpoint", angleController.atSetpoint());
 
-    Logger.log("CoralIntake/Sensor", this.isSensorActive());
+    Logger.recordOutput("CoralIntake/Sensor", this.isSensorActive());
   }
 
   public void setSpeeds(double speed) {
@@ -113,7 +115,7 @@ public class CoralIntakeRealSubsystem extends SubsystemBase implements CoralInta
     return this.sensor.asTrigger();
   }
 
-  public MechanismLigament2d getLigament() {
+  public LoggedMechanismLigament2d getLigament() {
       throw new UnsupportedOperationException("Sim dışı kullanılan metod 'getLigament'");
   }
 

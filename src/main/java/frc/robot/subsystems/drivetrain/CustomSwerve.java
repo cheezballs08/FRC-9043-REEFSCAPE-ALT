@@ -6,7 +6,6 @@ package frc.robot.subsystems.drivetrain;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
-import com.pathplanner.lib.util.DriveFeedforwards;
 import com.studica.frc.AHRS;
 
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
@@ -112,7 +111,7 @@ public class CustomSwerve extends SubsystemBase implements DrivetrainSubsystem {
       this::getPose, 
       this::resetOdometry, 
       this::getRobotRelativeSpeeds, 
-      (speeds, feedworwards) -> this.drive(speeds, feedworwards), 
+      (speeds, feedworwards) -> this.drive(speeds), 
       controller, 
       RobotConstants.config, 
       () -> DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == DriverStation.Alliance.Red, 
@@ -145,8 +144,6 @@ public class CustomSwerve extends SubsystemBase implements DrivetrainSubsystem {
   }
 
   public double getRobotAngle() {
-    // TODO: Bunu yapmalımıyım yoksa otomatik olarak yapılıyor mu?
-    // navxin getangle ı accumilated yani 360tan öteye gidiyor, illa ieeeremainder ile yapmana gerek yok modülüs (%) ile de olur ama hangisi daha hızlı ona emin değilim.
     return Math.IEEEremainder(gyroscope.getAngle(), 360);
   }
 
@@ -226,9 +223,6 @@ public class CustomSwerve extends SubsystemBase implements DrivetrainSubsystem {
 
     this.setModuleStates(DrivetrainConstants.kinematics.toSwerveModuleStates(speeds));
   }
-
-  //  TODO: Bunu çalışır duruma getir.
-  public void drive(ChassisSpeeds speeds, DriveFeedforwards feedforwards) {}
 
   public Pose2d getSimPose() {
     return new Pose2d();
