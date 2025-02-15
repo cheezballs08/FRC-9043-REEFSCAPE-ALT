@@ -64,15 +64,15 @@ public class CoralIntakeConstants {
   public static final double positionConversionConstant = 0;
   public static final double velocityConversionConstant = 0;
   
-  public static final double P = 0.025;
-  public static final double I = 0.083;
-  public static final double D = 0.0023;
-  public static final double IZ = 0.1;
+  public static final double P = 1;
+  public static final double I = 0;
+  public static final double D = 0;
+  public static final double IZ = 0;
   
   public static final Constraints constraints = new Constraints(1000, 1000);
 
   public static final double S = 0;
-  public static final double G = 0.1;
+  public static final double G = 0;
   public static final double V = 0;
   public static final double A = 0;
 }

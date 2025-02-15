@@ -70,7 +70,7 @@ public class RobotContainer {
 
   /* <--------------------------------------------------------------------------------------------------------------------> */
 
-  /* CoralIntakeSubsystem coralIntakeSubsystem = new CoralIntakeSimSubsystem();
+  CoralIntakeSubsystem coralIntakeSubsystem = new CoralIntakeSimSubsystem();
 
   AngleCoralIntake toRestAngle = new AngleCoralIntake(coralIntakeSubsystem, CoralIntakeConstants.restAngle);
   AngleCoralIntake toFeedAngle = new AngleCoralIntake(coralIntakeSubsystem, CoralIntakeConstants.feedAngle);
@@ -80,11 +80,11 @@ public class RobotContainer {
   AngleCoralIntake toL4Angle = new AngleCoralIntake(coralIntakeSubsystem, CoralIntakeConstants.L4Angle);
   
   IntakeCoral intakeCoral = new IntakeCoral(coralIntakeSubsystem);
-  OuttakeCoral outtakeCoral = new OuttakeCoral(coralIntakeSubsystem);*/
+  OuttakeCoral outtakeCoral = new OuttakeCoral(coralIntakeSubsystem);
 
   /* <--------------------------------------------------------------------------------------------------------------------> */
 
-  /* ElevatorSubsystem elevatorSubsystem = new ElevatorSimSubsystem();
+  ElevatorSubsystem elevatorSubsystem = new ElevatorSimSubsystem();
 
   MoveElevator toRestHeight = new MoveElevator(elevatorSubsystem, ElevatorConstants.restHeight);
   MoveElevator toFeedHeight = new MoveElevator(elevatorSubsystem, ElevatorConstants.feedHeight);
@@ -95,7 +95,7 @@ public class RobotContainer {
 
   /* <--------------------------------------------------------------------------------------------------------------------> */
 
-  /* ParallelCommandGroup restPosition = new ParallelCommandGroup(
+  ParallelCommandGroup restPosition = new ParallelCommandGroup(
     toRestAngle,
     toRestHeight
   );
@@ -127,34 +127,34 @@ public class RobotContainer {
 
   /* <--------------------------------------------------------------------------------------------------------------------> */
 
-  /*SequentialCommandGroup takeCoral = new SequentialCommandGroup(
-    intakeCoral,
-    restPosition
+  SequentialCommandGroup takeCoral = new SequentialCommandGroup(
+    feedPosition,
+    intakeCoral
   );
 
   SequentialCommandGroup putCoralToL1 = new SequentialCommandGroup(
     L1Position,
-    outtakeCoral
+    outtakeCoral.asProxy()
   );
 
   SequentialCommandGroup putCoralToL2 = new SequentialCommandGroup(
     L2Position,
-    outtakeCoral
+    outtakeCoral.asProxy()
   );
 
   SequentialCommandGroup putCoralToL3 = new SequentialCommandGroup(
     L3Position,
-    outtakeCoral
+    outtakeCoral.asProxy()
   );
 
   SequentialCommandGroup putCoralToL4 = new SequentialCommandGroup(
     L4Position,
-    outtakeCoral
+    outtakeCoral.asProxy()
   );
 
   /* <--------------------------------------------------------------------------------------------------------------------> */
 
-  /* MechansimSim mechansimSim = new MechansimSim();
+  MechansimSim mechansimSim = new MechansimSim(coralIntakeSubsystem, elevatorSubsystem);
 
   MechansimSim algeaMechansimSim = new MechansimSim();
 
@@ -162,11 +162,16 @@ public class RobotContainer {
 
   private void configureBindings() {
     drivetrainSubsystem.setDefaultCommand(teleopDriveCommand);
+    coralIntakeSubsystem.setDefaultCommand(restPosition);
+    elevatorSubsystem.setDefaultCommand(restPosition);
 
-    /*CoralIntakeSubsystem.setDefaultCommand(restPosition);
-    elevatorSubsystem.setDefaultCommand(restPosition);*/
+    x.onTrue(restPosition);
+    a.onTrue(L1Position);
+    b.onTrue(L2Position);
+    y.onTrue(feedPosition);
 
-    x.toggleOnTrue(chaseApriltag18);
+    x.and(b).toggleOnTrue(chaseApriltag18);
+
 
     x.and(a).and(b).and(y).onTrue(resetOdometry);
 

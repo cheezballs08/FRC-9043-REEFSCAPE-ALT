@@ -10,21 +10,21 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 public class ElevatorConstants {
 
 
-  public static final double elevatorHeight = 0.0;
-  public static final double L1Height = 0.0;
-  public static final double L2Height = 0.0;
-  public static final double L3Height = 0.0;
-  public static final double L4Height = 0.0;
-  public static final double feedHeight = 0;
+  public static final double elevatorHeight = 1.5;
+  public static final double L1Height = 0.25;
+  public static final double L2Height = 0.50;
+  public static final double L3Height = 0.75;
+  public static final double L4Height = 0.1;
+  public static final double feedHeight = 1.25;
   public static final double restHeight = 0;
 
   public static final double startingHeight = restHeight;
   
-  public static final double elevatorMass = 0;
+  public static final double elevatorMass = 22;
   
-  public static final double drumRadius = 0.0;
+  public static final double drumRadius = 0.03343;
 
-  public static final double gearing = 0.0;
+  public static final double gearing = 11.28;
   
   public static final SparkBaseConfig motorDefaultConfig = new SparkMaxConfig()
   .smartCurrentLimit(0)
@@ -47,12 +47,12 @@ public class ElevatorConstants {
   public static final double encoderPositionConversionFactor = 0.0;
   public static final double encoderVelocityConversionFactor = 0.0;
 
-  public static final double P = 0.0;
+  public static final double P = 1;
   public static final double I = 0.0;
   public static final double IZ = 0.0;
   public static final double D = 0.0;
 
-  public static final Constraints constraints = new Constraints(0.0, 0.0);
+  public static final Constraints constraints = new Constraints(100, 100);
 
   public static final double S = 0;
   public static final double G = 0;

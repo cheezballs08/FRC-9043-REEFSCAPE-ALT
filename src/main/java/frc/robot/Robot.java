@@ -3,18 +3,15 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
-
-import org.littletonrobotics.junction.LoggedRobot;
-import org.littletonrobotics.junction.Logger;
-import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.photonvision.simulation.VisionSystemSim;
 
+import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.units.VisionProcessingUnit;
 import frc.robot.utils.CameraPosition;
 
-public class Robot extends LoggedRobot {
+public class Robot extends TimedRobot {
   private Command autonomousCommand;
 
   private final RobotContainer robotContainer;
@@ -26,12 +23,6 @@ public class Robot extends LoggedRobot {
   private VisionSystemSim visionSimulation = VisionProcessingUnit.getSimulation();
 
   public Robot() {
-
-    // TODO: Advantage kiti yarışma vakti ayarla.
-    Logger.addDataReceiver(new NT4Publisher());
-
-    Logger.start();
-
     robotContainer = new RobotContainer();
   }
 

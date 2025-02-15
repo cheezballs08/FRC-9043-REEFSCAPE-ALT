@@ -17,7 +17,7 @@ import frc.robot.subsystems.drivetrain.DrivetrainSubsystem;
 import frc.robot.units.VisionProcessingUnit;
 import frc.robot.utils.CameraPosition;
 import frc.robot.utils.DriveType;
-import org.littletonrobotics.junction.Logger;
+import frc.robot.utils.Logger;
 
 public class ChaseApriltag extends Command {
 
@@ -107,31 +107,31 @@ public class ChaseApriltag extends Command {
     }
 
     Pose3d robotPose = new Pose3d(drivetrainSubsystem.getPose());
-    Logger.recordOutput("ChaseApriltag/RobotPose", robotPose);
+    Logger.log("ChaseApriltag/RobotPose", robotPose);
 
     Transform3d camToTarget = target.getBestCameraToTarget();
 
     Pose3d cameraPose = robotPose.transformBy(VisionConstants.robotToFrontCameraTransform);
-    Logger.recordOutput("ChaseApriltag/CameraPose", cameraPose);
+    Logger.log("ChaseApriltag/CameraPose", cameraPose);
 
     Pose3d targetPose = cameraPose.transformBy(camToTarget);
-    Logger.recordOutput("ChaseApriltag/TargetPose", targetPose);
+    Logger.log("ChaseApriltag/TargetPose", targetPose);
 
     Pose3d goalPose = targetPose.transformBy(apriltagToGoal.inverse());
-    Logger.recordOutput("ChaseApriltag/GoalPose", goalPose);
+    Logger.log("ChaseApriltag/GoalPose", goalPose);
 
 
     xSpeed = xController.calculate(robotPose.getX(), goalPose.getX());
-    Logger.recordOutput("ChaseApriltag/XSpeed", xSpeed);
-    Logger.recordOutput("ChaseApriltag/XError", xController.getPositionError());
+    Logger.log("ChaseApriltag/XSpeed", xSpeed);
+    Logger.log("ChaseApriltag/XError", xController.getPositionError());
 
     ySpeed = yController.calculate(robotPose.getY(), goalPose.getY());
-    Logger.recordOutput("ChaseApriltag/YSpeed", ySpeed);
-    Logger.recordOutput("ChaseApriltag/YError", yController.getPositionError());
+    Logger.log("ChaseApriltag/YSpeed", ySpeed);
+    Logger.log("ChaseApriltag/YError", yController.getPositionError());
 
     rSpeed = rController.calculate(robotPose.getRotation().getAngle(), goalPose.getRotation().getAngle());
-    Logger.recordOutput("ChaseApriltag/RSpeed", rSpeed);
-    Logger.recordOutput("ChaseApriltag/RError", rController.getPositionError());
+    Logger.log("ChaseApriltag/RSpeed", rSpeed);
+    Logger.log("ChaseApriltag/RError", rController.getPositionError());
 
     drivetrainSubsystem.drive(xSpeed, ySpeed, rSpeed, DriveType.RobotRelative);
   }

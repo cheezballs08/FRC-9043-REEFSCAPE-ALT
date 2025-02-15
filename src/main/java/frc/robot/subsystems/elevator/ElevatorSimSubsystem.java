@@ -1,6 +1,6 @@
 package frc.robot.subsystems.elevator;
 
-import org.littletonrobotics.junction.mechanism.LoggedMechanismLigament2d;
+import frc.robot.utils.Logger;
 
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -17,8 +17,7 @@ public class ElevatorSimSubsystem implements ElevatorSubsystem {
 
   ElevatorFeedforward feedforward;
 
-  LoggedMechanismLigament2d ligament;
-
+  MechanismLigament2d ligament;
 
   public ElevatorSimSubsystem() {
     this.simulation  = new ElevatorSim(
@@ -48,7 +47,7 @@ public class ElevatorSimSubsystem implements ElevatorSubsystem {
       ElevatorConstants.A
     );
     
-    this.ligament = new LoggedMechanismLigament2d(
+    this.ligament = new MechanismLigament2d(
       "elevator", 
       ElevatorConstants.startingHeight, 
       90
@@ -56,12 +55,23 @@ public class ElevatorSimSubsystem implements ElevatorSubsystem {
   }
 
   @Override
-  public void periodic() {}
+  public void periodic() {
+    simulation.update(0.020);
+
+    Logger.log("Elevator/Encoder/Position", simulation.getPositionMeters());
+    Logger.log("Elevator/Controller/SetpointPosition", controller.getSetpoint().position);
+    Logger.log("Elevator/Controller/SetpointVelocity", controller.getSetpoint().velocity);
+    Logger.log("Elevator/Controller/PositionError", controller.getPositionError());
+    Logger.log("Elevator/Controller/VelocityError", controller.getVelocityError());
+    Logger.log("Elevator/Controller/AccumulatedError", controller.getAccumulatedError());
+    Logger.log("Elevator/Controller/AtSetpoint", controller.atSetpoint());
+      
+    this.ligament.setLength(simulation.getPositionMeters());
+  }
 
   @Override
   public void setElevatorPosition(double desiredPosition) {
     double currentPosition = simulation.getPositionMeters();
-    this.ligament.setLength(currentPosition);
     
     double currentVelocity = simulation.getVelocityMetersPerSecond();
 
@@ -70,7 +80,6 @@ public class ElevatorSimSubsystem implements ElevatorSubsystem {
     output += feedforward.calculate(currentVelocity);
 
     this.setVoltages(output);
-
   }
 
   @Override
@@ -79,7 +88,7 @@ public class ElevatorSimSubsystem implements ElevatorSubsystem {
   }
 
   @Override
-  public LoggedMechanismLigament2d getLigament() {
+  public MechanismLigament2d getLigament() {
     return ligament;
   }
   

@@ -3,15 +3,13 @@ package frc.robot.subsystems.elevator;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.revrobotics.spark.SparkMax;
 
-import org.littletonrobotics.junction.Logger;
-import org.littletonrobotics.junction.mechanism.LoggedMechanismLigament2d;
-
+import frc.robot.utils.Logger;
 import frc.robot.constants.ElevatorConstants;
 import frc.robot.constants.MotorConstants;
 import frc.robot.utils.CANCoderWrapper;
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.wpilibj.smartdashboard.LoggedMechanismLigament2dmLigament2d;
+import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
 
 // TODO: Feedforward kullanımı ekle.
 public class ElevatorRealSubsystem implements ElevatorSubsystem {
@@ -55,21 +53,21 @@ public class ElevatorRealSubsystem implements ElevatorSubsystem {
 
   @Override
   public void periodic() {
-    Logger.recordOutput("ElevatorSubsystem/Speeds/Motor1", motor1.get());
-    Logger.recordOutput("ElevatorSubsystem/Speeds/Motor2", motor2.get());
+    Logger.log("ElevatorSubsystem/Speeds/Motor1", motor1.get());
+    Logger.log("ElevatorSubsystem/Speeds/Motor2", motor2.get());
     
-    Logger.recordOutput("ElevatorSubsystem/Voltages/Motor1", motor1.getAppliedOutput());
-    Logger.recordOutput("ElevatorSubsystem/Voltages/Motor2", motor2.getAppliedOutput());
+    Logger.log("ElevatorSubsystem/Voltages/Motor1", motor1.getAppliedOutput());
+    Logger.log("ElevatorSubsystem/Voltages/Motor2", motor2.getAppliedOutput());
 
-    Logger.recordOutput("ElevatorSubsystem/Encoder/Position", encoder.getPosition());
-    Logger.recordOutput("ElevatorSubsystem/Encoder/Velocity", encoder.getVelocity());
+    Logger.log("ElevatorSubsystem/Encoder/Position", encoder.getPosition());
+    Logger.log("ElevatorSubsystem/Encoder/Velocity", encoder.getVelocity());
 
-    Logger.recordOutput("ElevatorSubsystem/Controller/SetpointPosition", controller.getSetpoint().position);
-    Logger.recordOutput("ElevatorSubsystem/Controller/SetpointVelocity", controller.getSetpoint().velocity);
-    Logger.recordOutput("ElevatorSubsystem/Controller/PositionError", controller.getPositionError());
-    Logger.recordOutput("ElevatorSubsystem/Controller/VelocityError", controller.getVelocityError());
-    Logger.recordOutput("ElevatorSubsystem/Controller/AccumulatedError", controller.getAccumulatedError());
-    Logger.recordOutput("ElevatorSubsystem/Controller/AtSetpoint", controller.atSetpoint());
+    Logger.log("ElevatorSubsystem/Controller/SetpointPosition", controller.getSetpoint().position);
+    Logger.log("ElevatorSubsystem/Controller/SetpointVelocity", controller.getSetpoint().velocity);
+    Logger.log("ElevatorSubsystem/Controller/PositionError", controller.getPositionError());
+    Logger.log("ElevatorSubsystem/Controller/VelocityError", controller.getVelocityError());
+    Logger.log("ElevatorSubsystem/Controller/AccumulatedError", controller.getAccumulatedError());
+    Logger.log("ElevatorSubsystem/Controller/AtSetpoint", controller.atSetpoint());
   }
 
   public void setVoltages(double voltage) {
@@ -107,7 +105,7 @@ public class ElevatorRealSubsystem implements ElevatorSubsystem {
   }
 
   @Override
-  public LoggedMechanismLigament2d getLigament() {
+  public MechanismLigament2d getLigament() {
     throw new UnsupportedOperationException("Sim dışı kullanılmış metod 'getLigament'");   
   }
 }

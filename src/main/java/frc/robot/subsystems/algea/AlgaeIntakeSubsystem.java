@@ -2,7 +2,7 @@ package frc.robot.subsystems.algea;
 
 import com.revrobotics.spark.SparkMax;
 
-import org.littletonrobotics.junction.Logger;
+import frc.robot.utils.Logger;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.constants.AlgeaIntakeConstants;
@@ -27,13 +27,13 @@ public class AlgaeIntakeSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    Logger.recordOutput("AlgeaIntake/Speeds/Motor1", motor1.get());
-    Logger.recordOutput("AlgeaIntake/Speeds/Motor2", motor2.get());
+    Logger.log("AlgeaIntake/Speeds/Motor1", motor1.get());
+    Logger.log("AlgeaIntake/Speeds/Motor2", motor2.get());
     
-    Logger.recordOutput("AlgeaIntake/Voltages/Motor1", motor1.getAppliedOutput());
-    Logger.recordOutput("AlgeaIntake/Voltages/Motor2", motor2.getAppliedOutput());
+    Logger.log("AlgeaIntake/Voltages/Motor1", motor1.getAppliedOutput());
+    Logger.log("AlgeaIntake/Voltages/Motor2", motor2.getAppliedOutput());
 
-    Logger.recordOutput("AlgeaIntake/Sensor", this.isSensorActive());
+    Logger.log("AlgeaIntake/Sensor", this.isSensorActive());
   }
 
   public void setSpeeds(double speed){

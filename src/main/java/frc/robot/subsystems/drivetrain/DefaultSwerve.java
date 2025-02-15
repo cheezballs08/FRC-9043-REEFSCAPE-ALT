@@ -14,8 +14,11 @@ import frc.robot.constants.RobotConstants;
 import frc.robot.units.VisionProcessingUnit;
 import frc.robot.utils.CameraPosition;
 import frc.robot.utils.DriveType;
+import frc.robot.utils.Logger;
 import swervelib.SwerveDrive;
 import swervelib.parser.SwerveParser;
+import swervelib.telemetry.SwerveDriveTelemetry;
+import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 
 public class DefaultSwerve extends SubsystemBase implements DrivetrainSubsystem {
   
@@ -28,6 +31,7 @@ public class DefaultSwerve extends SubsystemBase implements DrivetrainSubsystem 
   private PPHolonomicDriveController controller = new PPHolonomicDriveController(ModuleConstants.drivePID, ModuleConstants.anglePID);
 
   public DefaultSwerve() {
+    
     try {
       this.swerveDrive = new SwerveParser(DrivetrainConstants.jsonDirectory)
       .createSwerveDrive(ModuleConstants.driveMaxSpeed);
@@ -35,6 +39,8 @@ public class DefaultSwerve extends SubsystemBase implements DrivetrainSubsystem 
     } catch (IOException e) {
       e.printStackTrace();
     }
+
+    SwerveDriveTelemetry.verbosity = TelemetryVerbosity.NONE;
 
     this.resetOdometry(RobotConstants.initialPose);
 
@@ -56,6 +62,12 @@ public class DefaultSwerve extends SubsystemBase implements DrivetrainSubsystem 
   @Override
   public void periodic() {
     this.updateOdometer();
+
+    Logger.log("/Drivetrain/SimPose", this.getSimPose());
+    Logger.log("/Drivetrain/OdometryPose", this.getPose());
+
+    Logger.log("/Drivetrain/FieldRelativeSpeeds", this.getFieldRelativeSpeeds());
+    Logger.log("/Drivetrain/RobotRelativeSpeeds", this.getRobotRelativeSpeeds());
   }
 
 
@@ -89,9 +101,9 @@ public class DefaultSwerve extends SubsystemBase implements DrivetrainSubsystem 
   }
 
 /*  public void drive(ChassisSpeeds speeds, DriveFeedforwards feedforwards) {
-    DogLog.recordOutput("/Dirty/Speeds", speeds);
-    DogLog.recordOutput("/Dirty/Accels", feedforwards.accelerationsMPSSq());
-    DogLog.recordOutput("/Dirty/Forces", feedforwards.linearForces().toString());
+    DogLog.log("/Dirty/Speeds", speeds);
+    DogLog.log("/Dirty/Accels", feedforwards.accelerationsMPSSq());
+    DogLog.log("/Dirty/Forces", feedforwards.linearForces().toString());
     
     swerveDrive.drive(
       speeds,

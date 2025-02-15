@@ -1,27 +1,29 @@
 package frc.robot;
 
-import org.littletonrobotics.junction.mechanism.LoggedMechanism2d;
-import org.littletonrobotics.junction.mechanism.LoggedMechanismLigament2d;
-import org.littletonrobotics.junction.mechanism.LoggedMechanismRoot2d;
+import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
+import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
+import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
 
 import frc.robot.constants.AlgeaIntakeConstants;
 import frc.robot.subsystems.coral.CoralIntakeSubsystem;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
-import org.littletonrobotics.junction.Logger;
+import frc.robot.utils.Logger;
 
 public class MechansimSim {
-  LoggedMechanism2d ui;
+  Mechanism2d ui;
 
-  LoggedMechanismRoot2d root;
+  MechanismRoot2d root;
 
-  LoggedMechanismLigament2d coralLigament;
+  MechanismLigament2d coralLigament;
 
-  LoggedMechanismLigament2d algeaLigament;
+  MechanismLigament2d algeaLigament;
 
-  LoggedMechanismLigament2d elevatorLigament;
+  MechanismLigament2d elevatorLigament;
+
+  Mechanism2d mechanism2d;
 
   public MechansimSim(CoralIntakeSubsystem coralIntakeSubsystem, ElevatorSubsystem elevatorSubsystem) {
-    this.ui = new LoggedMechanism2d(2, 2);
+    this.ui = new Mechanism2d(2, 2);
     
     this.root = ui.getRoot("MechansimRoot", 1.20, 0.05);
 
@@ -33,11 +35,11 @@ public class MechansimSim {
   }
 
   public MechansimSim() {
-    this.ui = new LoggedMechanism2d(2, 2);
+    this.ui = new Mechanism2d(2, 2);
 
     this.root = ui.getRoot("MechansimRoot", 1.25, 0.60);
 
-    this.algeaLigament = new LoggedMechanismLigament2d(
+    this.algeaLigament = new MechanismLigament2d(
       "AlgeaLigament", 
       AlgeaIntakeConstants.lenght, 
       0
@@ -47,7 +49,7 @@ public class MechansimSim {
   }
 
   public void update() {
-    Logger.recordOutput("Mechansim", ui);
+    Logger.log("Mechansim", ui);
   }
 
 }
