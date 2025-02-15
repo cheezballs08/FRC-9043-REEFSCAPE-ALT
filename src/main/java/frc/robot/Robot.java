@@ -35,6 +35,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     this.updateVisionUnits();
+    this.robotContainer.mechansimSim.update();
   
     CommandScheduler.getInstance().run();
   }

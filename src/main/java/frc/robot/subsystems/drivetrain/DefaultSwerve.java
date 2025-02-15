@@ -63,11 +63,11 @@ public class DefaultSwerve extends SubsystemBase implements DrivetrainSubsystem 
   public void periodic() {
     this.updateOdometer();
 
-    Logger.log("/Drivetrain/SimPose", this.getSimPose());
-    Logger.log("/Drivetrain/OdometryPose", this.getPose());
+    Logger.log("Drivetrain/SimPose", this.getSimPose());
+    Logger.log("Drivetrain/OdometryPose", this.getPose());
 
-    Logger.log("/Drivetrain/FieldRelativeSpeeds", this.getFieldRelativeSpeeds());
-    Logger.log("/Drivetrain/RobotRelativeSpeeds", this.getRobotRelativeSpeeds());
+    Logger.log("Drivetrain/FieldRelativeSpeeds", this.getFieldRelativeSpeeds());
+    Logger.log("Drivetrain/RobotRelativeSpeeds", this.getRobotRelativeSpeeds());
   }
 
 
@@ -93,10 +93,10 @@ public class DefaultSwerve extends SubsystemBase implements DrivetrainSubsystem 
 
   public void drive(double xSpeed, double ySpeed, double rSpeed, DriveType driveType) {
     if (driveType == DriveType.FieldRelative) {
-      swerveDrive.driveFieldOriented(new ChassisSpeeds(xSpeed, ySpeed, rSpeed));
+      swerveDrive.driveFieldOriented(new ChassisSpeeds(-xSpeed, -ySpeed, -rSpeed));
     
     } else {
-      swerveDrive.drive(new ChassisSpeeds(xSpeed, ySpeed, rSpeed));  
+      swerveDrive.drive(new ChassisSpeeds(-xSpeed, -ySpeed, -rSpeed));  
     }
   }
 

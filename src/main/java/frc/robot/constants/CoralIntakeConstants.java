@@ -64,7 +64,7 @@ public class CoralIntakeConstants {
   public static final double positionConversionConstant = 0;
   public static final double velocityConversionConstant = 0;
   
-  public static final double P = 1;
+  public static final double P = 0.05;
   public static final double I = 0;
   public static final double D = 0;
   public static final double IZ = 0;
@@ -75,4 +75,6 @@ public class CoralIntakeConstants {
   public static final double G = 0;
   public static final double V = 0;
   public static final double A = 0;
+
+  public static final double mechansimOffset = 90;
 }

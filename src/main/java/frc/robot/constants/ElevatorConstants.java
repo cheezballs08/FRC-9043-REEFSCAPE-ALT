@@ -47,7 +47,7 @@ public class ElevatorConstants {
   public static final double encoderPositionConversionFactor = 0.0;
   public static final double encoderVelocityConversionFactor = 0.0;
 
-  public static final double P = 1;
+  public static final double P = 10;
   public static final double I = 0.0;
   public static final double IZ = 0.0;
   public static final double D = 0.0;

@@ -53,9 +53,9 @@ public class RobotContainer {
   DriveCommand teleopDriveCommand = new DriveCommand(
     drivetrainSubsystem,
     DriveType.FieldRelative,
-    () -> -controller.getLeftX(),
-    () -> -controller.getLeftY(),
-    () -> -controller.getRightX() 
+    () -> controller.getLeftY(),
+    () -> controller.getLeftX(),
+    () -> controller.getRightX() 
   );
 
   ChaseApriltag chaseApriltag18 = new ChaseApriltag(
@@ -96,59 +96,59 @@ public class RobotContainer {
   /* <--------------------------------------------------------------------------------------------------------------------> */
 
   ParallelCommandGroup restPosition = new ParallelCommandGroup(
-    toRestAngle,
-    toRestHeight
+    toRestAngle.asProxy(),
+    toRestHeight.asProxy()
   );
 
   ParallelCommandGroup feedPosition = new ParallelCommandGroup(
-    toFeedAngle,
-    toFeedHeight
+    toFeedAngle.asProxy(),
+    toFeedHeight.asProxy()
   );
 
   ParallelCommandGroup L1Position = new ParallelCommandGroup(
-    toL1Angle,
-    toL1Height
+    toL1Angle.asProxy(),
+    toL1Height.asProxy()
   );
 
   ParallelCommandGroup L2Position = new ParallelCommandGroup(
-    toL2Angle,
-    toL2Height
+    toL2Angle.asProxy(),
+    toL2Height.asProxy()
   );
 
   ParallelCommandGroup L3Position = new ParallelCommandGroup(
-    toL3Angle,
-    toL3Height
+    toL3Angle.asProxy(),
+    toL3Height.asProxy()
   );
 
   ParallelCommandGroup L4Position = new ParallelCommandGroup(
-    toL4Angle,
-    toL4Height
+    toL4Angle.asProxy(),
+    toL4Height.asProxy()
   );
 
   /* <--------------------------------------------------------------------------------------------------------------------> */
 
   SequentialCommandGroup takeCoral = new SequentialCommandGroup(
-    feedPosition,
-    intakeCoral
+    feedPosition.asProxy(),
+    intakeCoral.asProxy()
   );
 
   SequentialCommandGroup putCoralToL1 = new SequentialCommandGroup(
-    L1Position,
+    L1Position.asProxy(),
     outtakeCoral.asProxy()
   );
 
   SequentialCommandGroup putCoralToL2 = new SequentialCommandGroup(
-    L2Position,
+    L2Position.asProxy(),
     outtakeCoral.asProxy()
   );
 
   SequentialCommandGroup putCoralToL3 = new SequentialCommandGroup(
-    L3Position,
+    L3Position.asProxy(),
     outtakeCoral.asProxy()
   );
 
   SequentialCommandGroup putCoralToL4 = new SequentialCommandGroup(
-    L4Position,
+    L4Position.asProxy(),
     outtakeCoral.asProxy()
   );
 
@@ -156,14 +156,16 @@ public class RobotContainer {
 
   MechansimSim mechansimSim = new MechansimSim(coralIntakeSubsystem, elevatorSubsystem);
 
-  MechansimSim algeaMechansimSim = new MechansimSim();
-
   /* <--------------------------------------------------------------------------------------------------------------------> */
+
+  public RobotContainer() {
+    configureBindings();
+  }
 
   private void configureBindings() {
     drivetrainSubsystem.setDefaultCommand(teleopDriveCommand);
-    coralIntakeSubsystem.setDefaultCommand(restPosition);
-    elevatorSubsystem.setDefaultCommand(restPosition);
+    coralIntakeSubsystem.setDefaultCommand(toRestAngle);
+    elevatorSubsystem.setDefaultCommand(toRestHeight);
 
     x.onTrue(restPosition);
     a.onTrue(L1Position);

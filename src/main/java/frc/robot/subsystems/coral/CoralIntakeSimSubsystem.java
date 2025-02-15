@@ -77,7 +77,7 @@ public class CoralIntakeSimSubsystem extends SubsystemBase implements CoralIntak
     Logger.log("CoralIntake/Controller/AccumulatedError", angleController.getAccumulatedError());
     Logger.log("CoralIntake/Controller/AtSetpoint", angleController.atSetpoint());
 
-    ligament.setAngle(Units.radiansToDegrees(simulation.getAngleRads()));
+    ligament.setAngle(Units.radiansToDegrees(simulation.getAngleRads()) - CoralIntakeConstants.mechansimOffset);
   }
 
   @Override
@@ -87,7 +87,7 @@ public class CoralIntakeSimSubsystem extends SubsystemBase implements CoralIntak
 
   @Override
   public void setAngle(double angle) {
-    double speed = angleController.calculate(this.simulation.getAngleRads(), angle);
+    double speed = angleController.calculate(Units.radiansToDegrees(simulation.getAngleRads()), angle);
 
     double output = speed + feedforward.calculate(simulation.getAngleRads(), simulation.getVelocityRadPerSec());
 

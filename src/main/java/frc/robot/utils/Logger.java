@@ -7,6 +7,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Logger extends DogLog {
 
   public static void log(String key, Mechanism2d field) {
-    SmartDashboard.putData("/DogLog/" + key, field);
+    SmartDashboard.putData(key, field);
   }
 }

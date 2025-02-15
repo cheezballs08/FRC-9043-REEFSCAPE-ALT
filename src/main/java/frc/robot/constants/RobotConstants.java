@@ -28,6 +28,10 @@ public class RobotConstants {
   public static RobotConfig config;
 
   public static double robotVoltage = 12;
+
+  public static double mechansimXPosition = 1.15;
+
+  public static double mechansimYPosition = 0.25;
   
   static {
     try{
