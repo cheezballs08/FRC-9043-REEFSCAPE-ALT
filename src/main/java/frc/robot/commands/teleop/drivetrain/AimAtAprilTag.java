@@ -3,9 +3,7 @@ package frc.robot.commands.teleop.drivetrain;
 import java.util.function.Supplier;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.constants.AutoConstants;
-import frc.robot.utils.DrivetrainSubsystem;
+import frc.robot.subsystems.drivetrain.DrivetrainSubsystem;
 import frc.robot.units.VisionProcessingUnit;
 import frc.robot.utils.CameraPosition;
 import frc.robot.utils.DriveType;
@@ -50,21 +48,10 @@ public class AimAtAprilTag extends Command {
   public void updateSpeeds() {
     xSpeed = xSpeedSupplier.get();
     ySpeed = ySpeedSupplier.get();
-  
-    this.calculateRSpeed();
-  }
-
-  public void calculateRSpeed() {
-    angleError = vision.getTarget(targetId).getYaw();
   }
 
   @Override
   public void initialize() {
-    // TODO: Bunu yapmakta sıkıntı var mıdır.
-    if (Math.abs(angleError) < AutoConstants.aprilTagAngleTolerance || !vision.isSeen(targetId)) {
-      // This specifically.
-      CommandScheduler.getInstance().cancel(this);
-    }
   }
 
   @Override
@@ -81,11 +68,6 @@ public class AimAtAprilTag extends Command {
 
   @Override
   public boolean isFinished() {
-
-    if (Math.abs(angleError) < AutoConstants.aprilTagAngleTolerance || !vision.isSeen(targetId)) {
-      return true;
-    }
-
     return false;
   }
 }

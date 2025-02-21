@@ -3,7 +3,7 @@ package frc.robot.commands.base;
 import java.util.function.Supplier;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.utils.DrivetrainSubsystem;
+import frc.robot.subsystems.drivetrain.DrivetrainSubsystem;
 import frc.robot.utils.DriveType;
 
 public class DriveCommand extends Command {
@@ -44,7 +44,7 @@ public class DriveCommand extends Command {
     yInput = yInputSupplier.get();
     rInput = rInputSupplier.get();
 
-    drivetrainSubsystem.drive(yInput, xInput, rInput, driveType);
+    drivetrainSubsystem.drive(xInput, yInput, rInput, driveType);
   }
 
   @Override

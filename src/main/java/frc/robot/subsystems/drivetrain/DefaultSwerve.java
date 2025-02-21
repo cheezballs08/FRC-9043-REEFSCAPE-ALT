@@ -4,8 +4,6 @@ import java.io.IOException;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
-import com.pathplanner.lib.util.DriveFeedforwards;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -16,9 +14,11 @@ import frc.robot.constants.RobotConstants;
 import frc.robot.units.VisionProcessingUnit;
 import frc.robot.utils.CameraPosition;
 import frc.robot.utils.DriveType;
-import frc.robot.utils.DrivetrainSubsystem;
+import frc.robot.utils.Logger;
 import swervelib.SwerveDrive;
 import swervelib.parser.SwerveParser;
+import swervelib.telemetry.SwerveDriveTelemetry;
+import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 
 public class DefaultSwerve extends SubsystemBase implements DrivetrainSubsystem {
   
@@ -31,6 +31,7 @@ public class DefaultSwerve extends SubsystemBase implements DrivetrainSubsystem 
   private PPHolonomicDriveController controller = new PPHolonomicDriveController(ModuleConstants.drivePID, ModuleConstants.anglePID);
 
   public DefaultSwerve() {
+    
     try {
       this.swerveDrive = new SwerveParser(DrivetrainConstants.jsonDirectory)
       .createSwerveDrive(ModuleConstants.driveMaxSpeed);
@@ -39,16 +40,18 @@ public class DefaultSwerve extends SubsystemBase implements DrivetrainSubsystem 
       e.printStackTrace();
     }
 
+    SwerveDriveTelemetry.verbosity = TelemetryVerbosity.NONE;
+
     this.resetOdometry(RobotConstants.initialPose);
 
     swerveDrive.setCosineCompensator(false);
+    swerveDrive.setHeadingCorrection(false);
 
     AutoBuilder.configure(
       this::getPose, 
       this::resetOdometry, 
       this::getRobotRelativeSpeeds, 
-      // TODO: bunu feedforwardları da kullanack şekilde değiştir
-      (speeds, feedworwards) -> this.drive(speeds), 
+      (speeds, feedforwards) -> this.drive(speeds),
       controller, 
       RobotConstants.config, 
       () -> RobotConstants.alliance != DriverStation.Alliance.Blue, 
@@ -59,6 +62,12 @@ public class DefaultSwerve extends SubsystemBase implements DrivetrainSubsystem 
   @Override
   public void periodic() {
     this.updateOdometer();
+
+    Logger.log("Drivetrain/SimPose", this.getSimPose());
+    Logger.log("Drivetrain/OdometryPose", this.getPose());
+
+    Logger.log("Drivetrain/FieldRelativeSpeeds", this.getFieldRelativeSpeeds());
+    Logger.log("Drivetrain/RobotRelativeSpeeds", this.getRobotRelativeSpeeds());
   }
 
 
@@ -84,17 +93,24 @@ public class DefaultSwerve extends SubsystemBase implements DrivetrainSubsystem 
 
   public void drive(double xSpeed, double ySpeed, double rSpeed, DriveType driveType) {
     if (driveType == DriveType.FieldRelative) {
-      swerveDrive.driveFieldOriented(new ChassisSpeeds(xSpeed, ySpeed, rSpeed));
+      swerveDrive.driveFieldOriented(new ChassisSpeeds(-xSpeed, -ySpeed, -rSpeed));
     
     } else {
-      swerveDrive.drive(new ChassisSpeeds(xSpeed, ySpeed, rSpeed));  
+      swerveDrive.drive(new ChassisSpeeds(-xSpeed, -ySpeed, -rSpeed));  
     }
   }
 
-  // TODO: Bunun niye çalışmadığına bak.
-  public void drive(ChassisSpeeds speeds, DriveFeedforwards feedforwards) {
-    swerveDrive.drive(speeds, swerveDrive.getStates(), feedforwards.linearForces());
-  }
+/*  public void drive(ChassisSpeeds speeds, DriveFeedforwards feedforwards) {
+    DogLog.log("/Dirty/Speeds", speeds);
+    DogLog.log("/Dirty/Accels", feedforwards.accelerationsMPSSq());
+    DogLog.log("/Dirty/Forces", feedforwards.linearForces().toString());
+    
+    swerveDrive.drive(
+      speeds,
+      swerveDrive.kinematics.toSwerveModuleStates(speeds),
+      feedforwards.linearForces()
+      );
+  }*/
 
   public Pose2d getPose() {
     return swerveDrive.getPose();

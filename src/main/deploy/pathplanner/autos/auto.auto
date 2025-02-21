@@ -7,13 +7,132 @@
         {
           "type": "path",
           "data": {
-            "pathName": "mid-1"
+            "pathName": "mid-6"
+          }
+        },
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "angleToL2L3"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 1.2
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "coraldrop6_to_topfeed"
+          }
+        },
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "angleToFeed"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 1.2
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "topfeeder_to_coraldrop5"
+          }
+        },
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "angleToL2L3"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 1.2
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "coraldrop5_to_topfeed"
+          }
+        },
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "angleToFeed"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 1.2
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "topfeeder_to_coraldrop5"
+          }
+        },
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "angleToL2L3"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 1.2
+                }
+              }
+            ]
           }
         }
       ]
     }
   },
-  "resetOdom": false,
+  "resetOdom": true,
   "folder": null,
   "choreoAuto": false
 }

@@ -3,12 +3,9 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
-
 import org.photonvision.simulation.VisionSystemSim;
 
-import edu.wpi.first.hal.AllianceStationID;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.simulation.DriverStationSim;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.units.VisionProcessingUnit;
@@ -38,7 +35,9 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     this.updateVisionUnits();
-  
+    this.robotContainer.mechansimSim.update();
+    this.robotContainer.articulationHelper.update();
+    
     CommandScheduler.getInstance().run();
   }
 
@@ -53,6 +52,10 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
+    frontUnit.disableVisionEstimation(true);
+    leftUnit.disableVisionEstimation(true);
+    rightUnit.disableVisionEstimation(true);
+
     autonomousCommand = robotContainer.getAutonomousCommand();
 
     if (autonomousCommand != null) {
@@ -64,10 +67,17 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {}
 
   @Override
-  public void autonomousExit() {}
+  public void autonomousExit() {
+    frontUnit.disableVisionEstimation(false);
+    leftUnit.disableVisionEstimation(false);
+    rightUnit.disableVisionEstimation(false);
+  }
 
   @Override
   public void teleopInit() {
+    frontUnit.disableVisionEstimation(false);
+    leftUnit.disableVisionEstimation(false);
+    rightUnit.disableVisionEstimation(false);
  
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
@@ -82,7 +92,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void simulationInit() {
-   DriverStationSim.setAllianceStationId(AllianceStationID.Blue1);
     visionSimulation.update(robotContainer.drivetrainSubsystem.getSimPose());
   }
 

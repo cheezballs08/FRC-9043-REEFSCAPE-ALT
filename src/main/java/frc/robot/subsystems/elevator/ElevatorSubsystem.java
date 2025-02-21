@@ -1,87 +1,18 @@
 package frc.robot.subsystems.elevator;
 
-import com.ctre.phoenix6.hardware.CANcoder;
-import com.revrobotics.spark.SparkMax;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
 
-import dev.doglog.DogLog;
-import frc.robot.constants.ElevatorConstants;
-import frc.robot.constants.MotorConstants;
-import frc.robot.utils.CANCoderWrapper;
-import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 
-public class ElevatorSubsystem extends SubsystemBase {
-  
-  SparkMax motor1, motor2;
+public interface ElevatorSubsystem extends Subsystem {
 
-  CANCoderWrapper encoder;
+  public void setElevatorPosition(double desiredPosition);
 
-  ProfiledPIDController controller;
+  public void setVoltages(double voltage);
 
-  public ElevatorSubsystem() {
-    this.motor1 = new SparkMax(ElevatorConstants.motor1ID, ElevatorConstants.motor1type);
-    this.motor1.configure(ElevatorConstants.motor1Config, MotorConstants.resetMode, MotorConstants.persistMode);
+  public MechanismLigament2d getLigament();
 
-    this.motor2 = new SparkMax(ElevatorConstants.motor2ID, ElevatorConstants.motor2type);
-    this.motor1.configure(ElevatorConstants.motor2Config, MotorConstants.resetMode, MotorConstants.persistMode);
-    
-    this.encoder = new CANCoderWrapper(new CANcoder(ElevatorConstants.encoderID));
+  public Transform3d getElevatorTransform();
 
-    this.encoder.setPositionConversionFactor(ElevatorConstants.encoderPositionConversionFactor);
-    this.encoder.setVelocityConversionFactor(ElevatorConstants.encoderVelocityConversionFactor);
-
-    this.controller = new ProfiledPIDController(ElevatorConstants.P, ElevatorConstants.I, ElevatorConstants.D, ElevatorConstants.constraints);
-    this.controller.setIZone(ElevatorConstants.IZ);
-  }
-
-  @Override
-  public void periodic() {
-    DogLog.log("ElevatorSubsystem/Speeds/Motor1", motor1.get());
-    DogLog.log("ElevatorSubsystem/Speeds/Motor2", motor2.get());
-    
-    DogLog.log("ElevatorSubsystem/Voltages/Motor1", motor1.getAppliedOutput());
-    DogLog.log("ElevatorSubsystem/Voltages/Motor2", motor2.getAppliedOutput());
-
-    DogLog.log("ElevatorSubsystem/Encoder/Position", encoder.getPosition());
-    DogLog.log("ElevatorSubsystem/Encoder/Velocity", encoder.getVelocity());
-
-    DogLog.log("ElevatorSubsystem/Controller/SetpointPosition", controller.getSetpoint().position);
-    DogLog.log("ElevatorSubsystem/Controller/SetpointVelocity", controller.getSetpoint().velocity);
-    DogLog.log("ElevatorSubsystem/Controller/PositionError", controller.getPositionError());
-    DogLog.log("ElevatorSubsystem/Controller/VelocityError", controller.getVelocityError());
-    DogLog.log("ElevatorSubsystem/Controller/AccumulatedError", controller.getAccumulatedError());
-    DogLog.log("ElevatorSubsystem/Controller/AtSetpoint", controller.atSetpoint());
-  }
-
-  public void setSpeeds(double speed) {
-    this.motor1.set(speed);
-    this.motor2.set(speed);
-  }
-
-  public void setElevatorPosition(double desiredPosition) {
-
-    if (desiredPosition > ElevatorConstants.elevatorHeight || desiredPosition < 0) {
-      System.err.println("İstenen pozisyon ya çok büyük ya da 0'dan küçük");
-    
-      return;  
-    }
-
-    double currentPosition = encoder.getPosition();
-
-    double output = controller.calculate(currentPosition, desiredPosition);
-
-    this.setSpeeds(output);
-  }
-
-  public double getEncoderPosition() {
-    return encoder.getPosition();
-  }
-
-  public double getEncoderVelocity() {
-    return encoder.getVelocity();
-  }
-
-  public boolean isAtSetpoint() {
-    return controller.atSetpoint();
-  }
 }

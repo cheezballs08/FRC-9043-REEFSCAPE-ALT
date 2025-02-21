@@ -1,13 +1,11 @@
 package frc.robot.constants;
 
-import com.pathplanner.lib.config.ModuleConfig;
 import com.pathplanner.lib.config.PIDConstants;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
-
-import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 
 public class ModuleConstants {
   
@@ -59,6 +57,8 @@ public class ModuleConstants {
   public static final double DDrive = 1;
   public static final double IZDrive = 0;
 
+  public static final Constraints driveConstraints = new Constraints(driveMaxSpeed, driveMaxAcceleration);
+
   public static final PIDConstants drivePID = new PIDConstants(PDrive, IDrive, DDrive, IZDrive);
 
   public static final double PAngle = 0.0020645;
@@ -66,16 +66,17 @@ public class ModuleConstants {
   public static final double DAngle = 0;
   public static final double IZAngle = 0;
 
+  public static final Constraints angleConstraints = new Constraints(driveMaxSpeed, driveMaxAcceleration);
+
   public static final PIDConstants anglePID = new PIDConstants(PAngle, IAngle, DAngle, IZAngle);
 
-  // TODO: Modül başına motor neden 1? (Büyük ihtimal sadece sürüş motorunu hesaba kattığım.)
-  // TODO: Gear reduction ile Gear ratio aynı şey mi bak.
-  public static final ModuleConfig moduleConfig = new ModuleConfig(
+/*  public static final ModuleConfig moduleConfig = new ModuleConfig(
       wheelDiameter / 2,
       driveMaxSpeed, 
       wheelCoefficientOfFriction, 
       DCMotor.getNEO(1).withReduction(driveMotorGearRatio), 
       driveCurrentLimit, 
       1
-  );
+  );*/
+
 }

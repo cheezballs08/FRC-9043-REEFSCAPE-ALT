@@ -59,6 +59,8 @@ public class VisionProcessingUnit {
 
   private PhotonCameraSim cameraSimulation;
 
+  private boolean isEstimationEnabled;
+
   private VisionProcessingUnit(String cameraName, Transform3d robotToCamTransform, SimCameraProperties cameraProperties) {
     camera = new PhotonCamera(cameraName);
 
@@ -147,7 +149,7 @@ public class VisionProcessingUnit {
   }
 
   public boolean canEstimatePose() {
-    return estimateOptional.isPresent();
+    return estimateOptional.isPresent() && isEstimationEnabled;
   }
 
   public EstimatedRobotPose getEstimate() {
@@ -165,5 +167,14 @@ public class VisionProcessingUnit {
   private PhotonCameraSim getCameraSimulation() {
     return cameraSimulation;
   }
+
+  public void disableVisionEstimation(boolean disable) {
+    if (disable) {
+      this.isEstimationEnabled = false;
+    }
+    else {
+      this.isEstimationEnabled = true;
+    }
+  } 
 
 }

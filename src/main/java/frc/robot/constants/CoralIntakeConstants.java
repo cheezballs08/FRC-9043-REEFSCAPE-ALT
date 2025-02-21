@@ -5,9 +5,27 @@ import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
+import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
 
 public class CoralIntakeConstants {
+
+  public static final double gearing = 20;
+  
+  public static final double intakeLength = 0.2;
+  
+  public static final double intakeWidth = 0.02;
+
+  public static final double intakeMass = 4;
+  
+  public static final double momentOfInertia = SingleJointedArmSim.estimateMOI(intakeLength, intakeMass);
+
+  public static final double maximumAngle = Units.degreesToRadians(90);
+
+  public static final double minimumAngle = Units.degreesToRadians(-90);
 
   public static final MotorType motorType = MotorType.kBrushless; 
 
@@ -33,14 +51,26 @@ public class CoralIntakeConstants {
   public static final double intakeSpeed = 0.0;
   
   public static final double outtakeSpeed = 0.0;
+
+  public static final double angleOffset = 14.5;
   
-  public static final double maxAngle = 0;
+  /* Coral dallarına paralel yükseklikler
+  public static final double feedAngle = 40 + angleOffset;
+  public static final double L1Angle = -10 + angleOffset;
+  public static final double L2Angle = -30 + angleOffset;
+  public static final double L4Angle = -45 + angleOffset;
+  public static final double restAngle = 90;
+  public static final double startingAngle = Units.degreesToRadians(restAngle);
+  */
+
+  public static final double feedAngle = 40 + angleOffset;
+  public static final double L1Angle = -10 + angleOffset;
+  public static final double L2Angle = -5 + angleOffset;
+  public static final double L4Angle = -48 + angleOffset;
+  public static final double restAngle = 90;
+  public static final double startingAngle = Units.degreesToRadians(restAngle);
   
-  public static final double L1Angle = 0;
-  public static final double L2Angle = 0;
-  public static final double L3Angle = 0;
-  public static final double L4Angle = 0;
-  
+
   public static final int sensorID = 0; 
   
   public static final int encoderID = 0;
@@ -48,10 +78,25 @@ public class CoralIntakeConstants {
   public static final double positionConversionConstant = 0;
   public static final double velocityConversionConstant = 0;
   
-  public static final double P = 0.0;
-  public static final double I = 0.0;
-  public static final double D = 0.0;
-  public static final double IZ = 0.0;
+  // P = 0.2 I = 0.5 D = 0.001 IZ = 1
+  public static final double P = 0.2;
+  public static final double I = 0.5;
+  public static final double D = 0.001;
+  public static final double IZ = 1;
   
-  public static final Constraints constraints = new Constraints(0.0, 0.0);
+  public static final Constraints constraints = new Constraints(1000, 1000);
+
+  public static final double S = 0;
+  public static final double G = 1;
+  public static final double V = 0;
+  public static final double A = 0;
+
+  public static final double mechansimOffset = 90;
+
+  public static final Transform3d robotToIntake = new Transform3d(
+    0.34, 
+    0.21, 
+    0.53, 
+    new Rotation3d()
+  );
 }
