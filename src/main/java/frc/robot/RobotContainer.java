@@ -65,7 +65,7 @@ public class RobotContainer {
     () -> Math.abs(controller.getRightX()) > ControllerConstants.deadband ? controller.getRightX() * 3 : 0 
   );
 
-  ChaseApriltag chaseApriltag18 = new ChaseApriltag(
+  /*ChaseApriltag chaseApriltag18 = new ChaseApriltag(
     drivetrainSubsystem,
     18,
     0.5,
@@ -77,7 +77,7 @@ public class RobotContainer {
 
   /* <--------------------------------------------------------------------------------------------------------------------> */
 
-  CoralIntakeSubsystem coralIntakeSubsystem = new CoralIntakeSimSubsystem();
+  /*CoralIntakeSubsystem coralIntakeSubsystem = new CoralIntakeSimSubsystem();
 
   AngleCoralIntake toRestAngle = new AngleCoralIntake(coralIntakeSubsystem, CoralIntakeConstants.restAngle);
   AngleCoralIntake toFeedAngle = new AngleCoralIntake(coralIntakeSubsystem, CoralIntakeConstants.feedAngle);
@@ -91,7 +91,7 @@ public class RobotContainer {
 
   /* <--------------------------------------------------------------------------------------------------------------------> */
 
-  ElevatorSubsystem elevatorSubsystem = new ElevatorSimSubsystem();
+  /*ElevatorSubsystem elevatorSubsystem = new ElevatorSimSubsystem();
   MoveElevator toRestHeight = new MoveElevator(elevatorSubsystem, ElevatorConstants.restHeight);
 
   MoveElevator toCoralFeedHeight = new MoveElevator(elevatorSubsystem, ElevatorConstants.coralFeedHeight);
@@ -108,7 +108,7 @@ public class RobotContainer {
   /* <--------------------------------------------------------------------------------------------------------------------> */
 
   // TODO: Proxy için bir çözüm bul.
-  ParallelCommandGroup restPosition = new ParallelCommandGroup(
+  /*ParallelCommandGroup restPosition = new ParallelCommandGroup(
     toRestAngle.asProxy(),
     toRestHeight.asProxy()
   );
@@ -140,7 +140,7 @@ public class RobotContainer {
 
   /* <--------------------------------------------------------------------------------------------------------------------> */
 
-  SequentialCommandGroup takeCoral = new SequentialCommandGroup(
+  /*SequentialCommandGroup takeCoral = new SequentialCommandGroup(
     feedPosition.asProxy(),
     intakeCoral.asProxy()
   );
@@ -167,7 +167,7 @@ public class RobotContainer {
 
   /* <--------------------------------------------------------------------------------------------------------------------> */
 
-  MechansimSim mechansimSim = new MechansimSim(coralIntakeSubsystem, elevatorSubsystem);
+  /*MechansimSim mechansimSim = new MechansimSim(coralIntakeSubsystem, elevatorSubsystem);
 
   ArticulationHelper articulationHelper = new ArticulationHelper(drivetrainSubsystem, coralIntakeSubsystem, elevatorSubsystem);
 
@@ -179,7 +179,7 @@ public class RobotContainer {
 
   private void configureBindings() {
     drivetrainSubsystem.setDefaultCommand(teleopDriveCommand);
-    coralIntakeSubsystem.setDefaultCommand(toRestAngle);
+    /*coralIntakeSubsystem.setDefaultCommand(toRestAngle);
     elevatorSubsystem.setDefaultCommand(toRestHeight);
 
     x.onTrue(L1CoralPosition);
@@ -192,11 +192,11 @@ public class RobotContainer {
     x.and(b).toggleOnTrue(chaseApriltag18);
 
 
-    x.and(a).and(b).and(y).onTrue(resetOdometry);
-
+    x.and(a).and(b).and(y).onTrue(resetOdometry);*/
   }
 
   public Command getAutonomousCommand() {
-    return AutoBuilder.buildAuto(AutoConstants.autoName);
+    //return AutoBuilder.buildAuto(AutoConstants.autoName);
+    return new InstantCommand();
   }
 }
