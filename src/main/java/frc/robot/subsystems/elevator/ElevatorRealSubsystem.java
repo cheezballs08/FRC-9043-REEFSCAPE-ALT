@@ -9,10 +9,12 @@ import frc.robot.constants.MotorConstants;
 import frc.robot.utils.CANCoderWrapper;
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 // TODO: Feedforward kullanımı ekle.
-public class ElevatorRealSubsystem implements ElevatorSubsystem {
+public class ElevatorRealSubsystem extends SubsystemBase implements ElevatorSubsystem  {
   
   SparkMax motor1, motor2;
 
@@ -107,5 +109,10 @@ public class ElevatorRealSubsystem implements ElevatorSubsystem {
   @Override
   public MechanismLigament2d getLigament() {
     throw new UnsupportedOperationException("Sim dışı kullanılmış metod 'getLigament'");   
+  }
+
+  @Override
+  public Transform3d getElevatorTransform() {
+    throw new UnsupportedOperationException("Sim dışı kullanılmış metod 'getElevatorTranslation'");
   }
 }

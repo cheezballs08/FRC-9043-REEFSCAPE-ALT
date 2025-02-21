@@ -4,12 +4,16 @@ import frc.robot.utils.Logger;
 
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.simulation.ElevatorSim;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.ElevatorConstants;
 
-public class ElevatorSimSubsystem implements ElevatorSubsystem {
+public class ElevatorSimSubsystem extends SubsystemBase implements ElevatorSubsystem {
 
   ElevatorSim simulation;
 
@@ -56,7 +60,10 @@ public class ElevatorSimSubsystem implements ElevatorSubsystem {
 
   @Override
   public void periodic() {
-    simulation.update(0.020);
+    
+    if (RobotState.isEnabled()) {
+      simulation.update(0.020);
+    }
 
     Logger.log("Elevator/Encoder/Position", simulation.getPositionMeters());
     Logger.log("Elevator/Controller/SetpointPosition", controller.getSetpoint().position);
@@ -91,5 +98,14 @@ public class ElevatorSimSubsystem implements ElevatorSubsystem {
   public MechanismLigament2d getLigament() {
     return ligament;
   }
-  
+
+  @Override
+  public Transform3d getElevatorTransform() {
+    return new Transform3d(
+      0, 
+      0, 
+      simulation.getPositionMeters(), 
+    new Rotation3d()
+    );
+  }
 }

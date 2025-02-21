@@ -11,8 +11,11 @@ import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -30,6 +33,8 @@ public class CoralIntakeSimSubsystem extends SubsystemBase implements CoralIntak
 
   MechanismLigament2d ligament;
 
+  Pose3d pose;
+
   public CoralIntakeSimSubsystem() {
     this.simulation = new SingleJointedArmSim(
       DCMotor.getNEO(1), 
@@ -43,6 +48,7 @@ public class CoralIntakeSimSubsystem extends SubsystemBase implements CoralIntak
       0,
       0
     );
+    simulation.setState(CoralIntakeConstants.startingAngle, 0);
 
     this.angleController = new ProfiledPIDController(
       CoralIntakeConstants.P, 
@@ -54,7 +60,8 @@ public class CoralIntakeSimSubsystem extends SubsystemBase implements CoralIntak
     this.feedforward = new ArmFeedforward(
       CoralIntakeConstants.S, 
       CoralIntakeConstants.G, 
-      CoralIntakeConstants.V
+      CoralIntakeConstants.V,
+      CoralIntakeConstants.A
     );
 
     this.ligament = new MechanismLigament2d("IntakeLigament", CoralIntakeConstants.intakeLength, CoralIntakeConstants.startingAngle);
@@ -63,19 +70,22 @@ public class CoralIntakeSimSubsystem extends SubsystemBase implements CoralIntak
 
   @Override
   public void periodic() {
-    simulation.update(0.020);
-
+    
     Logger.log("CoralIntake/Speeds/IntakeMotor", intakeSpeed);
-
+    
     Logger.log("CoralIntake/Encoder/Position", Units.radiansToDegrees(simulation.getAngleRads()));
     Logger.log("CoralIntake/Encoder/Velocity", Units.radiansToDegrees(simulation.getVelocityRadPerSec()));
-
+    
     Logger.log("CoralIntake/Controller/SetpointPosition", angleController.getSetpoint().position);
     Logger.log("CoralIntake/Controller/SetpointVelocity", angleController.getSetpoint().velocity);
     Logger.log("CoralIntake/Controller/PositionError", angleController.getPositionError());
     Logger.log("CoralIntake/Controller/VelocityError", angleController.getVelocityError());
     Logger.log("CoralIntake/Controller/AccumulatedError", angleController.getAccumulatedError());
     Logger.log("CoralIntake/Controller/AtSetpoint", angleController.atSetpoint());
+    
+    if (RobotState.isEnabled()) {
+      simulation.update(0.020);
+    }
 
     ligament.setAngle(Units.radiansToDegrees(simulation.getAngleRads()) - CoralIntakeConstants.mechansimOffset);
   }
@@ -115,8 +125,10 @@ public class CoralIntakeSimSubsystem extends SubsystemBase implements CoralIntak
     return ligament;
   }
 
-  public Pose3d getPose() {
-      return null;
 
-  }
+  @Override
+  public Transform3d getAngleTrasnsform() {
+    // TODO Auto-generated method stub
+    return new Transform3d(0, 0, 0, new Rotation3d(0, simulation.getAngleRads(), 0));
+  }  
 }

@@ -12,7 +12,7 @@ import frc.robot.utils.CANCoderWrapper;
 import frc.robot.utils.PhotoelectricSensor;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -119,7 +119,8 @@ public class CoralIntakeRealSubsystem extends SubsystemBase implements CoralInta
   }
 
   @Override
-  public Pose3d getPose() {
-    throw new UnsupportedOperationException("Sim dışı kullanılan metod 'getPose'");
+  public Transform3d getAngleTrasnsform() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Sim dışı kullanılan metod 'getAngleTrasnsform'");
   }
 }

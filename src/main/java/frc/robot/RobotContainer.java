@@ -1,5 +1,7 @@
 package frc.robot;
 
+import java.util.function.Supplier;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
@@ -32,7 +34,9 @@ import frc.robot.subsystems.drivetrain.DefaultSwerve;
 import frc.robot.subsystems.drivetrain.DrivetrainSubsystem;
 import frc.robot.subsystems.elevator.ElevatorSimSubsystem;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
+import frc.robot.utils.ArticulationHelper;
 import frc.robot.utils.DriveType;
+import frc.robot.utils.MechansimSim;
 
 @SuppressWarnings("unused")
 public class RobotContainer {
@@ -45,6 +49,9 @@ public class RobotContainer {
   Trigger a = controller.a();
   Trigger b = controller.b();
   Trigger y = controller.y();
+  Trigger rb = controller.rightBumper();
+  Trigger lb = controller.leftBumper();
+
 
   /* <--------------------------------------------------------------------------------------------------------------------> */
 
@@ -52,10 +59,10 @@ public class RobotContainer {
 
   DriveCommand teleopDriveCommand = new DriveCommand(
     drivetrainSubsystem,
-    DriveType.FieldRelative,
-    () -> controller.getLeftY(),
-    () -> controller.getLeftX(),
-    () -> controller.getRightX() 
+    DriveType.RobotRelative,
+    () -> Math.abs(controller.getLeftY()) > ControllerConstants.deadband ? controller.getLeftY() * 3 : 0,
+    () -> Math.abs(controller.getLeftX()) > ControllerConstants.deadband ? controller.getLeftX() * 3 : 0,
+    () -> Math.abs(controller.getRightX()) > ControllerConstants.deadband ? controller.getRightX() * 3 : 0 
   );
 
   ChaseApriltag chaseApriltag18 = new ChaseApriltag(
@@ -85,13 +92,18 @@ public class RobotContainer {
   /* <--------------------------------------------------------------------------------------------------------------------> */
 
   ElevatorSubsystem elevatorSubsystem = new ElevatorSimSubsystem();
-
   MoveElevator toRestHeight = new MoveElevator(elevatorSubsystem, ElevatorConstants.restHeight);
-  MoveElevator toFeedHeight = new MoveElevator(elevatorSubsystem, ElevatorConstants.feedHeight);
-  MoveElevator toL1Height = new MoveElevator(elevatorSubsystem, ElevatorConstants.L1Height);
-  MoveElevator toL2Height = new MoveElevator(elevatorSubsystem, ElevatorConstants.L2Height);
-  MoveElevator toL3Height = new MoveElevator(elevatorSubsystem, ElevatorConstants.L3Height);
-  MoveElevator toL4Height = new MoveElevator(elevatorSubsystem, ElevatorConstants.L4Height);
+
+  MoveElevator toCoralFeedHeight = new MoveElevator(elevatorSubsystem, ElevatorConstants.coralFeedHeight);
+  MoveElevator toL1CoralHeight = new MoveElevator(elevatorSubsystem, ElevatorConstants.coralL1Height);
+  MoveElevator toL2CoralHeight = new MoveElevator(elevatorSubsystem, ElevatorConstants.coralL2Height);
+  MoveElevator toL3CoralHeight = new MoveElevator(elevatorSubsystem, ElevatorConstants.coralL3Height);
+  MoveElevator toL4CoralHeight = new MoveElevator(elevatorSubsystem, ElevatorConstants.coralL4Height);
+
+  MoveElevator toAlgeaStartHeight = new MoveElevator(elevatorSubsystem, ElevatorConstants.algeaStartHeight);
+  MoveElevator toAlgeaOutputHeight = new MoveElevator(elevatorSubsystem, ElevatorConstants.algeaEndHeight);
+  MoveElevator toAlgeaStage1Height = new MoveElevator(elevatorSubsystem, ElevatorConstants.algeaStage1Height);
+  MoveElevator toAlgeaStage2Height = new MoveElevator(elevatorSubsystem, ElevatorConstants.algeaStage2Height);
 
   /* <--------------------------------------------------------------------------------------------------------------------> */
 
@@ -103,27 +115,27 @@ public class RobotContainer {
 
   ParallelCommandGroup feedPosition = new ParallelCommandGroup(
     toFeedAngle.asProxy(),
-    toFeedHeight.asProxy()
+    toCoralFeedHeight.asProxy()
   );
 
-  ParallelCommandGroup L1Position = new ParallelCommandGroup(
+  ParallelCommandGroup L1CoralPosition = new ParallelCommandGroup(
     toL1Angle.asProxy(),
-    toL1Height.asProxy()
+    toL1CoralHeight.asProxy()
   );
 
-  ParallelCommandGroup L2Position = new ParallelCommandGroup(
+  ParallelCommandGroup L2CoralPosition = new ParallelCommandGroup(
     toL2Angle.asProxy(),
-    toL2Height.asProxy()
+    toL2CoralHeight.asProxy()
   );
 
-  ParallelCommandGroup L3Position = new ParallelCommandGroup(
+  ParallelCommandGroup L3CoralPosition = new ParallelCommandGroup(
     toL3Angle.asProxy(),
-    toL3Height.asProxy()
+    toL3CoralHeight.asProxy()
   );
 
-  ParallelCommandGroup L4Position = new ParallelCommandGroup(
+  ParallelCommandGroup L4CoralPosition = new ParallelCommandGroup(
     toL4Angle.asProxy(),
-    toL4Height.asProxy()
+    toL4CoralHeight.asProxy()
   );
 
   /* <--------------------------------------------------------------------------------------------------------------------> */
@@ -134,28 +146,30 @@ public class RobotContainer {
   );
 
   SequentialCommandGroup putCoralToL1 = new SequentialCommandGroup(
-    L1Position.asProxy(),
+    L1CoralPosition.asProxy(),
     outtakeCoral.asProxy()
   );
 
   SequentialCommandGroup putCoralToL2 = new SequentialCommandGroup(
-    L2Position.asProxy(),
+    L2CoralPosition.asProxy(),
     outtakeCoral.asProxy()
   );
 
   SequentialCommandGroup putCoralToL3 = new SequentialCommandGroup(
-    L3Position.asProxy(),
+    L3CoralPosition.asProxy(),
     outtakeCoral.asProxy()
   );
 
   SequentialCommandGroup putCoralToL4 = new SequentialCommandGroup(
-    L4Position.asProxy(),
+    L4CoralPosition.asProxy(),
     outtakeCoral.asProxy()
   );
 
   /* <--------------------------------------------------------------------------------------------------------------------> */
 
   MechansimSim mechansimSim = new MechansimSim(coralIntakeSubsystem, elevatorSubsystem);
+
+  ArticulationHelper articulationHelper = new ArticulationHelper(drivetrainSubsystem, coralIntakeSubsystem, elevatorSubsystem);
 
   /* <--------------------------------------------------------------------------------------------------------------------> */
 
@@ -168,10 +182,12 @@ public class RobotContainer {
     coralIntakeSubsystem.setDefaultCommand(toRestAngle);
     elevatorSubsystem.setDefaultCommand(toRestHeight);
 
-    x.onTrue(restPosition);
-    a.onTrue(L1Position);
-    b.onTrue(L2Position);
-    y.onTrue(feedPosition);
+    x.onTrue(L1CoralPosition);
+    a.onTrue(L2CoralPosition);
+    b.onTrue(L3CoralPosition);
+    y.onTrue(L4CoralPosition);
+    rb.onTrue(restPosition);
+    lb.onTrue(feedPosition);
 
     x.and(b).toggleOnTrue(chaseApriltag18);
 

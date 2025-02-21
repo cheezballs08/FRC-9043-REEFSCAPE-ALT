@@ -1,4 +1,4 @@
-package frc.robot;
+package frc.robot.utils;
 
 import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
 import frc.robot.constants.RobotConstants;
 import frc.robot.subsystems.coral.CoralIntakeSubsystem;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
-import frc.robot.utils.Logger;
 
 public class MechansimSim {
   Mechanism2d ui;
