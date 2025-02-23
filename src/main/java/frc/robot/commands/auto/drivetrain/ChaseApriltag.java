@@ -2,6 +2,8 @@
 
 package frc.robot.commands.auto.drivetrain;
 
+import static edu.wpi.first.units.Units.Degree;
+import static edu.wpi.first.units.Units.Radians;
 import org.photonvision.targeting.PhotonTrackedTarget;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose3d;
@@ -36,6 +38,16 @@ public class ChaseApriltag extends Command {
   ProfiledPIDController rController;
 
   Transform3d apriltagToGoal;
+  
+  Transform3d camToTarget;
+
+  Pose3d cameraPose;
+  
+  Pose3d robotPose;
+  
+  Pose3d targetPose;
+
+  Pose3d goalPose;
 
   public ChaseApriltag(
     DrivetrainSubsystem drivetrainSubsystem,
@@ -90,7 +102,18 @@ public class ChaseApriltag extends Command {
   @Override
   public void initialize() {
     if (frontUnit.isSeen(targetId)) {
-      target = frontUnit.getTarget(targetId);  
+      target = frontUnit.getTarget(targetId);
+      
+      robotPose = new Pose3d(drivetrainSubsystem.getPose());
+    
+      camToTarget = target.getBestCameraToTarget();
+  
+      cameraPose = robotPose.transformBy(VisionConstants.robotToFrontCameraTransform);
+  
+      targetPose = cameraPose.transformBy(camToTarget);
+  
+      goalPose = targetPose.transformBy(apriltagToGoal);
+      
       return;
     }
     CommandScheduler.getInstance().cancel(this); 
@@ -101,25 +124,15 @@ public class ChaseApriltag extends Command {
 
     if (frontUnit.isSeen(targetId)) {
       target = frontUnit.getTarget(targetId);  
-      
     } else {
+      drivetrainSubsystem.stop();
       return;
     }
 
-    Pose3d robotPose = new Pose3d(drivetrainSubsystem.getPose());
-    Logger.log("ChaseApriltag/RobotPose", robotPose);
+    robotPose = new Pose3d(drivetrainSubsystem.getPose());
 
-    Transform3d camToTarget = target.getBestCameraToTarget();
-
-    Pose3d cameraPose = robotPose.transformBy(VisionConstants.robotToFrontCameraTransform);
-    Logger.log("ChaseApriltag/CameraPose", cameraPose);
-
-    Pose3d targetPose = cameraPose.transformBy(camToTarget);
+    Logger.log("ChaseApriltag/GoalPose", goalPose.transformBy(AutoConstants.offsetTransform));
     Logger.log("ChaseApriltag/TargetPose", targetPose);
-
-    Pose3d goalPose = targetPose.transformBy(apriltagToGoal.inverse());
-    Logger.log("ChaseApriltag/GoalPose", goalPose);
-
 
     xSpeed = xController.calculate(robotPose.getX(), goalPose.getX());
     Logger.log("ChaseApriltag/XSpeed", xSpeed);
@@ -129,11 +142,12 @@ public class ChaseApriltag extends Command {
     Logger.log("ChaseApriltag/YSpeed", ySpeed);
     Logger.log("ChaseApriltag/YError", yController.getPositionError());
 
-    rSpeed = rController.calculate(robotPose.getRotation().getAngle(), goalPose.getRotation().getAngle());
+    //rSpeed = rController.calculate(target.getYaw() / 90, 0);
+    rSpeed = target.getYaw() - robotPose.getRotation().getZ();
     Logger.log("ChaseApriltag/RSpeed", rSpeed);
-    Logger.log("ChaseApriltag/RError", rController.getPositionError());
+    //Logger.log("ChaseApriltag/RError", rController.getPositionError());
 
-    drivetrainSubsystem.drive(xSpeed, ySpeed, rSpeed, DriveType.RobotRelative);
+    drivetrainSubsystem.drive(-xSpeed, -ySpeed, rSpeed, DriveType.FieldRelative);
   }
 
   @Override

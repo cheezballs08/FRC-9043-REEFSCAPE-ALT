@@ -175,6 +175,5 @@ public class VisionProcessingUnit {
     else {
       this.isEstimationEnabled = true;
     }
-  } 
-
+  }
 }

@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -28,7 +29,7 @@ public class DefaultSwerve extends SubsystemBase implements DrivetrainSubsystem 
   VisionProcessingUnit leftUnit = VisionProcessingUnit.getUnit(CameraPosition.Left);
   VisionProcessingUnit rightUnit = VisionProcessingUnit.getUnit(CameraPosition.Right);
   
-  private PPHolonomicDriveController controller = new PPHolonomicDriveController(ModuleConstants.drivePID, ModuleConstants.anglePID);
+  PPHolonomicDriveController controller = new PPHolonomicDriveController(ModuleConstants.drivePID, ModuleConstants.anglePID);
 
   public DefaultSwerve() {
     
@@ -39,7 +40,7 @@ public class DefaultSwerve extends SubsystemBase implements DrivetrainSubsystem 
     } catch (IOException e) {
       e.printStackTrace();
     }
-
+    
     SwerveDriveTelemetry.verbosity = TelemetryVerbosity.NONE;
 
     this.resetOdometry(RobotConstants.initialPose);
@@ -68,8 +69,9 @@ public class DefaultSwerve extends SubsystemBase implements DrivetrainSubsystem 
 
     Logger.log("Drivetrain/FieldRelativeSpeeds", this.getFieldRelativeSpeeds());
     Logger.log("Drivetrain/RobotRelativeSpeeds", this.getRobotRelativeSpeeds());
-  }
 
+    Logger.log("Drivetrain/SwerveModuleStates", swerveDrive.getStates());
+  }
 
   public ChassisSpeeds getFieldRelativeSpeeds() {
     return swerveDrive.getFieldVelocity();
@@ -122,12 +124,16 @@ public class DefaultSwerve extends SubsystemBase implements DrivetrainSubsystem 
 
   public void updateOdometer() {
     if (frontUnit.canEstimatePose()) {
+      swerveDrive.swerveDrivePoseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(0.9, 0.9, 0.9));     
+
       swerveDrive.addVisionMeasurement(frontUnit.getEstimatedPose2d(), frontUnit.getEstimate().timestampSeconds);
     }
     /*if (leftUnit.canEstimatePose()) {
+      swerveDrive.swerveDrivePoseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(0.9, 0.9, 0.9));
       swerveDrive.addVisionMeasurement(leftUnit.getEstimatedPose2d(), leftUnit.getEstimate().timestampSeconds);
     }
     if (rightUnit.canEstimatePose()) {
+      swerveDrive.swerveDrivePoseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(0.9, 0.9, 0.9));
       swerveDrive.addVisionMeasurement(rightUnit.getEstimatedPose2d(), rightUnit.getEstimate().timestampSeconds);
     }*/
 

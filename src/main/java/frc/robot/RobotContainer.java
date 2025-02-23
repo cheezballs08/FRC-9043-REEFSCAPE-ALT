@@ -2,10 +2,13 @@ package frc.robot;
 
 import java.util.function.Supplier;
 
+import org.photonvision.simulation.VisionSystemSim;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -21,6 +24,7 @@ import frc.robot.commands.teleop.coral.AngleCoralIntake;
 import frc.robot.commands.teleop.coral.IntakeCoral;
 import frc.robot.commands.teleop.coral.OuttakeCoral;
 import frc.robot.commands.teleop.elevator.MoveElevator;
+import frc.robot.constants.AlgeaIntakeConstants;
 import frc.robot.constants.AutoConstants;
 import frc.robot.constants.ControllerConstants;
 import frc.robot.constants.CoralIntakeConstants;
@@ -34,7 +38,9 @@ import frc.robot.subsystems.drivetrain.DefaultSwerve;
 import frc.robot.subsystems.drivetrain.DrivetrainSubsystem;
 import frc.robot.subsystems.elevator.ElevatorSimSubsystem;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
+import frc.robot.units.VisionProcessingUnit;
 import frc.robot.utils.ArticulationHelper;
+import frc.robot.utils.CameraPosition;
 import frc.robot.utils.DriveType;
 import frc.robot.utils.MechansimSim;
 
@@ -50,8 +56,17 @@ public class RobotContainer {
   Trigger b = controller.b();
   Trigger y = controller.y();
   Trigger rb = controller.rightBumper();
+  Trigger rt = controller.rightTrigger(0.1);
   Trigger lb = controller.leftBumper();
+  Trigger lt = controller.leftTrigger(0.1);
 
+  /* <--------------------------------------------------------------------------------------------------------------------> */
+
+  VisionProcessingUnit frontUnit = VisionProcessingUnit.getUnit(CameraPosition.Front);
+  VisionProcessingUnit leftUnit = VisionProcessingUnit.getUnit(CameraPosition.Left);
+  VisionProcessingUnit rightUnit = VisionProcessingUnit.getUnit(CameraPosition.Right);
+
+  VisionSystemSim visionSimulation = VisionProcessingUnit.getSimulation();
 
   /* <--------------------------------------------------------------------------------------------------------------------> */
 
@@ -59,7 +74,7 @@ public class RobotContainer {
 
   DriveCommand teleopDriveCommand = new DriveCommand(
     drivetrainSubsystem,
-    DriveType.RobotRelative,
+    DriveType.FieldRelative,
     () -> Math.abs(controller.getLeftY()) > ControllerConstants.deadband ? controller.getLeftY() * 3 : 0,
     () -> Math.abs(controller.getLeftX()) > ControllerConstants.deadband ? controller.getLeftX() * 3 : 0,
     () -> Math.abs(controller.getRightX()) > ControllerConstants.deadband ? controller.getRightX() * 3 : 0 
@@ -68,7 +83,7 @@ public class RobotContainer {
   ChaseApriltag chaseApriltag18 = new ChaseApriltag(
     drivetrainSubsystem,
     18,
-    0.5,
+    0.68,
     0,
     0
   );
@@ -101,12 +116,26 @@ public class RobotContainer {
   MoveElevator toL4CoralHeight = new MoveElevator(elevatorSubsystem, ElevatorConstants.coralL4Height);
 
   MoveElevator toAlgeaStartHeight = new MoveElevator(elevatorSubsystem, ElevatorConstants.algeaStartHeight);
-  MoveElevator toAlgeaOutputHeight = new MoveElevator(elevatorSubsystem, ElevatorConstants.algeaEndHeight);
+  MoveElevator toAlgeaOutputHeight = new MoveElevator(elevatorSubsystem, ElevatorConstants.algeaOutputHeight);
   MoveElevator toAlgeaStage1Height = new MoveElevator(elevatorSubsystem, ElevatorConstants.algeaStage1Height);
   MoveElevator toAlgeaStage2Height = new MoveElevator(elevatorSubsystem, ElevatorConstants.algeaStage2Height);
 
   /* <--------------------------------------------------------------------------------------------------------------------> */
 
+  /* AlgaeIntakeSubsystem algaeIntakeSubsystem = new AlgaeIntakeSubsystem();
+
+  IntakeAlgea intakeAlgea = new IntakeAlgea(algaeIntakeSubsystem);
+  OuttakeAlgea outtakeAlgea = new OuttakeAlgea(algaeIntakeSubsystem);
+
+  /* <--------------------------------------------------------------------------------------------------------------------> */
+   
+  /* ClimbSubsystem climbSubsystem = new ClimbSubsystem();
+
+  ClimbForward climbForward = new ClimbForward(climbSubsystem);
+  ClimbBackward climbBackward = new ClimbBackward(climbSubsystem);
+
+  /* <--------------------------------------------------------------------------------------------------------------------> */
+  
   // TODO: Proxy için bir çözüm bul.
   ParallelCommandGroup restPosition = new ParallelCommandGroup(
     toRestAngle.asProxy(),
@@ -175,6 +204,7 @@ public class RobotContainer {
 
   public RobotContainer() {
     configureBindings();
+    namedCommands();
   }
 
   private void configureBindings() {
@@ -182,18 +212,32 @@ public class RobotContainer {
     coralIntakeSubsystem.setDefaultCommand(toRestAngle);
     elevatorSubsystem.setDefaultCommand(toRestHeight);
 
-    x.onTrue(L1CoralPosition);
-    a.onTrue(L2CoralPosition);
-    b.onTrue(L3CoralPosition);
-    y.onTrue(L4CoralPosition);
-    rb.onTrue(restPosition);
-    lb.onTrue(feedPosition);
-
-    x.and(b).toggleOnTrue(chaseApriltag18);
-
+    x.and(rb).onTrue(L1CoralPosition);
+    a.and(rb).onTrue(L2CoralPosition);
+    b.and(rb).onTrue(L3CoralPosition);
+    y.and(rb).onTrue(L4CoralPosition);
+    
+    x.and(lb).toggleOnTrue(chaseApriltag18);
 
     x.and(a).and(b).and(y).onTrue(resetOdometry);
+  
+    rb.and(rt).onTrue(new InstantCommand(() -> CommandScheduler.getInstance().cancelAll()));
+  }
 
+  public void periodic() {
+    frontUnit.update();
+    leftUnit.update();
+    rightUnit.update();
+
+    visionSimulation.update(drivetrainSubsystem.getSimPose());
+
+    mechansimSim.update();
+    articulationHelper.update();
+  }
+
+  public void namedCommands() {
+    NamedCommands.registerCommand("chaseApriltag18", chaseApriltag18);
+    NamedCommands.registerCommand("L2CoralPosition", L2CoralPosition);
   }
 
   public Command getAutonomousCommand() {

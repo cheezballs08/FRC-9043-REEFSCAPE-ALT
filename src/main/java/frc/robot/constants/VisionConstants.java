@@ -26,7 +26,7 @@ public class VisionConstants {
 
   public static final Transform3d robotToLeftCameraTransform = new Transform3d(0, 0, 0.5, new Rotation3d(0, -Math.toRadians(0), +Math.toRadians(90)));
 
-  public static final PoseStrategy poseEstimationStrategy = PoseStrategy.LOWEST_AMBIGUITY;
+  public static final PoseStrategy poseEstimationStrategy = PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR;
 
   public static final AprilTagFieldLayout fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2025Reefscape);
   
