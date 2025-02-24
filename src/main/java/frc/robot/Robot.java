@@ -34,9 +34,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    robotContainer.frontUnit.disableVisionEstimation(true);
-    robotContainer.leftUnit.disableVisionEstimation(true);
-    robotContainer.rightUnit.disableVisionEstimation(true);
 
     autonomousCommand = robotContainer.getAutonomousCommand();
 
@@ -50,17 +47,10 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousExit() {
-    robotContainer.frontUnit.disableVisionEstimation(false);
-    robotContainer.leftUnit.disableVisionEstimation(false);
-    robotContainer.rightUnit.disableVisionEstimation(false);
   }
 
   @Override
   public void teleopInit() {
-    robotContainer.frontUnit.disableVisionEstimation(false);
-    robotContainer.leftUnit.disableVisionEstimation(false);
-    robotContainer.rightUnit.disableVisionEstimation(false);
- 
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
     }

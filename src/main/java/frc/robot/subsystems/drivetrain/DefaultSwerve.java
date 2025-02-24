@@ -1,19 +1,13 @@
 package frc.robot.subsystems.drivetrain;
 
+import java.io.File;
 import java.io.IOException;
 
-import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.controllers.PPHolonomicDriveController;
-import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.constants.DrivetrainConstants;
-import frc.robot.constants.ModuleConstants;
 import frc.robot.constants.RobotConstants;
-import frc.robot.units.VisionProcessingUnit;
-import frc.robot.utils.CameraPosition;
 import frc.robot.utils.DriveType;
 import frc.robot.utils.Logger;
 import swervelib.SwerveDrive;
@@ -25,17 +19,11 @@ public class DefaultSwerve extends SubsystemBase implements DrivetrainSubsystem 
   
   SwerveDrive swerveDrive;
 
-  VisionProcessingUnit frontUnit = VisionProcessingUnit.getUnit(CameraPosition.Front);
-  VisionProcessingUnit leftUnit = VisionProcessingUnit.getUnit(CameraPosition.Left);
-  VisionProcessingUnit rightUnit = VisionProcessingUnit.getUnit(CameraPosition.Right);
-  
-  PPHolonomicDriveController controller = new PPHolonomicDriveController(ModuleConstants.drivePID, ModuleConstants.anglePID);
-
   public DefaultSwerve() {
     
     try {
-      this.swerveDrive = new SwerveParser(DrivetrainConstants.jsonDirectory)
-      .createSwerveDrive(ModuleConstants.driveMaxSpeed);
+      this.swerveDrive = new SwerveParser(new File(Filesystem.getDeployDirectory(), "swerve"))
+      .createSwerveDrive(5);
     
     } catch (IOException e) {
       e.printStackTrace();
@@ -47,19 +35,8 @@ public class DefaultSwerve extends SubsystemBase implements DrivetrainSubsystem 
 
     swerveDrive.setCosineCompensator(false);
     swerveDrive.setHeadingCorrection(false);
-
-    AutoBuilder.configure(
-      this::getPose, 
-      this::resetOdometry, 
-      this::getRobotRelativeSpeeds, 
-      (speeds, feedforwards) -> this.drive(speeds),
-      controller, 
-      RobotConstants.config, 
-      () -> RobotConstants.alliance != DriverStation.Alliance.Blue, 
-      this
-    );
   }
-
+  
   @Override
   public void periodic() {
     this.updateOdometer();
@@ -95,10 +72,10 @@ public class DefaultSwerve extends SubsystemBase implements DrivetrainSubsystem 
 
   public void drive(double xSpeed, double ySpeed, double rSpeed, DriveType driveType) {
     if (driveType == DriveType.FieldRelative) {
-      swerveDrive.driveFieldOriented(new ChassisSpeeds(-xSpeed, -ySpeed, -rSpeed));
+      swerveDrive.driveFieldOriented(new ChassisSpeeds(xSpeed, ySpeed, rSpeed));
     
     } else {
-      swerveDrive.drive(new ChassisSpeeds(-xSpeed, -ySpeed, -rSpeed));  
+      swerveDrive.drive(new ChassisSpeeds(xSpeed, ySpeed, rSpeed));  
     }
   }
 
@@ -123,20 +100,6 @@ public class DefaultSwerve extends SubsystemBase implements DrivetrainSubsystem 
   }
 
   public void updateOdometer() {
-    if (frontUnit.canEstimatePose()) {
-      swerveDrive.swerveDrivePoseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(0.9, 0.9, 0.9));     
-
-      swerveDrive.addVisionMeasurement(frontUnit.getEstimatedPose2d(), frontUnit.getEstimate().timestampSeconds);
-    }
-    /*if (leftUnit.canEstimatePose()) {
-      swerveDrive.swerveDrivePoseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(0.9, 0.9, 0.9));
-      swerveDrive.addVisionMeasurement(leftUnit.getEstimatedPose2d(), leftUnit.getEstimate().timestampSeconds);
-    }
-    if (rightUnit.canEstimatePose()) {
-      swerveDrive.swerveDrivePoseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(0.9, 0.9, 0.9));
-      swerveDrive.addVisionMeasurement(rightUnit.getEstimatedPose2d(), rightUnit.getEstimate().timestampSeconds);
-    }*/
-
     swerveDrive.updateOdometry();
   }
 }
