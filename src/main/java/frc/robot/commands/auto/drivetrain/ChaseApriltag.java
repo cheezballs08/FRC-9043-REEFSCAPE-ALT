@@ -142,12 +142,12 @@ public class ChaseApriltag extends Command {
     Logger.log("ChaseApriltag/YSpeed", ySpeed);
     Logger.log("ChaseApriltag/YError", yController.getPositionError());
 
-    //rSpeed = rController.calculate(target.getYaw() / 90, 0);
+    //rSpeed = rController.calculate(target.getYaw(), 0);
     rSpeed = target.getYaw() - robotPose.getRotation().getZ();
     Logger.log("ChaseApriltag/RSpeed", rSpeed);
     //Logger.log("ChaseApriltag/RError", rController.getPositionError());
 
-    drivetrainSubsystem.drive(-xSpeed, -ySpeed, rSpeed, DriveType.FieldRelative);
+    drivetrainSubsystem.drive(-xSpeed, -ySpeed, rSpeed / 7, DriveType.FieldRelative);
   }
 
   @Override
