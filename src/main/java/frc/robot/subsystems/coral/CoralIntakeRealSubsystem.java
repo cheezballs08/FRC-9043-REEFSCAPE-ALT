@@ -94,7 +94,7 @@ public class CoralIntakeRealSubsystem extends SubsystemBase implements CoralInta
 
     output += this.feedforward.calculate(position, this.angleEncoder.getVelocity());
 
-    this.angleMotor.set(output);
+    this.angleMotor.setVoltage(output);
   }
 
   public void setPosition(double speed, double angle) {

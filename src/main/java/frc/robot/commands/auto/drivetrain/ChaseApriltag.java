@@ -2,10 +2,9 @@
 
 package frc.robot.commands.auto.drivetrain;
 
-import static edu.wpi.first.units.Units.Degree;
-import static edu.wpi.first.units.Units.Radians;
 import org.photonvision.targeting.PhotonTrackedTarget;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
@@ -65,7 +64,7 @@ public class ChaseApriltag extends Command {
       desiredXOffset, 
       desiredYOffset, 
       0,
-      new Rotation3d(new Rotation2d(Units.degreesToRadians(desiredAngle)))
+      new Rotation3d(new Rotation2d(Units.degreesToRadians(desiredAngle) + Math.PI))
     );
 
     this.xController = new ProfiledPIDController(
@@ -103,7 +102,7 @@ public class ChaseApriltag extends Command {
   public void initialize() {
     if (frontUnit.isSeen(targetId)) {
       target = frontUnit.getTarget(targetId);
-      
+
       robotPose = new Pose3d(drivetrainSubsystem.getPose());
     
       camToTarget = target.getBestCameraToTarget();
@@ -122,16 +121,15 @@ public class ChaseApriltag extends Command {
   @Override
   public void execute() {
 
-    if (frontUnit.isSeen(targetId)) {
-      target = frontUnit.getTarget(targetId);  
-    } else {
+    if (goalPose == null) {
       drivetrainSubsystem.stop();
+      this.initialize();
       return;
     }
 
     robotPose = new Pose3d(drivetrainSubsystem.getPose());
 
-    Logger.log("ChaseApriltag/GoalPose", goalPose.transformBy(AutoConstants.offsetTransform));
+    Logger.log("ChaseApriltag/GoalPose", new Pose2d(goalPose.getX(), goalPose.getY(), goalPose.getRotation().toRotation2d()));
     Logger.log("ChaseApriltag/TargetPose", targetPose);
 
     xSpeed = xController.calculate(robotPose.getX(), goalPose.getX());
@@ -142,12 +140,15 @@ public class ChaseApriltag extends Command {
     Logger.log("ChaseApriltag/YSpeed", ySpeed);
     Logger.log("ChaseApriltag/YError", yController.getPositionError());
 
-    //rSpeed = rController.calculate(target.getYaw(), 0);
-    rSpeed = target.getYaw() - robotPose.getRotation().getZ();
-    Logger.log("ChaseApriltag/RSpeed", rSpeed);
-    //Logger.log("ChaseApriltag/RError", rController.getPositionError());
 
-    drivetrainSubsystem.drive(-xSpeed, -ySpeed, rSpeed / 7, DriveType.FieldRelative);
+
+    //rSpeed = robotPose.getRotation().getZ() - goalPose.getRotation().getZ();
+    
+    rSpeed = rController.calculate(robotPose.getRotation().getZ(), goalPose.getRotation().getZ());
+    Logger.log("ChaseApriltag/RSpeed", rSpeed);
+    Logger.log("ChaseApriltag/RError", rController.getPositionError());
+
+    drivetrainSubsystem.drive(xSpeed, ySpeed, rSpeed, DriveType.FieldRelative);
   }
 
   @Override

@@ -1,7 +1,7 @@
 package frc.robot.constants;
 
 import com.pathplanner.lib.config.RobotConfig;
-
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -23,7 +23,7 @@ public class RobotConstants {
   public static final double robotMass = 74.088;
   public static final double robotMomentOfInertia = 0.883;
 
-  public static final Alliance alliance = Alliance.Blue;
+  public static final Alliance alliance;
 
   public static RobotConfig config;
 
@@ -34,6 +34,9 @@ public class RobotConstants {
   public static double mechansimYPosition = 0.25;
   
   static {
+
+    alliance = DriverStation.getAlliance().orElse(Alliance.Blue);
+
     try{
       config = RobotConfig.fromGUISettings();
     } catch (Exception e) {
