@@ -63,7 +63,7 @@ public class CoralIntakeConstants {
   public static final double startingAngle = Units.degreesToRadians(restAngle);
   */
 
-  public static final double feedAngle = 40 + angleOffset;
+  public static final double feedAngle = 50 + angleOffset;
   public static final double L1Angle = -10 + angleOffset;
   public static final double L2Angle = -5 + angleOffset;
   public static final double L4Angle = -48 + angleOffset;

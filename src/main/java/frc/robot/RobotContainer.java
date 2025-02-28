@@ -7,6 +7,8 @@ import org.photonvision.simulation.VisionSystemSim;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -16,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.auto.drivetrain.ChaseApriltag;
+import frc.robot.commands.auto.drivetrain.ChaseBestApriltag;
 import frc.robot.commands.base.DriveCommand;
 import frc.robot.commands.teleop.algea.IntakeAlgea;
 import frc.robot.commands.teleop.algea.OuttakeAlgea;
@@ -23,7 +26,9 @@ import frc.robot.commands.teleop.climb.ClimbBackward;
 import frc.robot.commands.teleop.climb.ClimbForward;
 import frc.robot.commands.teleop.coral.AngleCoralIntake;
 import frc.robot.commands.teleop.coral.IntakeCoral;
+import frc.robot.commands.teleop.coral.MaintainAngle;
 import frc.robot.commands.teleop.coral.OuttakeCoral;
+import frc.robot.commands.teleop.elevator.MaintainHeight;
 import frc.robot.commands.teleop.elevator.MoveElevator;
 import frc.robot.constants.AlgeaIntakeConstants;
 import frc.robot.constants.AutoConstants;
@@ -43,6 +48,7 @@ import frc.robot.units.VisionProcessingUnit;
 import frc.robot.utils.ArticulationHelper;
 import frc.robot.utils.CameraPosition;
 import frc.robot.utils.DriveType;
+import frc.robot.utils.Logger;
 import frc.robot.utils.MechansimSim;
 
 @SuppressWarnings("unused")
@@ -81,31 +87,24 @@ public class RobotContainer {
     () -> Math.abs(controller.getRightX()) > ControllerConstants.deadband ? controller.getRightX() * -3 : 0 
   );
 
-  ChaseApriltag chaseApriltag181 = new ChaseApriltag(
-    drivetrainSubsystem,
-    18,
-    0.70,
-    -0.03,
-    0
-  );
+  // 0.70
+  // -0.03
+  
+  // 0.70
+  // 0.3
 
-  ChaseApriltag chaseApriltag182 = new ChaseApriltag(
-    drivetrainSubsystem,
-    18,
-    0.70,
-    0.3,
-    0
-  );
-
-  ChaseApriltag chaseApriltag13 = new ChaseApriltag(
-    drivetrainSubsystem, 
-    13, 
-    0.60, 
-    0.20, 
-    0
-  );
+  // 0.60
+  // 0.20
 
   InstantCommand resetOdometry = new InstantCommand(() -> drivetrainSubsystem.resetOdometry(RobotConstants.initialPose));
+
+  InstantCommand fixOdometry = new InstantCommand(() -> {
+    this.disableEstimation(false);
+    drivetrainSubsystem.updateOdometer();
+    this.disableEstimation(true);
+  }); 
+
+  InstantCommand cancelCommands = new InstantCommand(() -> CommandScheduler.getInstance().cancelAll());
 
   /* <--------------------------------------------------------------------------------------------------------------------> */
 
@@ -153,104 +152,6 @@ public class RobotContainer {
 
   /* <--------------------------------------------------------------------------------------------------------------------> */
   
-  // TODO: Proxy için bir çözüm bul.
-  /*ParallelCommandGroup restPosition = new ParallelCommandGroup(
-    toRestAngle,
-    toRestHeight
-  );*/
-
-  ParallelCommandGroup feedPosition = new ParallelCommandGroup(
-    toFeedAngle,
-    toCoralFeedHeight
-  );
-
-  ParallelCommandGroup L1CoralPosition = new ParallelCommandGroup(
-    toL1Angle.asProxy(),
-    toL1CoralHeight.asProxy()
-  );
-
-  ParallelCommandGroup L2CoralPosition = new ParallelCommandGroup(
-    toL2Angle.asProxy(),
-    toL2CoralHeight.asProxy()
-  );
-
-  ParallelCommandGroup L3CoralPosition = new ParallelCommandGroup(
-    toL3Angle.asProxy(),
-    toL3CoralHeight.asProxy()
-  );
-
-  ParallelCommandGroup L4CoralPosition = new ParallelCommandGroup(
-    toL4Angle,
-    toL4CoralHeight
-  );
-
-  /* <--------------------------------------------------------------------------------------------------------------------> */
-
-  /*SequentialCommandGroup takeCoral = new SequentialCommandGroup(
-    feedPosition.asProxy(),
-    intakeCoral.asProxy()
-  );
-
-  SequentialCommandGroup putCoralToL1 = new SequentialCommandGroup(
-    L1CoralPosition.asProxy(),
-    outtakeCoral.asProxy()
-  );
-
-  SequentialCommandGroup putCoralToL2 = new SequentialCommandGroup(
-    L2CoralPosition.asProxy(),
-    outtakeCoral.asProxy()
-  );
-
-  SequentialCommandGroup putCoralToL3 = new SequentialCommandGroup(
-    L3CoralPosition.asProxy(),
-    outtakeCoral.asProxy()
-  );
-
-  SequentialCommandGroup putCoralToL4 = new SequentialCommandGroup(
-    L4CoralPosition.asProxy(),
-    outtakeCoral.asProxy()
-  );
-
-  /*SequentialCommandGroup putAlgea = new SequentialCommandGroup(
-    toAlgeaOutputHeight.asProxy(),
-    outtakeAlgea.asProxy()
-  );
-
-  SequentialCommandGroup takeStartAlgea = new SequentialCommandGroup(
-    toAlgeaStartHeight.asProxy(),
-    intakeAlgea.asProxy()
-  );
-
-  SequentialCommandGroup takeStage1Algea = new SequentialCommandGroup(
-    toAlgeaStage1Height.asProxy(),
-    intakeAlgea.asProxy()
-  );
-
-  SequentialCommandGroup takeStage2Algea = new SequentialCommandGroup(
-    toAlgeaStage2Height.asProxy(),
-    intakeAlgea.asProxy()
-  );
-
-  SequentialCommandGroup swapStage1Algea = new SequentialCommandGroup(
-    new ParallelCommandGroup(
-      toAlgeaStage1Height.asProxy(),
-      toL2Angle.asProxy()
-    ),
-    intakeAlgea.asProxy(),
-    outtakeCoral.asProxy()
-  );
-
-  SequentialCommandGroup swapStage2Algea = new SequentialCommandGroup(
-    new ParallelCommandGroup(
-      toAlgeaStage2Height.asProxy(),
-      toL3Angle.asProxy()
-    ),
-    intakeAlgea.asProxy(),
-    outtakeCoral.asProxy()
-  );
-
-  /* <--------------------------------------------------------------------------------------------------------------------> */
-
   MechansimSim mechansimSim = new MechansimSim(coralIntakeSubsystem, elevatorSubsystem);
 
   ArticulationHelper articulationHelper = new ArticulationHelper(drivetrainSubsystem, coralIntakeSubsystem, elevatorSubsystem);
@@ -258,27 +159,63 @@ public class RobotContainer {
   /* <--------------------------------------------------------------------------------------------------------------------> */
 
   public RobotContainer() {
-    configureBindings();
-    namedCommands();
+    this.disableEstimation(true);
   }
 
   private void configureBindings() {
     drivetrainSubsystem.setDefaultCommand(teleopDriveCommand);
-    coralIntakeSubsystem.setDefaultCommand(toRestAngle);
-    elevatorSubsystem.setDefaultCommand(toRestHeight);
+    coralIntakeSubsystem.setDefaultCommand(new AngleCoralIntake(coralIntakeSubsystem, CoralIntakeConstants.restAngle));
+    elevatorSubsystem.setDefaultCommand(new MoveElevator(elevatorSubsystem, ElevatorConstants.restHeight));
 
-    /*x.and(rb).onTrue(L1CoralPosition);
-    a.and(rb).onTrue(L2CoralPosition);
-    b.and(rb).onTrue(L3CoralPosition);
-    y.and(rb).onTrue(feedPosition);*/
+    //lb.and(lt).onTrue(fixOdometry);
+
+    rb.and(rt).onTrue(cancelCommands);
+
+    rb.and(x).onTrue(
+      new ChaseBestApriltag(
+        drivetrainSubsystem, 
+        0.70, 
+        0, 
+        0
+      )
+    );
+
+    rb.and(b).onTrue(
+      new ChaseBestApriltag(
+        drivetrainSubsystem, 
+        0.50, 
+        0.31, 
+        0
+      )
+    );
+
+
+    lb.and(x).onTrue(
+      new ParallelCommandGroup(
+        new MoveElevator(elevatorSubsystem, ElevatorConstants.coralL3Height),
+        new AngleCoralIntake(coralIntakeSubsystem, CoralIntakeConstants.L2Angle)
+      )
+    );
+
+    lb.and(b).onTrue(
+      new ParallelCommandGroup(
+        new MoveElevator(elevatorSubsystem, ElevatorConstants.coralFeedHeight),
+        new AngleCoralIntake(coralIntakeSubsystem, CoralIntakeConstants.feedAngle)
+      )
+    );
+  }
+
+  public void initialize() {
+    RobotConstants.alliance = DriverStation.getAlliance().orElse(Alliance.Blue);
     
-    /*x.and(lb).toggleOnTrue(TchaseApriltag181);
-    a.and(lb).toggleOnTrue(TchaseApriltag182);
-    b.and(lb).toggleOnTrue(TchaseApriltag13);*/
+    RobotConstants.updateInitialPose();
+    AutoConstants.updatePoses();
+    AutoConstants.logPoses();
+    
+    this.configureBindings();
+    this.namedCommands();
 
-    x.and(a).and(b).and(y).onTrue(resetOdometry);
-  
-    rb.and(rt).onTrue(new InstantCommand(() -> CommandScheduler.getInstance().cancelAll()));
+    drivetrainSubsystem.resetOdometry(RobotConstants.initialPose);
   }
 
   public void periodic() {
@@ -290,22 +227,65 @@ public class RobotContainer {
 
     mechansimSim.update();
     articulationHelper.update();
+
+    RobotConstants.alliance = DriverStation.getAlliance().orElse(Alliance.Blue);
+
+    Logger.log("Robot/Alliance", RobotConstants.alliance);
   }
 
   public void namedCommands() {
-    NamedCommands.registerCommand("chaseApriltag181", chaseApriltag181);
-    NamedCommands.registerCommand("chaseApriltag182", chaseApriltag182);
-    NamedCommands.registerCommand("chaseApriltag13", chaseApriltag13);
-    NamedCommands.registerCommand("restPosition", new ParallelCommandGroup(
-      new AngleCoralIntake(coralIntakeSubsystem, CoralIntakeConstants.restAngle),
-      new MoveElevator(elevatorSubsystem, ElevatorConstants.restHeight)
-    ));
-    NamedCommands.registerCommand("L1CoralPosition", L1CoralPosition);
-    NamedCommands.registerCommand("L2CoralPosition", L2CoralPosition);
-    NamedCommands.registerCommand("L3CoralPosition", L3CoralPosition);
-    NamedCommands.registerCommand("L4CoralPosition", L4CoralPosition);
-    NamedCommands.registerCommand("feedPosition", feedPosition);
-    /*NamedCommands.registerCommand("restPosition", restPosition);*/
+    NamedCommands.registerCommand("CoralDrop1Pose", AutoBuilder.pathfindToPose(AutoConstants.coralDrop1Pose, AutoConstants.pathConstraints));
+    NamedCommands.registerCommand("CoralDrop2Pose", AutoBuilder.pathfindToPose(AutoConstants.coralDrop2Pose, AutoConstants.pathConstraints));
+    NamedCommands.registerCommand("CoralDrop3Pose", AutoBuilder.pathfindToPose(AutoConstants.coralDrop3Pose, AutoConstants.pathConstraints));
+    NamedCommands.registerCommand("CoralDrop4Pose", AutoBuilder.pathfindToPose(AutoConstants.coralDrop4Pose, AutoConstants.pathConstraints));
+    NamedCommands.registerCommand("CoralDrop5Pose", AutoBuilder.pathfindToPose(AutoConstants.coralDrop5Pose, AutoConstants.pathConstraints));
+    NamedCommands.registerCommand("CoralDrop6Pose", AutoBuilder.pathfindToPose(AutoConstants.coralDrop6Pose, AutoConstants.pathConstraints));
+
+    NamedCommands.registerCommand("LeftFeederPose", AutoBuilder.pathfindToPose(AutoConstants.leftFeederPose, AutoConstants.pathConstraints));
+    NamedCommands.registerCommand("RightFeederPose", AutoBuilder.pathfindToPose(AutoConstants.rightFeederPose, AutoConstants.pathConstraints));
+
+    NamedCommands.registerCommand("AlgeaOuttakePose", AutoBuilder.pathfindToPose(AutoConstants.algeaOuttakePose, AutoConstants.pathConstraints));
+
+    NamedCommands.registerCommand("ChaseBestApriltagCoralLeft", new ChaseBestApriltag(drivetrainSubsystem, 0.70, -0.05, 0));
+    NamedCommands.registerCommand("ChaseBestApriltagCoralRight", new ChaseBestApriltag(drivetrainSubsystem, 0.70, 0.30, 0));
+
+    NamedCommands.registerCommand("L1Position", new ParallelCommandGroup(
+      new MoveElevator(elevatorSubsystem, ElevatorConstants.coralL1Height),
+      new AngleCoralIntake(coralIntakeSubsystem, CoralIntakeConstants.L1Angle)
+    ).raceWith(new WaitCommand(2)));
+
+    NamedCommands.registerCommand("L2Position", new ParallelCommandGroup(
+      new MoveElevator(elevatorSubsystem, ElevatorConstants.coralL2Height),
+      new AngleCoralIntake(coralIntakeSubsystem, CoralIntakeConstants.L2Angle)
+    ).raceWith(new WaitCommand(2)));
+
+    NamedCommands.registerCommand("L3Position", new ParallelCommandGroup(
+      new MoveElevator(elevatorSubsystem, ElevatorConstants.coralL3Height),
+      new AngleCoralIntake(coralIntakeSubsystem, CoralIntakeConstants.L2Angle)
+    ).raceWith(new WaitCommand(2)));
+
+    NamedCommands.registerCommand("L4Position", new ParallelCommandGroup(
+      new MoveElevator(elevatorSubsystem, ElevatorConstants.coralL4Height),
+      new AngleCoralIntake(coralIntakeSubsystem, CoralIntakeConstants.L4Angle)
+    ).raceWith(new WaitCommand(2)));
+
+    NamedCommands.registerCommand("FeedPosition", new ParallelCommandGroup(
+      new MoveElevator(elevatorSubsystem, ElevatorConstants.coralFeedHeight),
+      new AngleCoralIntake(coralIntakeSubsystem, CoralIntakeConstants.feedAngle)
+    ).raceWith(new WaitCommand(2)));
+
+    NamedCommands.registerCommand("RestPosition", new ParallelCommandGroup(
+      new MoveElevator(elevatorSubsystem, ElevatorConstants.restHeight),
+      new AngleCoralIntake(coralIntakeSubsystem, CoralIntakeConstants.restAngle)
+    ).raceWith(new WaitCommand(0.25)));
+
+    NamedCommands.registerCommand("FixOdometry", fixOdometry);
+  }
+
+  public void disableEstimation(boolean disable) {
+    frontUnit.disableVisionEstimation(disable);
+    leftUnit.disableVisionEstimation(disable);
+    rightUnit.disableVisionEstimation(disable);
   }
 
   public Command getAutonomousCommand() {

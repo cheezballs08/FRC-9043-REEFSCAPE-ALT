@@ -115,4 +115,9 @@ public class ElevatorRealSubsystem extends SubsystemBase implements ElevatorSubs
   public Transform3d getElevatorTransform() {
     throw new UnsupportedOperationException("Sim dışı kullanılmış metod 'getElevatorTranslation'");
   }
+
+  @Override
+  public double getHeight() {
+    return encoder.getPosition();
+  }
 }

@@ -123,4 +123,9 @@ public class CoralIntakeRealSubsystem extends SubsystemBase implements CoralInta
     // TODO Auto-generated method stub
     throw new UnsupportedOperationException("Sim dışı kullanılan metod 'getAngleTrasnsform'");
   }
+
+  @Override
+  public double getAngle() {
+    return angleEncoder.getPosition();
+  }
 }

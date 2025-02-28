@@ -2,7 +2,9 @@ package frc.robot.commands.base;
 
 import java.util.function.Supplier;
 
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.constants.RobotConstants;
 import frc.robot.subsystems.drivetrain.DrivetrainSubsystem;
 import frc.robot.utils.DriveType;
 
@@ -44,7 +46,12 @@ public class DriveCommand extends Command {
     yInput = yInputSupplier.get();
     rInput = rInputSupplier.get();
 
-    drivetrainSubsystem.drive(xInput, yInput, rInput, driveType);
+    if (RobotConstants.alliance == Alliance.Blue && driveType == DriveType.FieldRelative) {
+      drivetrainSubsystem.drive(xInput, yInput, rInput, driveType);
+    }
+    else {
+      drivetrainSubsystem.drive(-xInput, -yInput, -rInput, driveType);
+    }
   }
 
   @Override

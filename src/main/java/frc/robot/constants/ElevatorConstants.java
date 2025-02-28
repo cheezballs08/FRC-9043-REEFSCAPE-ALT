@@ -34,7 +34,7 @@ public class ElevatorConstants {
   public static final double coralL2Height = 0.19;
   public static final double coralL3Height = 0.60;
   public static final double coralL4Height = 1.65;
-  public static final double coralFeedHeight = 0.15;
+  public static final double coralFeedHeight = 0.10;
 
   public static final double algeaStartHeight = 0;
   public static final double algeaOutputHeight = 0;

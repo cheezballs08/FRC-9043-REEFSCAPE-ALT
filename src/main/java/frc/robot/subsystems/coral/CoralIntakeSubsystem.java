@@ -14,6 +14,8 @@ public interface CoralIntakeSubsystem extends Subsystem {
 
   public boolean isAtSetpoint();
 
+  public double getAngle();
+
   public boolean isSensorActive();
 
   public Trigger getSensorAsTrigger();

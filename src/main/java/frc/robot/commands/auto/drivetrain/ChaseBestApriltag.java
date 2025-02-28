@@ -11,7 +11,6 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.constants.AutoConstants;
 import frc.robot.constants.VisionConstants;
 import frc.robot.subsystems.drivetrain.DrivetrainSubsystem;
@@ -20,15 +19,13 @@ import frc.robot.utils.CameraPosition;
 import frc.robot.utils.DriveType;
 import frc.robot.utils.Logger;
 
-public class ChaseApriltag extends Command {
+public class ChaseBestApriltag extends Command {
 
   DrivetrainSubsystem drivetrainSubsystem;
 
   VisionProcessingUnit frontUnit = VisionProcessingUnit.getUnit(CameraPosition.Front);
 
   double xSpeed, ySpeed, rSpeed;
-
-  int targetId;
 
   PhotonTrackedTarget target;
 
@@ -48,17 +45,14 @@ public class ChaseApriltag extends Command {
 
   Pose3d goalPose;
 
-  public ChaseApriltag(
+  public ChaseBestApriltag(
     DrivetrainSubsystem drivetrainSubsystem,
-    int targetId,
     double desiredXOffset,
     double desiredYOffset,
     double desiredAngle
     ) {
 
     this.drivetrainSubsystem = drivetrainSubsystem;
-
-    this.targetId = targetId;
 
     this.apriltagToGoal = new Transform3d(
       desiredXOffset, 
@@ -100,8 +94,8 @@ public class ChaseApriltag extends Command {
 
   @Override
   public void initialize() {
-    if (frontUnit.isSeen(targetId)) {
-      target = frontUnit.getTarget(targetId);
+    if (frontUnit.getBestTarget() != null) {
+      target = frontUnit.getBestTarget();
 
       robotPose = new Pose3d(drivetrainSubsystem.getPose());
     
@@ -115,7 +109,9 @@ public class ChaseApriltag extends Command {
       
       return;
     }
-    CommandScheduler.getInstance().cancel(this); 
+    else {
+      this.cancel();      
+    }
   }
 
   @Override

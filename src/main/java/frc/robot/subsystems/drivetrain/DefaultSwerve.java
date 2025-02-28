@@ -4,6 +4,8 @@ import java.io.IOException;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.pathplanner.lib.util.DriveFeedforwards;
+
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -32,7 +34,6 @@ public class DefaultSwerve extends SubsystemBase implements DrivetrainSubsystem 
   PPHolonomicDriveController controller = new PPHolonomicDriveController(ModuleConstants.drivePID, ModuleConstants.anglePID);
 
   public DefaultSwerve() {
-    
     try {
       this.swerveDrive = new SwerveParser(DrivetrainConstants.jsonDirectory)
       .createSwerveDrive(ModuleConstants.driveMaxSpeed);
@@ -102,17 +103,13 @@ public class DefaultSwerve extends SubsystemBase implements DrivetrainSubsystem 
     }
   }
 
-/*  public void drive(ChassisSpeeds speeds, DriveFeedforwards feedforwards) {
-    DogLog.log("/Dirty/Speeds", speeds);
-    DogLog.log("/Dirty/Accels", feedforwards.accelerationsMPSSq());
-    DogLog.log("/Dirty/Forces", feedforwards.linearForces().toString());
-    
+  public void drive(ChassisSpeeds speeds, DriveFeedforwards feedforwards) {  
     swerveDrive.drive(
       speeds,
       swerveDrive.kinematics.toSwerveModuleStates(speeds),
       feedforwards.linearForces()
       );
-  }*/
+  }
 
   public Pose2d getPose() {
     return swerveDrive.getPose();
@@ -124,7 +121,7 @@ public class DefaultSwerve extends SubsystemBase implements DrivetrainSubsystem 
 
   public void updateOdometer() {
     if (frontUnit.canEstimatePose()) {
-      swerveDrive.swerveDrivePoseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(0.9, 0.9, 0.9));     
+      swerveDrive.swerveDrivePoseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(0.000000000001, 0.000000000001, 0.000000000001));     
 
       swerveDrive.addVisionMeasurement(frontUnit.getEstimatedPose2d(), frontUnit.getEstimate().timestampSeconds);
     }

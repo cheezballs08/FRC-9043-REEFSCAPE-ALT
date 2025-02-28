@@ -11,8 +11,12 @@ public interface ElevatorSubsystem extends Subsystem {
 
   public void setVoltages(double voltage);
 
+  public double getHeight();
+
   public MechanismLigament2d getLigament();
 
   public Transform3d getElevatorTransform();
+
+  public boolean isAtSetpoint();
 
 }

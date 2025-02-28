@@ -108,4 +108,14 @@ public class ElevatorSimSubsystem extends SubsystemBase implements ElevatorSubsy
     new Rotation3d()
     );
   }
+
+  @Override
+  public double getHeight() {
+    return simulation.getPositionMeters();
+  }
+
+  @Override
+  public boolean isAtSetpoint() {
+    return controller.atSetpoint();
+  }
 }

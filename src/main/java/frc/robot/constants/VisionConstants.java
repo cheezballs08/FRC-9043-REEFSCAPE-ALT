@@ -9,7 +9,6 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout.OriginPosition;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 public class VisionConstants {
   public static final String frontCameraName = "frontcamera";
@@ -28,16 +27,10 @@ public class VisionConstants {
 
   public static final PoseStrategy poseEstimationStrategy = PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR;
 
-  public static final AprilTagFieldLayout fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2025Reefscape);
+  public static final AprilTagFieldLayout fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeAndyMark);
   
   static {
-
-    if (RobotConstants.alliance == Alliance.Red) {
-      fieldLayout.setOrigin(OriginPosition.kRedAllianceWallRightSide);
-    } else {
-      fieldLayout.setOrigin(OriginPosition.kBlueAllianceWallRightSide);
-    }
-
+    fieldLayout.setOrigin(OriginPosition.kBlueAllianceWallRightSide);
   }
 
   public static final SimCameraProperties frontCameraProperties = new SimCameraProperties();
