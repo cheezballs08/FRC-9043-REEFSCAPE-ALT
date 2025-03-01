@@ -1,5 +1,7 @@
 package frc.robot.constants;
 
+import com.ctre.phoenix6.configs.CANcoderConfiguration;
+import com.ctre.phoenix6.configs.MagnetSensorConfigs;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
@@ -74,6 +76,11 @@ public class CoralIntakeConstants {
   public static final int sensorID = 0; 
   
   public static final int encoderID = 0;
+
+    public static final CANcoderConfiguration encoderConfiguration = new CANcoderConfiguration()
+  .withMagnetSensor(
+    new MagnetSensorConfigs().withAbsoluteSensorDiscontinuityPoint(0.5)
+  );
   
   public static final double positionConversionConstant = 0;
   public static final double velocityConversionConstant = 0;

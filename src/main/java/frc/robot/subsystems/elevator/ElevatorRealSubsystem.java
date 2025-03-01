@@ -31,10 +31,14 @@ public class ElevatorRealSubsystem extends SubsystemBase implements ElevatorSubs
     this.motor2 = new SparkMax(ElevatorConstants.motor2ID, ElevatorConstants.motor2type);
     this.motor1.configure(ElevatorConstants.motor2Config, MotorConstants.resetMode, MotorConstants.persistMode);
     
-    this.encoder = new CANCoderWrapper(new CANcoder(ElevatorConstants.encoderID));
+    CANcoder cancoder = new CANcoder(ElevatorConstants.encoderID);
 
-    this.encoder.setPositionConversionFactor(ElevatorConstants.encoderPositionConversionFactor);
-    this.encoder.setVelocityConversionFactor(ElevatorConstants.encoderVelocityConversionFactor);
+    cancoder.getConfigurator().apply(ElevatorConstants.encoderConfiguration);
+
+    this.encoder = new CANCoderWrapper(cancoder);
+
+    /*this.encoder.setPositionConversionFactor(ElevatorConstants.encoderPositionConversionFactor);
+    this.encoder.setVelocityConversionFactor(ElevatorConstants.encoderVelocityConversionFactor);*/
 
     this.controller = new ProfiledPIDController(
       ElevatorConstants.P, 

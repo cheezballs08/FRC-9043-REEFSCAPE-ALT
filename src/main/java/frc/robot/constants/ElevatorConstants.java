@@ -1,5 +1,7 @@
 package frc.robot.constants;
 
+import com.ctre.phoenix6.configs.CANcoderConfiguration;
+import com.ctre.phoenix6.configs.MagnetSensorConfigs;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
@@ -66,6 +68,12 @@ public class ElevatorConstants {
   .inverted(false);
 
   public static final int encoderID = 0;
+
+  public static final CANcoderConfiguration encoderConfiguration = new CANcoderConfiguration()
+  .withMagnetSensor(
+    new MagnetSensorConfigs()
+    .withAbsoluteSensorDiscontinuityPoint(1) 
+  );
 
   public static final double encoderPositionConversionFactor = 0.0;
   public static final double encoderVelocityConversionFactor = 0.0;

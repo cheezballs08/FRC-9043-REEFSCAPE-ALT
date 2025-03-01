@@ -40,7 +40,12 @@ public class CoralIntakeRealSubsystem extends SubsystemBase implements CoralInta
     this.angleMotor = new SparkMax(CoralIntakeConstants.angleMotorID, CoralIntakeConstants.motorType);
     this.angleMotor.configure(CoralIntakeConstants.angleMotorConfig, MotorConstants.resetMode, MotorConstants.persistMode);
 
-    this.angleEncoder = new CANCoderWrapper(new CANcoder(CoralIntakeConstants.encoderID));
+    CANcoder cancoder = new CANcoder(CoralIntakeConstants.encoderID);
+
+    cancoder.getConfigurator().apply(CoralIntakeConstants.encoderConfiguration);
+
+    this.angleEncoder = new CANCoderWrapper(cancoder);
+
     this.angleEncoder.setPositionConversionFactor(CoralIntakeConstants.positionConversionConstant);
     this.angleEncoder.setVelocityConversionFactor(CoralIntakeConstants.velocityConversionConstant);
 
@@ -85,7 +90,6 @@ public class CoralIntakeRealSubsystem extends SubsystemBase implements CoralInta
     this.intakeMotor2.set(speed);
   }
 
-  /** Radian girdili */
   public void setAngle(double angle) {
 
     double position = this.angleEncoder.getPosition();
@@ -120,7 +124,6 @@ public class CoralIntakeRealSubsystem extends SubsystemBase implements CoralInta
 
   @Override
   public Transform3d getAngleTrasnsform() {
-    // TODO Auto-generated method stub
     throw new UnsupportedOperationException("Sim dışı kullanılan metod 'getAngleTrasnsform'");
   }
 
