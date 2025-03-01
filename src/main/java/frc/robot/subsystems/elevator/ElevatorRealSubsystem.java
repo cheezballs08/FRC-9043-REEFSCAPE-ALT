@@ -1,12 +1,9 @@
 package frc.robot.subsystems.elevator;
 
-import com.ctre.phoenix6.hardware.CANcoder;
 import com.revrobotics.spark.SparkMax;
-
 import frc.robot.utils.Logger;
 import frc.robot.constants.ElevatorConstants;
 import frc.robot.constants.MotorConstants;
-import frc.robot.utils.CANCoderWrapper;
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Transform3d;
@@ -18,8 +15,6 @@ public class ElevatorRealSubsystem extends SubsystemBase implements ElevatorSubs
   
   SparkMax motor1, motor2;
 
-  CANCoderWrapper encoder;
-
   ProfiledPIDController controller;
 
   ElevatorFeedforward feedforward;
@@ -30,12 +25,6 @@ public class ElevatorRealSubsystem extends SubsystemBase implements ElevatorSubs
 
     this.motor2 = new SparkMax(ElevatorConstants.motor2ID, ElevatorConstants.motor2type);
     this.motor1.configure(ElevatorConstants.motor2Config, MotorConstants.resetMode, MotorConstants.persistMode);
-    
-    CANcoder cancoder = new CANcoder(ElevatorConstants.encoderID);
-
-    cancoder.getConfigurator().apply(ElevatorConstants.encoderConfiguration);
-
-    this.encoder = new CANCoderWrapper(cancoder);
 
     /*this.encoder.setPositionConversionFactor(ElevatorConstants.encoderPositionConversionFactor);
     this.encoder.setVelocityConversionFactor(ElevatorConstants.encoderVelocityConversionFactor);*/
@@ -65,9 +54,6 @@ public class ElevatorRealSubsystem extends SubsystemBase implements ElevatorSubs
     Logger.log("ElevatorSubsystem/Voltages/Motor1", motor1.getAppliedOutput());
     Logger.log("ElevatorSubsystem/Voltages/Motor2", motor2.getAppliedOutput());
 
-    Logger.log("ElevatorSubsystem/Encoder/Position", encoder.getPosition());
-    Logger.log("ElevatorSubsystem/Encoder/Velocity", encoder.getVelocity());
-
     Logger.log("ElevatorSubsystem/Controller/SetpointPosition", controller.getSetpoint().position);
     Logger.log("ElevatorSubsystem/Controller/SetpointVelocity", controller.getSetpoint().velocity);
     Logger.log("ElevatorSubsystem/Controller/PositionError", controller.getPositionError());
@@ -83,7 +69,7 @@ public class ElevatorRealSubsystem extends SubsystemBase implements ElevatorSubs
 
   public void setElevatorPosition(double desiredPosition) {
 
-    if (desiredPosition > ElevatorConstants.elevatorHeight || desiredPosition < 0) {
+    /*if (desiredPosition > ElevatorConstants.elevatorHeight || desiredPosition < 0) {
       System.err.println("İstenen pozisyon ya çok büyük ya da 0'dan küçük");
     
       return;  
@@ -95,15 +81,15 @@ public class ElevatorRealSubsystem extends SubsystemBase implements ElevatorSubs
 
     output += feedforward.calculate(encoder.getVelocity());
 
-    this.setVoltages(output);
+    this.setVoltages(output);*/
   }
 
   public double getEncoderPosition() {
-    return encoder.getPosition();
+    return 0;//encoder.getPosition();
   }
 
   public double getEncoderVelocity() {
-    return encoder.getVelocity();
+    return 0;//encoder.getVelocity();
   }
 
   public boolean isAtSetpoint() {
@@ -122,6 +108,6 @@ public class ElevatorRealSubsystem extends SubsystemBase implements ElevatorSubs
 
   @Override
   public double getHeight() {
-    return encoder.getPosition();
+    return 0;//encoder.getPosition();
   }
 }
