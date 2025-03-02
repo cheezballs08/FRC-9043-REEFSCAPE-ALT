@@ -2,6 +2,7 @@ package frc.robot.constants;
 
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.MagnetSensorConfigs;
+import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
@@ -18,8 +19,6 @@ public class ElevatorConstants {
   // ARM TO CORAL HOLD 145 DEG
   // CORAL HOLD 53 DEG
   // FEED 53 DEG
-
-
 
   public static final double elevatorHeight = 2;
   public static final double restHeight = 0;
@@ -72,7 +71,8 @@ public class ElevatorConstants {
   public static final CANcoderConfiguration encoderConfiguration = new CANcoderConfiguration()
   .withMagnetSensor(
     new MagnetSensorConfigs()
-    .withAbsoluteSensorDiscontinuityPoint(1) 
+    .withAbsoluteSensorDiscontinuityPoint(1)
+    .withSensorDirection(SensorDirectionValue.Clockwise_Positive) 
   );
 
   public static final double encoderPositionConversionFactor = 0.0;

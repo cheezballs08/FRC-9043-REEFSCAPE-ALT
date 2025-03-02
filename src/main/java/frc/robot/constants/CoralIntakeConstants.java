@@ -2,6 +2,7 @@ package frc.robot.constants;
 
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.MagnetSensorConfigs;
+import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
@@ -36,19 +37,22 @@ public class CoralIntakeConstants {
   .idleMode(IdleMode.kBrake);
   
   public static final int intakeMotor1ID = 0;
+  public static final boolean intakeMotor1Inverted = false;
   public static final SparkBaseConfig intakeMotor1Config = new SparkMaxConfig()
   .apply(motorDefaultConfig)
-  .inverted(false);
+  .inverted(intakeMotor1Inverted);
 
   public static final int intakeMotor2ID = 0;
+  public static final boolean intakeMotor2Inverted = false;
   public static final SparkBaseConfig intakeMotor2Config = new SparkMaxConfig()
   .apply(motorDefaultConfig)
-  .inverted(false);
+  .inverted(intakeMotor2Inverted);
   
   public static final int angleMotorID = 0;
+  public static final boolean angleMotorInverted = false;
   public static final SparkBaseConfig angleMotorConfig = new SparkMaxConfig()
   .apply(motorDefaultConfig)
-  .inverted(false);
+  .inverted(angleMotorInverted);
 
   public static final double intakeSpeed = 0.0;
   
@@ -79,7 +83,9 @@ public class CoralIntakeConstants {
 
     public static final CANcoderConfiguration encoderConfiguration = new CANcoderConfiguration()
   .withMagnetSensor(
-    new MagnetSensorConfigs().withAbsoluteSensorDiscontinuityPoint(0.5)
+    new MagnetSensorConfigs()
+    .withAbsoluteSensorDiscontinuityPoint(0.5)
+    .withSensorDirection(SensorDirectionValue.Clockwise_Positive)
   );
   
   public static final double positionConversionConstant = 0;

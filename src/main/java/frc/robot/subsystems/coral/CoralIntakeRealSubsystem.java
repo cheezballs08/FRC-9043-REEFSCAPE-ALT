@@ -3,11 +3,10 @@ package frc.robot.subsystems.coral;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
 
 import com.ctre.phoenix6.hardware.CANcoder;
-import com.revrobotics.spark.SparkMax;
+import com.thethriftybot.ThriftyNova;
 
 import frc.robot.utils.Logger;
 import frc.robot.constants.CoralIntakeConstants;
-import frc.robot.constants.MotorConstants;
 import frc.robot.utils.CANCoderWrapper;
 import frc.robot.utils.PhotoelectricSensor;
 import edu.wpi.first.math.controller.ArmFeedforward;
@@ -18,9 +17,9 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 public class CoralIntakeRealSubsystem extends SubsystemBase implements CoralIntakeSubsystem {
 
-  SparkMax intakeMotor1, intakeMotor2;
+  ThriftyNova intakeMotor1, intakeMotor2;
 
-  SparkMax angleMotor;
+  ThriftyNova angleMotor;
 
   CANCoderWrapper angleEncoder;
   
@@ -31,15 +30,19 @@ public class CoralIntakeRealSubsystem extends SubsystemBase implements CoralInta
   PhotoelectricSensor sensor;
   
   public CoralIntakeRealSubsystem() {
-    this.intakeMotor1 = new SparkMax(CoralIntakeConstants.intakeMotor1ID, CoralIntakeConstants.motorType);
-    this.intakeMotor1.configure(CoralIntakeConstants.intakeMotor1Config, MotorConstants.resetMode, MotorConstants.persistMode);
+    this.intakeMotor1 = new ThriftyNova(CoralIntakeConstants.intakeMotor1ID);
+    intakeMotor1.setBrakeMode(true);
+    intakeMotor1.setInverted(CoralIntakeConstants.intakeMotor1Inverted);
     
-    this.intakeMotor2 = new SparkMax(CoralIntakeConstants.intakeMotor2ID, CoralIntakeConstants.motorType);
-    this.intakeMotor2.configure(CoralIntakeConstants.intakeMotor2Config, MotorConstants.resetMode, MotorConstants.persistMode);
+    this.intakeMotor2 = new ThriftyNova(CoralIntakeConstants.intakeMotor2ID);
+    intakeMotor2.setBrakeMode(true);
+    intakeMotor2.setInverted(CoralIntakeConstants.intakeMotor2Inverted);
     
-    this.angleMotor = new SparkMax(CoralIntakeConstants.angleMotorID, CoralIntakeConstants.motorType);
-    this.angleMotor.configure(CoralIntakeConstants.angleMotorConfig, MotorConstants.resetMode, MotorConstants.persistMode);
+    this.angleMotor = new ThriftyNova(CoralIntakeConstants.angleMotorID);
+    angleMotor.setBrakeMode(true);
 
+    angleMotor.setInverted(CoralIntakeConstants.angleMotorInverted);
+    
     CANcoder cancoder = new CANcoder(CoralIntakeConstants.encoderID);
 
     cancoder.getConfigurator().apply(CoralIntakeConstants.encoderConfiguration);
@@ -68,12 +71,15 @@ public class CoralIntakeRealSubsystem extends SubsystemBase implements CoralInta
     Logger.log("CoralIntake/Speeds/IntakeMotor2", intakeMotor2.get());
     Logger.log("CoralIntake/Speeds/AngleMotor", angleMotor.get());
     
-    Logger.log("CoralIntake/Voltages/IntakeMotor1", intakeMotor1.getAppliedOutput());
-    Logger.log("CoralIntake/Voltages/IntakeMotor2", intakeMotor2.getAppliedOutput());
-    Logger.log("CoralIntake/Voltages/AngleMotor", angleMotor.getAppliedOutput());
+    Logger.log("CoralIntake/Voltages/IntakeMotor1", intakeMotor1.getVoltage());
+    Logger.log("CoralIntake/Voltages/IntakeMotor2", intakeMotor2.getVoltage());
+    Logger.log("CoralIntake/Voltages/AngleMotor", angleMotor.getVoltage());
 
     Logger.log("CoralIntake/Encoder/Position", angleEncoder.getPosition());
     Logger.log("CoralIntake/Encoder/Velocity", angleEncoder.getVelocity());
+    Logger.log("CoralIntake/Encoder/RawPosition", angleEncoder.getRawPosition());
+    Logger.log("CoralIntake/Encoder/RawVelocity", angleEncoder.getRawPosition());
+    
 
     Logger.log("CoralIntake/Controller/SetpointPosition", angleController.getSetpoint().position);
     Logger.log("CoralIntake/Controller/SetpointVelocity", angleController.getSetpoint().velocity);

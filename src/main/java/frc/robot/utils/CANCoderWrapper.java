@@ -34,6 +34,14 @@ public class CANCoderWrapper {
     this.inverted = inverted;
   }
 
+  public double getRawPosition() {
+    return encoder.getPosition().getValueAsDouble();
+  }
+
+  public double getRawVelocity() {
+    return encoder.getVelocity().getValueAsDouble();
+  }
+
   public void setPositionConversionFactor(double positionConversionFactor) {
     this.positionConversionFactor = positionConversionFactor;
   }
